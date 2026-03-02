@@ -1,0 +1,11 @@
+body{
+    background-color: rgb(183, 181, 181);
+}
+
+header{
+    display: flex;
+}
+
+header img {
+    max-width: 5%;
+}
