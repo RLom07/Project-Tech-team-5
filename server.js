@@ -36,6 +36,7 @@ run().catch(console.dir);
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
+app.use(express.static("static"));
 app.use(express.urlencoded({ extended: true }))
 
 
