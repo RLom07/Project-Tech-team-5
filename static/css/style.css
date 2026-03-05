@@ -1,0 +1,125 @@
+/* Algemene styling */
+    @font-face {
+        font-family: bigDeal; /* set name */
+        src: url(aBigDeal.ttf); /* url of the font */
+    }
+    
+    body{
+        margin: 0;
+    }
+
+    
+    a{
+        text-decoration: none;
+    }
+
+
+
+
+/* Navigatie/Header  styling  */
+    nav{
+        margin-left: 2em;
+        margin-right: 2em;
+        margin-top: 3em;
+    }
+    nav ul{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    nav ul li{
+        list-style: none;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 1em;
+        align-items: center;
+    }
+
+    nav ul li img{
+        height: 70px;
+        width: auto;
+        padding-bottom: 2em;
+    }
+
+    nav ul li a{
+        font-family: Arial, Helvetica, sans-serif;
+        border-radius: 22px;
+        align-items: center;
+        padding: 20px 37.5px;
+
+
+        /* height: 5em;
+        width: 11em;     */
+    }
+
+    a.registreren{
+        background: linear-gradient(90deg, #321A70, #F45A1A);
+        color: white;
+        font-weight: bold;
+    }
+
+    a.inloggen{
+        border: 1px solid #F45A1A;
+        color: white;
+    }
+
+
+
+
+    
+/* Footer styling */
+
+    footer{
+        background-color: black;
+        height: 12em;
+    }
+
+    footer a{
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    footer ul{
+        list-style: none;
+        
+    }
+
+    footer ul li{
+        padding-right: 6em;
+        height: 1.5em;
+    }
+
+    footer ul:first-of-type{
+        padding-top: 1em;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        padding-bottom: 1em;
+        margin-right: 2em;
+        margin-left: 2em;
+
+    }
+
+    footer ul:last-of-type{
+        padding-top: 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        border-top: 1px solid red;
+        margin-right: 2em;
+        margin-left: 2em;
+    }
+
+    footer ul:last-of-type img{
+        height: 40px;
+        width: 40px;
+    }
+
+    .socials{
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 1em;
+        flex-direction: row;
+    }

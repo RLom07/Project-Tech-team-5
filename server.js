@@ -32,6 +32,10 @@ async function startServer() {
 
     // kies database naam
     db = client.db("myapp")
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'views'))
+app.use(express.static("static"));
+app.use(express.urlencoded({ extended: true }))
 
     // Express config pas starten NA DB connectie
     app.set('view engine', 'ejs')

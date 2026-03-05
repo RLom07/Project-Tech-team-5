@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <%- include('partials/head') %>
 </head>
 <body>
     <header>
-        <img src="/images/Cinematchlogo.png" alt="logo">
+        <%- include('partials/header') %>
     </header>
-    <h1>Vind je nieuwe films & series!</h1>
-
-<script src="/scripts/main.js"></script>
+    <main>
+    <div class="jumbotron">
+        <p>Welcome to templating using EJS</p>
+    </div>
+    </main>
+    <footer>
+        <%- include('partials/footer') %>
+    </footer>
 </body>
-
 </html>
