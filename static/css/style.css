@@ -1,3 +1,4 @@
+/* Algemene styling */
     @font-face {
         font-family: bigDeal; /* set name */
         src: url(aBigDeal.ttf); /* url of the font */
@@ -6,15 +7,24 @@
     body{
         margin: 0;
     }
+
     
+    a{
+        text-decoration: none;
+    }
+
+
+
+
+/* Navigatie/Header  styling  */
     nav{
         margin-left: 2em;
         margin-right: 2em;
+        margin-top: 3em;
     }
     nav ul{
         display: flex;
         justify-content: space-between;
-        margin-top: 3em;
         align-items: center;
     }
 
@@ -37,10 +47,6 @@
         padding-left: 0.8em;
     }
 
-    a{
-        text-decoration: none;
-    }
-
     a.registreren{
         background: linear-gradient(90deg, #321A70, #F45A1A);
         color: white;
@@ -52,6 +58,11 @@
         color: white;
     }
 
+
+
+
+    
+/* Footer styling */
 
     footer{
         background-color: black;
