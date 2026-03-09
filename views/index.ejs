@@ -8,14 +8,24 @@
     <%- include('partials/head') %>
 </head>
 <body>
-    <header>
+    <section class="hero">
+        <video autoplay loop muted plays-inline class="background-video">
+            <source src="../videos/Fight club loop.mp4">
+        </video>
+
+        <header>
         <%- include('partials/header') %>
-    </header>
-    <main>
-    <div class="jumbotron">
-        <p>Welcome to templating using EJS</p>
-    </div>
-    </main>
+        </header>
+
+        <main>
+            <h1> CINEMATCH</h1>
+            <h2>
+                Stop met scrollen,
+                Start met kijken!
+            </h2>
+        </main>
+    </section>
+    
     <footer>
         <%- include('partials/footer') %>
     </footer>

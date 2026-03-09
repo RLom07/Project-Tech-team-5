@@ -6,6 +6,7 @@
     
     body{
         margin: 0;
+        background-color: black;
     }
 
     
@@ -20,7 +21,6 @@
     nav{
         margin-left: 2em;
         margin-right: 2em;
-        margin-top: 3em;
     }
     nav ul{
         display: flex;
@@ -65,6 +65,15 @@
         color: white;
     }
 
+    
+
+    .background-video{
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        z-index: -1;
+        opacity: 80%;
+    }
 
 
 
