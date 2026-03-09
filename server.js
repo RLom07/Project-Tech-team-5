@@ -3,44 +3,58 @@ require('dotenv').config()
 const express = require('express')
 const path = require('path')
 const { MongoClient, ServerApiVersion } = require('mongodb')
+
 const app = express()
 const port = process.env.PORT || 3000
 
-const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/?appName=${process.env.APP_NAME}`;
+// 🔐 encode credentials
+const username = encodeURIComponent(process.env.DB_USERNAME)
+const password = encodeURIComponent(process.env.DB_PASSWORD)
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const uri = `mongodb+srv://${username}:${password}@${process.env.DB_HOST}/?appName=${process.env.APP_NAME}`
+
 const client = new MongoClient(uri, {
-  serverSelectionTimeoutMS: 5000, // na 5 sec een duidelijke error
+  serverSelectionTimeoutMS: 5000,
   connectTimeoutMS: 5000,
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
   }
-});
+})
 
+let db // we bewaren database hier
 
-async function run() {
+async function startServer() {
   try {
-    // Connect the client to the server (optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-run().catch(console.dir);
+    await client.connect()
+    console.log("✅ Connected to MongoDB")
 
+    // kies database naam
+    db = client.db("myapp")
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
+app.use(express.static("static"));
 app.use(express.urlencoded({ extended: true }))
 
+    // Express config pas starten NA DB connectie
+    app.set('view engine', 'ejs')
+    app.set('views', path.join(__dirname, 'views'))
+    app.use(express.static('public'))
+    app.use(express.urlencoded({ extended: true }))
 
-app.get('/', (req, res) => { res.render('index') })
+    app.get('/', async (req, res) => {
+      res.render('index')
+    })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+    app.listen(port, () => {
+      console.log(`🚀 Server running on port ${port}`)
+    })
+
+  } catch (err) {
+    console.error("❌ MongoDB connection failed:", err)
+    process.exit(1)
+  }
+}
+
+startServer()
