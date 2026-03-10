@@ -96,6 +96,14 @@
 
     
 
+/* Register Styling */
+.register_main {
+    background: #121212;
+}
+
+.register_h1 {
+    color: #321A70;
+}
     .background-video{
         position: absolute;
         width: 100%;
