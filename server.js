@@ -74,6 +74,10 @@ app.get('/', (req, res) => { res.render('index') })
 app.get('/profile', (req, res) => { res.render(`profile`) })
 
 app.get('/register', (req, res) => { res.render(`register`) })
+
+app.get('/vragenlijst', (req, res) => { res.render(`vragenlijst`) })
+ 
+app.get('/vragenlijst-vraag1', (req, res) => { res.render(`vragenlijst-vraag1`) })
  
  
 app.listen(port, () => {
