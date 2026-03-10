@@ -19,35 +19,6 @@ const client = new MongoClient(uri, {
   }
 });
  
- 
-//API
-async function fetchData() {
-  const url = 'https://imdb232.p.rapidapi.com/api' ;
- 
-  try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'x-rapidapi-host': 'imdb232.p.rapidapi.com',
-        'x-rapidapi-key': '6cbe0e049amsh5b14f29e50608aap12c417jsn221b084fae67'
-      }
-    });
- 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
- 
-    const data = await response.json();
-    console.log(data); // your result here
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
-}
- 
-// Call the function
-fetchData();
- 
- 
 async function run() {
   try {
     // Connect the client to the server (optional starting in v4.7)
@@ -61,6 +32,18 @@ async function run() {
   }
 }
 run().catch(console.dir);
+
+
+//API//////////////////////////////
+async function fetchData(url) {
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log(data)
+}
+
+fetchData(`http://www.omdbapi.com/?apikey=${process.env.API_KEY}&`);
+
+
  
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
