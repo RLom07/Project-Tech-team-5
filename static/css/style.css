@@ -1,4 +1,14 @@
 /* Algemene styling */
+    :root {
+        --button-color: #F45a1a;
+        --outline-color: #321A70;
+        --text-color: #FFFF;
+        --background-color: #121212;
+        --font: aBigDeal;
+    }   
+
+
+
     @font-face {
         font-family: bigDeal; /* set name */
         src: url(aBigDeal.ttf); /* url of the font */
@@ -6,6 +16,12 @@
     
     body{
         margin: 0;
+        font-family: aBigDeal, sans-serif;
+        background: url("../images/background.png");
+        background-repeat: repeat;
+        background-size: 120% 200%;
+        background-position: center;
+        background-color: var(--background-color);
     }
 
     
@@ -13,14 +29,27 @@
         text-decoration: none;
     }
 
+    .primary-button{
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #F45A1A;
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
 
+        padding: 20px 75px;
+        border-radius: 20px;
+
+        border: none;
+        cursor: pointer;
+    }
 
 
 /* Navigatie/Header  styling  */
     nav{
         margin-left: 2em;
         margin-right: 2em;
-        margin-top: 3em;
     }
     nav ul{
         display: flex;
@@ -65,24 +94,56 @@
         color: white;
     }
 
+    
 
+/* Register Styling */
+.register_main {
+    background: #121212;
+}
 
+.register_h1 {
+    color: #321A70;
+}
+    .background-video{
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        z-index: -1;
+        opacity: 70%;
+    }
+
+    .hero main{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .hero h1{
+        font-family: "a Big Deal";
+        font-size: 200px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.20) 15.39%, rgba(58, 34, 120, 0.14) 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 
     
 /* Footer styling */
 
     footer{
-        background-color: black;
+        background-color: var();
         height: 12em;
     }
 
     footer a{
-        color: white;
+        color: var(--text-color);
         font-family: Arial, Helvetica, sans-serif;
     }
     footer ul{
-        list-style: none;
-        
+        list-style: none; 
     }
 
     footer ul li{
@@ -102,24 +163,83 @@
     }
 
     footer ul:last-of-type{
-        padding-top: 0;
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
-        align-items: center;
+        align-items: top;
         border-top: 1px solid red;
-        margin-right: 2em;
-        margin-left: 2em;
     }
 
     footer ul:last-of-type img{
-        height: 40px;
-        width: 40px;
+        width: 28px;
+        height: 28px;
     }
 
-    .socials{
-        display: flex;
-        flex-wrap: wrap;
-        margin-top: 1em;
-        flex-direction: row;
+    li.socials{
+        display: flex; /* spacing between items; adjust as needed */
+        gap: 8px;
+        margin-top: 1.3em;
+        align-items: end; /* vertically centers if icons/text differ in height */
+    }
+
+
+
+    
+    /* Profile pagina */ 
+    #profilebanner h2{
+        text-align: center;
+        font-family: aBigDeal;
+        color: var(--text-color);
+    }
+
+    #profilebanner a#profileMatchList{
+    display: block;
+    width: 200px;
+    height: 50px;
+    text-align: center;
+    color: var(--text-color);
+    background-color: var(--button-color);
+    border-radius: 16px;
+    margin: 0 auto;
+    }
+
+    #recentlyWatched{
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    margin-top: 5em;
+    margin-left: 2.5em;
+    margin-right: 2.5em;
+    margin-bottom: 4em;
+    }
+
+    #recentlyWatched ul{
+    list-style: none;
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    margin-left: 0;
+    margin-right: 2.5em;
+    box-sizing: border-box;
+    overflow-x: auto;     
+    overflow-y: hidden;
+    }
+
+    #recentlyWatched ul li{
+    width: 176px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-right: 1em;
+    }
+
+    #recentlyWatched ul li > img{
+    height: 280px;
+    width: 170px;
+    object-fit: cover;
+    }
+
+    #recentlyWatched h3{
+    font-size: 16px;
     }
