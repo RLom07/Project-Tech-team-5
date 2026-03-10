@@ -72,6 +72,8 @@ app.use(express.urlencoded({ extended: true }))
 app.get('/', (req, res) => { res.render('index') })
  
 app.get('/profile', (req, res) => { res.render(`profile`) })
+
+app.get('/register', (req, res) => { res.render(`register`) })
  
  
 app.listen(port, () => {
