@@ -120,7 +120,7 @@
 
 .form-rectangle {
     display: grid;
-    grid-template-rows: .05fr .01fr .1fr .1fr .1fr .1fr .1fr .1fr .1fr .1fr;
+    grid-template-rows: .1fr .1fr 1fr 3fr;
     grid-template-columns: .1fr 1fr 1fr .1fr;
     width: 50rem;
     height: 40rem;
@@ -142,6 +142,66 @@
     justify-self: center;
     margin: 0;
 }
+
+.registreer-form {
+    display: grid;
+    grid-template-rows: .1fr .1fr .1fr .1fr .1fr .1fr .1fr .1fr;
+    grid-template-columns: .1fr 1fr 1fr .1fr;
+    grid-row-start: 3;
+    grid-column: 2 / 5;
+    justify-self: center;
+}
+
+.vnaam {
+    grid-row-start: 1;
+    grid-column-start: 2;
+}
+
+#vnaam {
+    grid-row-start: 2;
+    grid-column-start: 2;
+}
+
+.anaam {
+    grid-row-start: 1;
+    grid-column-start: 3;
+}
+
+#anaam {
+    grid-row-start: 2;
+    grid-column-start: 3;
+}
+
+.email {
+    grid-row-start: 3;
+    grid-column-start: 2;
+}
+
+#email {
+    grid-row-start: 4;
+    grid-column: 2 / 4;
+}
+
+.wwoord {
+    grid-row-start: 5;
+    grid-column-start: 2;
+}
+
+#wwoord {
+    grid-row-start: 6;
+    grid-column: 2 / 4;
+}
+
+.alac {
+    grid-row-start: 7;
+    grid-column-start: 3;
+}
+
+#register {
+    grid-row-start: 8;
+    grid-column: 2 / 4;
+}
+
 
     .background-video{
         position: absolute;
