@@ -41,10 +41,17 @@ async function fetchData(url) {
     console.log(data)
 }
 
-fetchData(`http://www.omdbapi.com/?apikey=${process.env.API_KEY}&`);
+fetchData(`${process.env.BASE_URL}/movie/popular?api_key${process.env.API_KEY}`);
 
+//Starter endpoints that can be used
+// /movie/popular?
 
- 
+// /trending/movie/day?
+
+// /search/movie?
+
+// /movie/top_rated?
+//////////////////////////////////// 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 app.use(express.static("static"));
