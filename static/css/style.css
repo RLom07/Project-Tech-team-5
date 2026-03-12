@@ -295,7 +295,6 @@
     
 /* Profile pagina **************************************/ 
 /* Kevin's Stukje **************************************/
-
     #recentlyWatched{
         color: var(--text-color);
         display: flex;
@@ -362,8 +361,103 @@
     }
 
 
+    /* sorteer buttons */
+    *, *::after, *::before {
+        box-sizing:border-box;  
+    }
+
+    aside{
+        color: var(--text-color);
+        font-size: 24px;
+        font-family: var(--font);
+        font-weight: normal;
+    }
+
+    .sort{
+        height: auto;
+        width: auto;
+        font-size: 24px;
+        padding: 10px;
+        color: var(--text-color);
+        background-color: var(--button-color);
+        border-radius: 20px;
+    }
+
+    .sort.asc,
+    .sort.desc {
+        font-weight: bold;
+    }
+
+    .sort.asc::after {
+        content: "(az↓)";
+    }
+
+    .sort.desc::after {
+        content: "(za↓)";
+    }
+
+
+    #watchList{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        margin-top: 5em;
+        width: auto;
+        margin-left: 20em;
+        margin-right: 20em;
+    }
+
+    #watchListNav{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+/********** Watchlist lijst ************/
+    #watchList ul{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: start;
+    }
+
     #watchList h2{
         font-family: var(--font);
         font-size: 40px;
         color: var(--text-color);
+    }
+
+    #watchList h3, h4, p{
+        color: var(--text-color);
+    }
+
+    #watchList h3{
+        margin-top: 0;
+    }
+
+    #watchList li{
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: start;
+        height: 14em;
+        width: 100%;
+        gap: 1em;
+        margin-top: 1em;
+        border: 2px solid red;
+    }
+
+    #watchList li img{
+        order: -1;
+        height: 100%;
+        width: 20em;
+    }
+
+    .descriptionCards{
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
     }
