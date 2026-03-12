@@ -41,8 +41,9 @@ async function fetchData(url) {
     console.log(data)
 }
 
-fetchData(`${process.env.BASE_URL}/movie/popular?api_key${process.env.API_KEY}`);
+fetchData(`${process.env.BASE_URL}/movie/popular?api_key=${process.env.API_KEY}`);
 
+console.log(`${process.env.BASE_URL}/movie/popular?api_key=${process.env.API_KEY}`)
 //Starter endpoints that can be used
 // /movie/popular?
 
@@ -57,6 +58,8 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.static("static"));
 app.use(express.urlencoded({ extended: true }))
  
+
+
 //Routes
  
 app.get('/', (req, res) => { res.render('index') })
