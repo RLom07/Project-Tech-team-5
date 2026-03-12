@@ -4,15 +4,15 @@
         --outline-color: #321A70;
         --text-color: #FFFF;
         --background-color: #121212;
-        --font: "a Big Deal";
-    }   
-
-
+        --header-font: aBigDeal;
+        --body-font: Arial, Helvetica, sans-serif;
+    } 
 
     @font-face {
         font-family: bigDeal; /* set name */
         src: url(aBigDeal.ttf); /* url of the font */
     }
+
     
     body{
         margin: 0;
@@ -22,11 +22,24 @@
         background-size: auto;
         background-position: center;
         background-color: var(--background-color);
+        color: var(--text-color);
     }
 
-    
+    h2{
+        font-family: var(--header-font);
+        font-size: 2.5em;
+        padding: 0 5rem 1.5rem 5rem;
+    }
+    p{
+        font-family: var(--body-font);
+    }
+
     a{
         text-decoration: none;
+    }
+
+    ul{
+        list-style: none;
     }
 
     .primary-button{
@@ -35,10 +48,9 @@
         justify-content: center;
         background-color: #F45A1A;
         color: white;
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: var(--body-font);
         font-weight: bold;
-
-        padding: 20px 75px;
+        padding: 25px 85px;
         border-radius: 20px;
 
         border: none;
@@ -47,8 +59,8 @@
 
 
 /* Navigatie/Header  styling  */
+
     nav{
-        margin-left: 2em;
         margin-right: 2em;
     }
     nav ul{
@@ -72,8 +84,8 @@
         padding-bottom: 2em;
     }
 
-    nav ul li a{
-        font-family: Arial, Helvetica, sans-serif;
+    nav ul li a, #call-to-action ul li a:last-child{
+        font-family: var(--body-font);
         border-radius: 22px;
         align-items: center;
         padding: 20px 37.5px;
@@ -94,7 +106,15 @@
         color: white;
     }
 
+
+
+/*hero styling */
+.hero{
+    padding-bottom:4em;
+    position: relative;
+    overflow: hidden;
     
+}
 
 /* Register Styling */
 
@@ -205,34 +225,228 @@
 
     .background-video{
         position: absolute;
+        inset: 0;
         width: 100%;
-        bottom: 0;
+        height: 100%;
+        object-fit: cover;
+        
+    
+        padding-left: 2.5em;
+ 
         z-index: -1;
-        opacity: 70%;
+        filter: brightness(0.7) contrast(1.1) saturate(0.9);
+        
+        transform: scale(1.1);
+    }
+
+    .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+
+        background: radial-gradient(
+            circle,
+            rgba(0, 0, 0, 0) 50%,
+            rgba(0, 0, 0, 0.55) 100%
+        );
+
+        
     }
 
     .hero main{
         display: flex;
         flex-direction: column;
         align-items: center;
+        
     }
+
     .hero h1{
-        font-family: var(--font);
+        margin: 0.4em 0 0 0; 
+        
+        font-family: var(--header-font);
         font-size: 200px;
-        font-style: normal;
         font-weight: 400;
-        line-height: normal;
-
-        background: linear-gradient(90deg, rgba(255, 255, 255, 0.20) 15.39%, rgba(58, 34, 120, 0.14) 100%);
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.25), rgba(58, 34, 120, 0.25));
         background-clip: text;
-        -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        -webkit-text-stroke: 1px rgba(120,100,255,0.3);
     }
 
-    .hero h2{
-        font-family: var(--font);
-        color: var(--text-color);
+    .hero h2, #call-to-action h2{
+        text-align: center;
     }
+
+/*index styling */
+    .info{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 9em 0;
+    }
+    
+
+    .info ul{
+        display: flex;
+        justify-content: space-between;
+        gap: 5em;
+        font-family: var(--body-font);
+        font-size: 28px;
+    }
+
+    .info li, #call-to-action ul, #call-to-action li, #trustpilot{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #call-to-action li{
+        gap: 1em;
+    }
+
+    .movie-grid{
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 10px;
+    }
+
+    .movie-card.large{
+        grid-column: span 3;
+        height: 260px;
+    }   
+
+    .movie-card{
+        grid-column: span 2;
+        height: 200px;
+        position: relative;
+        overflow: hidden;
+
+        font-family: var(--body-font);
+    }
+
+
+   .movie-card img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform .3s ease;
+    }
+    
+
+    .movie-card:hover img{
+        transform: scale(1.05);
+    }
+
+    .movie-card h3{
+        position: absolute;
+        inset: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: white;
+        font-size: 28px;
+        text-align: center;
+    }
+
+    .movie-card::before{
+        content:"";
+        position:absolute;
+        inset:0;
+
+        background: rgba(0,0,0,0.35);
+    }
+
+    
+
+    #gebruikers, #trustpilot>div:first-child, #reviews-header>div{
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        gap:1.5em;
+    }
+    #gebruikers{
+        padding: 9em 5em;
+        align-items: flex-end;
+        gap:4em;
+    }
+
+    #gebruikers h2{
+        padding: 0;
+        margin:0;
+    }
+
+    #trustpilot img{
+        width: 20em;
+    }
+
+     #reviews-header h3{
+        font-family: var(--body-font);
+        font-weight: bold;
+        font-size: 4em;
+         padding: 0;
+        margin: 0;
+    }
+
+    #trustpilot div p{
+        font-weight: bold;
+    }
+
+    #reviews-header{
+        padding-top: 3em;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    #reviews-header p img{
+        width: 6em;
+    }
+
+    #reviews{
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+    }
+      
+    #reviews img{
+        width: 10em;
+    }
+
+    #reviews article{
+        padding: 1em;
+        border-radius: 12px;
+
+        background: rgba(217,217,217,0.15);
+        backdrop-filter: blur(4px);
+
+        border:1px solid rgba(255,255,255,0.25);
+    }
+   
+    .review-meta{
+        display:flex;
+        align-items:center;
+        gap:10px;
+
+        font-size:0.9rem;
+    }
+
+    .review-meta time{
+        margin-left:auto;
+        opacity:0.7;
+    }
+
+
+/* Register Styling */
+.register_main {
+    background: #121212;
+}
+
+.register_h1 {
+    color: #321A70;
+}
 
     
 /* Footer styling */
@@ -244,7 +458,7 @@
 
     footer a{
         color: var(--text-color);
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: var(--body-font);
     }
     footer ul{
         list-style: none; 
