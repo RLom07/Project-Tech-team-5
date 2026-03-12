@@ -78,8 +78,11 @@ app.get('/register', (req, res) => { res.render(`register`) })
 app.get('/vragenlijst', (req, res) => { res.render(`vragenlijst`) })
  
 app.get('/vragenlijst-vraag1', (req, res) => { res.render(`vragenlijst-vraag1`) })
+
+app.get('/vragenlijst-vraag2', (req, res) => { res.render(`vragenlijst-vraag2`) })
  
- 
+app.get('/vragenlijst-vraag3', (req, res) => { res.render(`vragenlijst-vraag3`) })
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
