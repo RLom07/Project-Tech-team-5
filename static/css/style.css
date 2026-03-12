@@ -98,13 +98,13 @@
 
 /* Register Styling */
 
-.register-main {
+.lore-main {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: .1fr .37fr .37fr .1fr .01fr;
 }
 
-.h1-register {
+.h1-lore {
     color: #FFF;
     text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
     font-family: "a Big Deal";
@@ -122,7 +122,7 @@
     display: grid;
     grid-template-rows: .5fr 1fr 8fr;
     grid-template-columns: .2fr 1fr 1fr .2fr;
-    width: 50rem;
+    width: 45rem;
     height: 32rem;
     border-radius: 20px;
     background: rgba(255, 255, 255, 0.10);
@@ -145,7 +145,7 @@
     margin: 0;
 }
 
-.registreer-form {
+.register-form {
     display: grid;
     grid-template-rows: .1fr .1fr .1fr .1fr .1fr .1fr .1fr .1fr;
     grid-template-columns: .1fr 5fr 5fr .1fr;
@@ -170,6 +170,7 @@
 #vnaam {
     grid-row-start: 2;
     grid-column-start: 2;
+    width: 95%;
 }
 
 .anaam {
@@ -179,12 +180,15 @@
 
     color: #FFF;
     font-size: 18px;
-    font-weight: 600
+    font-weight: 600;
+    margin-left: .6rem;
 }
 
 #anaam {
     grid-row-start: 2;
     grid-column-start: 3;
+    width: 95%;
+    justify-self: end;
 }
 
 .email {
@@ -235,6 +239,80 @@
 }
 
 #register {
+    grid-row-start: 8;
+    grid-column: 2 / 4;
+    width: 20rem;
+    justify-self: center;
+    border-radius: 10px;
+    background-color: #F45A1A;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    color: #FFF;
+    font-size: 18px;
+    font-weight: 600;
+    border-color: transparent;
+}
+
+/* Login */
+
+.login-form {
+    display: grid;
+    grid-template-rows: .1fr .1fr .1fr .1fr .1fr .1fr .1fr .1fr;
+    grid-template-columns: .1fr 5fr 5fr .1fr;
+    grid-row: 3 / 4;
+    grid-column: 2 / 4;
+    justify-self: center;
+    align-self: stretch;
+    height: 112%;
+}
+
+.l-email {
+    grid-row-start: 1;
+    grid-column-start: 2;
+    align-self: center;
+
+    color: #FFF;
+    font-size: 18px;
+    font-weight: 600
+}
+
+#l-email {
+    grid-row-start: 2;
+    grid-column: 2 / 4;
+    width: 638px;
+}
+
+.l-wwoord {
+    grid-row-start: 4;
+    grid-column-start: 2;
+    align-self: center;
+
+    color: #FFF;
+    font-size: 18px;
+    font-weight: 600
+}
+
+#l-wwoord {
+    grid-row-start: 5;
+    grid-column: 2 / 4;
+}
+
+.l-alac {
+    grid-row: 6 / 8;
+    grid-column-start: 3;
+    justify-self: end;
+    align-self: center;
+
+    color: #FFF;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.toregister {
+    color: #F45A1A;
+}
+
+#login {
     grid-row-start: 8;
     grid-column: 2 / 4;
     width: 20rem;
