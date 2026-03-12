@@ -42,7 +42,6 @@ async function fetchData(url) {
 }
 
 fetchData(`${process.env.BASE_URL}/movie/popular?api_key=${process.env.API_KEY}`);
-
 console.log(`${process.env.BASE_URL}/movie/popular?api_key=${process.env.API_KEY}`)
 //Starter endpoints that can be used
 // /movie/popular?
@@ -69,8 +68,21 @@ app.get('/profile', (req, res) => { res.render(`profile`) })
 app.get('/register', (req, res) => { res.render(`register`) })
 
 app.get('/login', (req, res) => { res.render(`login`) })
+app.get('/vragenlijst', (req, res) => { res.render(`vragenlijst`) })
  
+app.get('/vragenlijst-vraag1', (req, res) => { res.render(`vragenlijst-vraag1`) })
+
+app.get('/vragenlijst-vraag2', (req, res) => { res.render(`vragenlijst-vraag2`) })
  
+app.get('/vragenlijst-vraag3', (req, res) => { res.render(`vragenlijst-vraag3`) })
+
+app.get('/vragenlijst-vraag4', (req, res) => { res.render(`vragenlijst-vraag4`)})
+
+app.get('/vragenlijst-vraag5', (req, res) => { res.render(`vragenlijst-vraag5`)})
+
+app.get('/vragenlijst-vraag6', (req, res) => { res.render(`vragenlijst-vraag6`)})
+
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <%- include('partials/head') %>
 </head>
 <body>
     <section class="hero">
         <video autoplay loop muted plays-inline class="background-video">
-            <source src="../videos/Fight club loop.mp4">
+            <source src="../videos/fightclub-loop.mp4">
         </video>
 
         <header>
@@ -20,15 +20,160 @@
         <main>
             <h1> CINEMATCH</h1>
             <h2>
-                Stop met scrollen,
+                Stop met scrollen,<br>
                 Start met kijken!
             </h2>
             <a href="#" class="primary-button"> Vind je match!</a>
         </main>
     </section>
+
+    <section class="info">
+        <ul>
+            <li>
+                <img src="../images/stemming.svg" alt="icoon stemming" loading="lazy" height="100">
+                <h3>
+                    Kies je stemming
+                </h3>
+            </li>
+            <li>
+                <img src="../images/match.svg" alt="icoon matching" loading="lazy" height="100">
+                <h3>
+                    Ontvang je match
+                </h3>
+            </li>
+             <li>
+                <img src="../images/favoriet.svg" alt="icoon favoriet" loading="lazy" height="100">
+                <h3>
+                    Bewaar je favoriet
+                </h3>
+            </li>
+        </ul>
+    </section>
+
+    <section id="populair-movies">
+        <h2>
+            Populair deze maand
+        </h2>
+
+        <div class="movie-grid">
+            <article class="movie-card large">
+                <img src="../images/spiderman.png" alt="Spiderman Into the Spiderverse" loading="lazy">
+                <h3>Spiderman: Into the multiverse</h3>  
+            </article>
+
+            <article class="movie-card large">
+                <img src="../images/spiderman.png" alt="Spiderman Into the Spiderverse" loading="lazy">
+                <h3>Spiderman: Into the multiverse</h3>  
+            </article>
+
+            <article class="movie-card">
+                <img src="../images/spiderman.png" alt="Spiderman Into the Spiderverse" loading="lazy">
+                <h3>Spiderman: Into the multiverse</h3>  
+            </article>
+
+            <article class="movie-card">
+                <img src="../images/spiderman.png" alt="Spiderman Into the Spiderverse" loading="lazy">
+                <h3>Spiderman: Into the multiverse</h3>  
+            </article>
+
+            <article class="movie-card">
+                <img src="../images/spiderman.png" alt="Spiderman Into the Spiderverse" loading="lazy">
+                <h3>Spiderman: Into the multiverse</h3>  
+            </article>
+        </div>
+    </section>
+
+    <section id="gebruikers">
+        <h2>
+            82% gebruikers hebben <br> hun match sneller <br> gevonden met Cinematch!
+        </h2>
+        <img src="../images/graphic-icon.svg" alt="graphic-icon" loading="lazy">
+    </section>
+
+
+    <section id="trustpilot">
+
+        <div>
+            <img src="../images/trustpilot-stars.svg" alt="trustpilot stars" aria-hidden="true">
+            <p>see our reviews</p>
+        </div>
+
+        
+        <div id="reviews-header">
+            <div>
+                <h3>Excellent</h3>
+                <img src="../images/trustpilot-stars.svg" alt="trustpilot stars" aria-hidden="true">
+            </div>
+            
+            <p>
+                See all <strong>765</strong> reviews on 
+                <img src="../images/trustpilot-logo.svg" alt="trustpilot-logo">
+            </p>
+        </div>
+
+        <section id="reviews">
+            <article>
+                <p class="review-meta">
+                    <img src="../images/trustpilot-stars.svg" alt="4 van 5 sterren" aria-hidden="true">
+                    <span>by <strong>John Doe</strong></span>
+                    <time datetime="2026-01-05">67 days ago</time>
+                </p>
+
+                <h4>Fantastisch!</h4>
+
+                <p class="review-text">
+                    Cinematch is zeer makkelijk te gebruiken en alles is gepersonaliseerd!
+                    Zeker een aanrader!
+                </p>
+            </article>
+
+            <article>
+                <p class="review-meta">
+                    <img src="../images/trustpilot-stars-4.svg" alt="4 van 5 sterren" aria-hidden="true">
+                    <span>by <strong>John Doe</strong></span>
+                    <time datetime="2026-01-05">67 days ago</time>
+                </p>
+
+                <h4>Fantastisch!</h4>
+
+                <p class="review-text">
+                    Cinematch is zeer makkelijk te gebruiken en alles is gepersonaliseerd!
+                    Zeker een aanrader!
+                </p>
+            </article>
+
+            <article>
+                <p class="review-meta">
+                    <img src="../images/trustpilot-stars.svg" alt="4 van 5 sterren" aria-hidden="true">
+                    <span>by <strong>John Doe</strong></span>
+                    <time datetime="2026-01-05">67 days ago</time>
+                </p>
+
+                <h4>Fantastisch!</h4>
+
+                <p class="review-text">
+                    Cinematch is zeer makkelijk te gebruiken en alles is gepersonaliseerd!
+                    Zeker een aanrader!
+                </p>
+            </article>
+        </section>
+
+    </section>
+
+    <!-- <section id="call-to-action">
+        <h2>
+            Stop met scrollen, <br> start met kijken!
+        </h2>
+        <ul>
+            <li>
+                <a href="#" class="primary-button"> Vind je match!</a>
+                <a href="#" class="inloggen">Inloggen</a>
+            </li>
+        </ul>
+    </section> -->
     
-    <!-- <footer>
+    <footer>
         <%- include('partials/footer') %>
-    </footer> -->
+    </footer>
 </body>
 </html>
