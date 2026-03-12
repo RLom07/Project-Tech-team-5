@@ -57,6 +57,10 @@
         cursor: pointer;
     }
 
+    .primary-button:hover{
+        background-color: #d94e14;
+        box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    }
 
 /* Navigatie/Header  styling  */
 
@@ -273,6 +277,105 @@
         -webkit-text-stroke: 1px rgba(120,100,255,0.3);
     }
 
+
+/* vragenlijst styling */
+
+.vragenlijst main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5em;
+}
+.vragenlijst h1{
+    color: white;
+    text-align: center;
+    font-family: "a Big Deal";
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding: 1em;
+}
+
+.vragenlijst h2{
+    color: white;
+    text-align: center;
+    font-family: "a Big Deal";
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.vragenlijst p{
+    color: #FFF;
+    text-align: center;
+    font-family: "a Big Deal";
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding: 1em;
+}
+
+.vragenlijst main section{
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.10);
+    width: 60%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    padding-bottom: 5em;  
+    padding-top: 2em; 
+}
+
+.vragenlijst .primary-button{
+    font-size: 1.5em;
+}
+
+.checkbox-button{
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 100%;
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    font-family: "a Big Deal";
+}
+
+.checkbox-button:hover{
+   background-color: white;
+   color: black;
+   transition: ease-in-out .5s;
+}
+
+.checkboxbutton-list{
+    display: flex;
+    list-style: none;
+    width: min(100%, 720px);
+    gap: 1rem;
+    padding: 0;
+    margin: 0 0 1rem;
+}
+
+.checkboxbutton-list li{
+    flex: 1 1 calc((100% - 2rem) / 3);
+    display: flex;
+}
+
+.volgende-vorige{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-inline: 4rem;
+    padding-top: 2em;
+    box-sizing: border-box;
     .hero h2, #call-to-action h2{
         text-align: center;
     }
@@ -449,6 +552,8 @@
 }
 
     
+}
+
 /* Footer styling */
 
     footer{
