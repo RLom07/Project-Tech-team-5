@@ -19,7 +19,7 @@
         font-family: aBigDeal, sans-serif;
         background: url("../images/background.png");
         background-repeat: repeat;
-        background-size: 120% 200%;
+        background-size: auto;
         background-position: center;
         background-color: var(--background-color);
         color: var(--text-color);
@@ -112,6 +112,15 @@
     overflow: hidden;
     
 }
+
+    /* Register Styling */
+    .register_main {
+        background: #121212;
+    }
+
+    .register_h1 {
+        color: #321A70;
+    }
 
     .background-video{
         position: absolute;
@@ -284,69 +293,89 @@
 
     li.socials{
         display: flex; /* spacing between items; adjust as needed */
-        gap: 8px;
+        flex-direction: row;
+        gap: 10px;
         margin-top: 1.3em;
-        align-items: end; /* vertically centers if icons/text differ in height */
+        align-items: start; /* vertically centers if icons/text differ in height */
     }
+
+
+
 
 
 
     
-    /* Profile pagina */ 
-    #profilebanner h2{
-        text-align: center;
-        font-family: aBigDeal;
-        color: var(--text-color);
-    }
-
-    #profilebanner a#profileMatchList{
-    display: block;
-    width: 200px;
-    height: 50px;
-    text-align: center;
-    color: var(--text-color);
-    background-color: var(--button-color);
-    border-radius: 16px;
-    margin: 0 auto;
-    }
+/* Profile pagina **************************************/ 
+/* Kevin's Stukje **************************************/
 
     #recentlyWatched{
-    color: var(--text-color);
-    display: flex;
-    flex-direction: column;
-    margin-top: 5em;
-    margin-left: 2.5em;
-    margin-right: 2.5em;
-    margin-bottom: 4em;
+        color: var(--text-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-top: 5em;
+        margin-left: 2em;
+        margin-right: 2em;
+        margin-bottom: 4em;
     }
 
     #recentlyWatched ul{
-    list-style: none;
-    width: auto;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    margin-left: 0;
-    margin-right: 2.5em;
-    box-sizing: border-box;
-    overflow-x: auto;     
-    overflow-y: hidden;
+        list-style: none;
+        width: auto;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        margin-left: 0;
+        margin-right: 2.5em;
+        box-sizing: border-box;
+        overflow-x: auto;     
+        overflow-y: hidden;
+    }
+
+    #recentlyWatched ul::-webkit-scrollbar{
+        height: 8px; /* horizontal scrollbar height */
+    }
+
+    #recentlyWatched ul::-webkit-scrollbar-track{
+        background: transparent;
+    }
+
+    #recentlyWatched ul::-webkit-scrollbar-thumb{
+        background: var(--button-color);
+        border-radius: 10px;
+    }
+
+    #recentlyWatched ul::-webkit-scrollbar-thumb:hover{
+        background: var(--text-color);
     }
 
     #recentlyWatched ul li{
-    width: 176px;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    margin-right: 1em;
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        margin-right: 1em;
     }
 
     #recentlyWatched ul li > img{
-    height: 280px;
-    width: 170px;
-    object-fit: cover;
+        height: 280px;
+        width: 200px;
+        object-fit: cover;
+    }
+
+    #recentlyWatched h2{
+        font-family: var(--font);
+        text-align: center;
+        font-size: 40px;
     }
 
     #recentlyWatched h3{
-    font-size: 16px;
+        font-size: 16px;
+    }
+
+
+    #watchList h2{
+        font-family: var(--font);
+        font-size: 40px;
+        color: var(--text-color);
     }
