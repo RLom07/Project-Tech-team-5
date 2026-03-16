@@ -332,6 +332,7 @@
     font-size: 18px;
     font-weight: 600;
     border-color: transparent;
+    cursor: pointer;
 }
 
 /* Login */
@@ -406,6 +407,7 @@
     font-size: 18px;
     font-weight: 600;
     border-color: transparent;
+    cursor: pointer;
 }
 
 
