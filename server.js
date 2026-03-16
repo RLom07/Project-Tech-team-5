@@ -58,6 +58,22 @@ console.log(`${process.env.BASE_URL}/movie/popular?api_key=${process.env.API_KEY
 
 // /movie/top_rated?
 //////////////////////////////////// 
+
+
+//API index populair movies//////////////////////////////
+async function getPopularMovies() {
+
+  const url = `${process.env.BASE_URL}/trending/movie/week?api_key=${process.env.API_KEY}`
+
+  const response = await fetch(url)
+  const data = await response.json()
+
+  return data.results.slice(0,5) // eerste 5 films
+
+}
+
+
+
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 app.use('/static', express.static(path.join(__dirname, 'static')))
@@ -66,11 +82,40 @@ app.use(express.urlencoded({ extended: true }))
  
 
 
+//Profile /////////////////////////////
+
+
+
+
+
 //Routes
  
-app.get('/', (req, res) => { res.render('index') })
+app.get('/', async (req, res) => {
+
+  const movies = await getPopularMovies()
+
+  res.render('index', { movies })
+
+})
+
+app.get('/movie/:id', async (req, res) => {
+
+  const movieId = req.params.id
+
+  const response = await fetch(
+    `${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`
+  )
+
+  const movie = await response.json()
+
+  res.render('detail', { movie })
+
+})
  
 app.get('/profile', (req, res) => { res.render(`profile`) })
+
+
+
 
 app.get('/register', (req, res) => { res.render(`register`) })
 
@@ -169,3 +214,9 @@ connectToMongo()
     console.error('Failed to start server:', error);
     process.exit(1);
   });
+app.get('/matching', (req, res) => { res.render(`matching`)})
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
+ 
