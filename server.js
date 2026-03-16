@@ -83,6 +83,8 @@ app.get('/vragenlijst-vraag5', (req, res) => { res.render(`vragenlijst-vraag5`)}
 app.get('/vragenlijst-vraag6', (req, res) => { res.render(`vragenlijst-vraag6`)})
 
 
+app.get('/matching', (req, res) => { res.render(`matching`)})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
