@@ -334,6 +334,34 @@
     
 }
 
+.matching h1{
+    color: white;
+    font-family: "a Big Deal";
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding: 1em;
+}
+
+.matching input{
+    width: 100%;
+    max-width: 70%;
+    padding: 1em;
+    border-radius: 1em;
+    border: 2px solid transparent;
+    background: linear-gradient(#0a0a0a, #0a0a0a) padding-box, 
+    linear-gradient(90deg, #321A70, #ff5a1f) border-box; 
+    color: white;
+}
+
+.matching section{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+
 /* Footer styling */
 
     footer{
