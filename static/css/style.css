@@ -9,21 +9,23 @@
     } 
 
     @font-face {
-        font-family: bigDeal; /* set name */
-        src: url(aBigDeal.ttf); /* url of the font */
+        font-family: "aBigDeal";
+        src: url("/fonts/aBigDeal.ttf");
+ 
     }
-
-    
+ 
     body{
         margin: 0;
-        font-family: aBigDeal, sans-serif;
-        background: url("../images/background.png");
-        background-repeat: repeat;
+        font-family: var(--body-font);
+        background: url("../images/background-image.png");
+       
         background-size: auto;
         background-position: center;
         background-color: var(--background-color);
         color: var(--text-color);
     }
+ 
+
 
     h2{
         font-family: var(--header-font);
@@ -36,6 +38,12 @@
 
     a{
         text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    a:hover{
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px rgba(244, 90, 26, 0.5);
     }
 
     ul{
@@ -85,7 +93,7 @@
     nav ul li img{
         height: 70px;
         width: auto;
-        padding-bottom: 2em;
+        padding-bottom: 0.5em;
     }
 
     nav ul li a, #call-to-action ul li a:last-child{
@@ -113,12 +121,62 @@
 
 
 /*hero styling */
-.hero{
-    padding-bottom:4em;
-    position: relative;
-    overflow: hidden;
+    .hero{
+        padding-bottom:4em;
+        position: relative;
+        overflow: hidden;
+        
+    }
+    .background-video{
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            
+        
+            padding-left: 2.5em;
     
-}
+            z-index: -1;
+            filter: brightness(0.7) contrast(1.1) saturate(0.9);
+            
+            transform: scale(1.1);
+        }
+
+    .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+
+        background: radial-gradient(
+            circle,
+            rgba(0, 0, 0, 0) 50%,
+            rgba(0, 0, 0, 0.55) 100%
+        );
+
+        
+    }
+
+    .hero main{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+    }
+
+    .hero h1{
+        margin: 0.4em 0 0 0; 
+        
+        font-family: var(--header-font);
+        font-size: 200px;
+        font-weight: 400;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.25), rgba(58, 34, 120, 0.25));
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        -webkit-text-stroke: 1px rgba(120,100,255,0.3);
+    }
+
 
 /* Register Styling */
 
@@ -274,6 +332,7 @@
     font-size: 18px;
     font-weight: 600;
     border-color: transparent;
+    cursor: pointer;
 }
 
 /* Login */
@@ -348,58 +407,8 @@
     font-size: 18px;
     font-weight: 600;
     border-color: transparent;
+    cursor: pointer;
 }
-
-
-    .background-video{
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        
-    
-        padding-left: 2.5em;
- 
-        z-index: -1;
-        filter: brightness(0.7) contrast(1.1) saturate(0.9);
-        
-        transform: scale(1.1);
-    }
-
-    .hero::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-
-        background: radial-gradient(
-            circle,
-            rgba(0, 0, 0, 0) 50%,
-            rgba(0, 0, 0, 0.55) 100%
-        );
-
-        
-    }
-
-    .hero main{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        
-    }
-
-    .hero h1{
-        margin: 0.4em 0 0 0; 
-        
-        font-family: var(--header-font);
-        font-size: 200px;
-        font-weight: 400;
-        background: linear-gradient(90deg, rgba(255, 255, 255, 0.25), rgba(58, 34, 120, 0.25));
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        -webkit-text-stroke: 1px rgba(120,100,255,0.3);
-    }
 
 
 /* vragenlijst styling */
@@ -502,6 +511,15 @@
     box-sizing: border-box;
 }
 
+    
+
+/*index styling */
+
+    .hero h2, #call-to-action h2{
+        text-align: center;
+    
+    }
+    
 .matching h1{
     color: white;
     font-family: "a Big Deal";
@@ -564,8 +582,10 @@
     padding: 1em;
 }
 
+
 /*index styling */
     .info{
+        position: relative;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -574,6 +594,8 @@
     
 
     .info ul{
+        position: relative;
+        z-index: 1;
         display: flex;
         justify-content: space-between;
         gap: 5em;
@@ -587,6 +609,16 @@
         align-items: center;
     }
 
+    .info > img{
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+    
+        z-index: -1;
+        pointer-events: none;
+    }
+
     #call-to-action li{
         gap: 1em;
     }
@@ -595,6 +627,10 @@
         display: grid;
         grid-template-columns: repeat(6, 1fr);
         gap: 10px;
+    }
+
+    .movie-grid a{
+        transition: none;
     }
 
     .movie-card.large{
@@ -611,6 +647,12 @@
         font-family: var(--body-font);
     }
 
+    
+    .movie-card:hover{
+        transform: none;
+        box-shadow: none;
+    }
+
 
    .movie-card img{
         width: 100%;
@@ -618,6 +660,7 @@
         object-fit: cover;
         transition: transform .3s ease;
     }
+    
     
 
     .movie-card:hover img{
@@ -643,6 +686,10 @@
         inset:0;
 
         background: rgba(0,0,0,0.35);
+    }
+
+    #call-to-action{
+        padding: 9em;
     }
 
     
@@ -672,9 +719,10 @@
         font-family: var(--body-font);
         font-weight: bold;
         font-size: 4em;
-         padding: 0;
+        padding: 0;
         margin: 0;
     }
+
 
     #trustpilot div p{
         font-weight: bold;
@@ -693,18 +741,23 @@
     }
 
     #reviews{
+        position: relative;
         display: flex;
         flex-direction: column;
         gap: 2em;
+        padding: 0 100px;
     }
       
-    #reviews img{
+    #reviews-rating img{
         width: 10em;
     }
 
-    #reviews article{
+    #reviews-rating article{
+        position: relative;
+        z-index: 2;
         padding: 1em;
         border-radius: 12px;
+        margin-bottom: 2em;;
 
         background: rgba(217,217,217,0.15);
         backdrop-filter: blur(4px);
@@ -723,6 +776,149 @@
     .review-meta time{
         margin-left:auto;
         opacity:0.7;
+    }
+
+    #reviews-rating>svg{
+        position: absolute;
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+
+        pointer-events: none;
+    }
+
+
+/* detailpagina */
+
+    .back-button{
+        color:var(--text-color);
+        text-transform:uppercase;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 2rem 0 0 6rem;
+        gap: 1em;
+
+        background: none;
+        border: none;
+
+        transition: 0.3s;
+    }
+
+    .back-button img{
+        width: 2em;
+    }
+
+    .back-button:hover{
+        color:white;
+        transform:translateX(-4px);
+    }
+
+    .movie-hero{
+        display: grid;
+        grid-template-columns: 260px 1fr 200px;
+        gap: 40px;
+        align-items: start;
+
+        padding: 3rem 6rem;
+    }
+
+    .movie-poster{
+        width:100%;
+        border-radius:12px;
+    }
+
+    .movie-info h1{
+        font-family: var(--header-font);
+        font-size:48px;
+        margin-bottom:10px;
+    }
+
+    .movie-description{
+        width: 90%;
+    }
+
+    .movie-meta{
+        margin-bottom:25px;
+    }
+
+    .movie-actions{
+        height: 100%;
+        display:flex;
+        flex-direction:column;
+        gap:20px;
+        justify-content:space-evenly;
+    }
+
+    .save-button{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+
+        padding:20px;
+        border-radius:14px;
+
+        font-size: 18px;
+        color:white;
+        cursor:pointer;
+
+        background: rgba(217,217,217,0.15);
+        backdrop-filter: blur(4px);
+
+        border:1px solid rgba(255,255,255,0.25);
+
+    }   
+    
+    .save-button img{
+        width: 3em;
+    }
+    
+    .watch-button{
+        margin-top:10px;
+        width:320px;
+    }
+
+    .movie-stats{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        gap:80px;
+
+        margin:0 ;
+    }
+
+    .stat{
+        text-align:left;
+    }
+
+   
+    .stat-box{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top:10px;
+        padding:20px 50px;
+        gap:1em;
+
+        border-radius:16px;
+
+        background: rgba(217,217,217,0.18);
+        backdrop-filter: blur(4px);
+    }
+    
+
+   .stat-box img{
+    width: 3em;
+   }
+
+    .vote-count{
+        display:block;
+        font-size:14px;
+        opacity:0.8;
     }
 
 
@@ -777,7 +973,7 @@
         flex-direction: row;
         justify-content: flex-end;
         align-items: top;
-        border-top: 1px solid red;
+        border-top: 1px solid var(--button-color);
     }
 
     footer ul:last-of-type img{
@@ -857,9 +1053,9 @@
     }
 
     #recentlyWatched h2{
-        font-family: var(--font);
+        font-family: var(--header-font);
         text-align: center;
-        font-size: 40px;
+        font-size: 30px;
     }
 
     #recentlyWatched h3{
@@ -872,6 +1068,46 @@
         box-sizing:border-box;  
     }
 
+    .viewIcons{
+        width: 1.5em;
+        height: 1.5em;
+        filter: brightness(0) saturate(100%) invert(56%) sepia(68%) saturate(4662%) hue-rotate(347deg) brightness(95%) contrast(102%);
+
+    }
+
+    #watchList .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 items per row */
+        gap: 20px; /* space between cards */
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        justify-content: end;
+    }
+
+    #watchList .grid li {
+        display: flex;
+        flex-direction: column;
+        height: 280px;
+        width: 200px;
+        align-items: center;
+        text-align: center;
+    }
+
+    #watchList .grid li img {
+        width: 200px;
+        height: 280px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    
+
+    #watchList .grid h4,
+    #watchList .grid p{
+        display: none;
+    }
+
+
     aside{
         color: var(--text-color);
         font-size: 24px;
@@ -879,49 +1115,76 @@
         font-weight: normal;
     }
 
-    .sort{
+    button.sort{
         height: auto;
         width: auto;
-        font-size: 24px;
+        margin-top: 0;
+        font-size: 20px;
         padding: 10px;
         color: var(--text-color);
-        background-color: var(--button-color);
+        background-color: var(--background-color);
+        border: 1px solid var(--button-color);
         border-radius: 20px;
     }
 
-    .sort.asc,
-    .sort.desc {
+    button.sort.asc,
+    button.sort.desc {
         font-weight: bold;
     }
 
-    .sort.asc::after {
-        content: "(az↓)";
+    button.sort.asc::after {
+        content: "(A - Z↓)";
     }
 
-    .sort.desc::after {
-        content: "(za↓)";
+    button.sort.desc::after {
+        content: "(Z - A↓)";
     }
 
 
     #watchList{
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
+        justify-content: start;
         margin-top: 5em;
         width: auto;
         margin-left: 20em;
         margin-right: 20em;
     }
 
-    #watchListNav{
+    #watchListNav {
         display: flex;
         flex-direction: row;
-        flex-wrap: wrap;
         justify-content: space-between;
+        align-items: center; /* centers items vertically */
+        gap: 10px; /* optional spacing between items */
+        padding-bottom: 0;
+    }
+
+    #watchListNav h2 {
+        font-family: var(--header-font);
+        display: flex;
         align-items: center;
+        padding-right: 2em;
+
+    }
+
+
+    #watchListNav aside {
+        display: flex;
+        align-items: center; /* vertical center for images and text */
+        gap: 10px; /* spacing between icons and text */
     }
 
 /********** Watchlist lijst ************/
+    input[type="search"]{
+        width: auto;
+        height: 3em;
+        background-color: var(--background-color);
+        border-color: var(--button-color);
+        color: var(--text-color);
+        border-radius: 12px;
+    }
+
     #watchList ul{
         display: flex;
         flex-direction: column;
@@ -930,8 +1193,8 @@
     }
 
     #watchList h2{
-        font-family: var(--font);
-        font-size: 40px;
+        font-family: var(--header-font);
+        font-size: 30px;
         color: var(--text-color);
     }
 

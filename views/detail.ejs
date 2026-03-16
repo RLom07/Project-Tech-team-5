@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>detailpagina</title>
+    <%- include('partials/head') %>
+</head>
+
+<body>
+   <header>
+        <%- include('partials/header') %>
+    </header>
+    <main class="movie-detail">
+
+        <button onclick="history.back()" class="back-button">
+            <img src="../images/icoon-pijl-wit.svg" alt="witte pijl naar rechts" aria-hidden="true">
+            Terug
+        </button>
+
+        <section class="movie-hero">
+
+            <img class="movie-poster" src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>">
+
+            <div class="movie-info">
+                <h1><%= movie.title %></h1>
+
+                <p class="movie-meta">
+                    <%= movie.release_date.slice(0,4) %> • 
+                    <%= movie.runtime %> min • 
+                    Actie/Crime
+                </p>
+
+                <div class="movie-description">
+                    <h3>Beschrijving</h3>
+                    <p><%= movie.overview %></p>
+                </div>
+
+                <a href="#" class="primary-button watch-button">
+                    Ik ga deze kijken!
+                </a>
+
+                </div>
+
+                <div class="movie-actions">
+
+
+
+                    <button class="save-button">
+                        <img src="/images/favoriet.svg" alt="">
+                        Voeg toe aan favoriet
+                    </button>
+
+                    <button class="save-button">
+                        <img src="/images/watchlater.svg" alt="">
+                        Voeg toe aan <br>later bekijken
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <section class="movie-stats">
+
+        <div class="stat">
+
+            <h3>Rating</h3>
+
+            <div class="stat-box">
+
+                <img src="../images/star.svg" alt=star icon aria-hidden="true"> 
+                <p><%= movie.vote_average.toFixed(1) %> /10 <br>
+                <span class="vote-count">
+                    <%= movie.vote_count %> votes
+                </span>
+            </p>
+
+                
+
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <h3>Popularity</h3>
+
+            <div class="stat-box">
+
+               <img src="../images/popularity.svg" alt=star icon aria-hidden="true"> 
+                <p><%= Math.round(movie.popularity) %></p>
+
+            </div>
+
+        </div>
+
+    </section>
+    
+</body>
+</html>
