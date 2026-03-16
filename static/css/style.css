@@ -835,6 +835,7 @@
         font-size:48px;
         margin-bottom:10px;
     }
+    
 
     .movie-description{
         width: 90%;
@@ -886,13 +887,16 @@
         display:flex;
         justify-content:center;
         align-items:center;
-        gap:80px;
+        gap: 80px;
+        padding-bottom: 3em;
 
-        margin:0 ;
+        margin: 0 4em 0 4em;
+
+        border-bottom: solid var(--outline-color);
     }
 
     .stat{
-        text-align:left;
+        text-align:center;
     }
 
    
@@ -901,13 +905,18 @@
         flex-wrap: wrap;
         justify-content: center;
         margin-top:10px;
-        padding:20px 50px;
+        padding:10px 30px;
         gap:1em;
 
         border-radius:16px;
 
         background: rgba(217,217,217,0.18);
         backdrop-filter: blur(4px);
+    }
+
+    .movie-stats .stat:nth-child(2) .stat-box{
+        background: none;
+        backdrop-filter: none;
     }
     
 
@@ -921,6 +930,7 @@
         opacity:0.8;
     }
 
+    
 
 /* Register Styling */
 .register_main {

@@ -108,9 +108,22 @@ app.get('/movie/:id', async (req, res) => {
 
   const movie = await response.json()
 
-  res.render('detail', { movie })
+  // streaming providers
+  const providerResponse = await fetch(
+    `${process.env.BASE_URL}/movie/${movieId}/watch/providers?api_key=${process.env.API_KEY}`
+  )
+
+  const providerData = await providerResponse.json()
+
+  const providers = providerData.results?.NL?.flatrate || []
+
+  res.render('detail', {
+    movie: movie,
+    providers: providers
+  })
 
 })
+
  
 app.get('/profile', (req, res) => { res.render(`profile`) })
 

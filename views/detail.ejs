@@ -22,13 +22,13 @@
 
             <img class="movie-poster" src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>">
 
-            <div class="movie-info">
+            <section class="movie-info">
                 <h1><%= movie.title %></h1>
 
                 <p class="movie-meta">
                     <%= movie.release_date.slice(0,4) %> • 
                     <%= movie.runtime %> min • 
-                    Actie/Crime
+                    <%= movie.genres.slice(0,2).map(g => g.name).join(' / ') %>
                 </p>
 
                 <div class="movie-description">
@@ -40,22 +40,20 @@
                     Ik ga deze kijken!
                 </a>
 
-                </div>
+            </section>
 
-                <div class="movie-actions">
+            <div class="movie-actions">
 
 
+                <button class="save-button">
+                    <img src="/images/favoriet.svg" alt="">
+                    Voeg toe aan favoriet
+                </button>
 
-                    <button class="save-button">
-                        <img src="/images/favoriet.svg" alt="">
-                        Voeg toe aan favoriet
-                    </button>
-
-                    <button class="save-button">
-                        <img src="/images/watchlater.svg" alt="">
-                        Voeg toe aan <br>later bekijken
-                    </button>
-                </div>
+                <button class="save-button">
+                    <img src="/images/watchlater.svg" alt="">
+                    Voeg toe aan <br>later bekijken
+                </button>
             </div>
 
         </section>
@@ -64,7 +62,7 @@
 
     <section class="movie-stats">
 
-        <div class="stat">
+        <section class="stat">
 
             <h3>Rating</h3>
 
@@ -72,19 +70,16 @@
 
                 <img src="../images/star.svg" alt=star icon aria-hidden="true"> 
                 <p><%= movie.vote_average.toFixed(1) %> /10 <br>
-                <span class="vote-count">
-                    <%= movie.vote_count %> votes
-                </span>
-            </p>
-
-                
-
+                    <span class="vote-count">
+                        <%= movie.vote_count %> votes
+                    </span>
+                </p>
             </div>
 
-        </div>
+        </section>
 
 
-        <div class="stat">
+        <section class="stat">
 
             <h3>Popularity</h3>
 
@@ -95,9 +90,31 @@
 
             </div>
 
+        </section>
+
+    </section>
+
+    <section class="watch-providers">
+
+        <h2>Waar te kijken</h2>
+
+        <div class="providers">
+
+            <% providers.forEach(provider => { %>
+
+            <img 
+                src="https://image.tmdb.org/t/p/w92<%= provider.logo_path %>" 
+                alt="<%= provider.provider_name %>"
+                title="<%= provider.provider_name %>"
+            >
+
+            <% }) %>
+
         </div>
 
     </section>
+
+    
     
 </body>
 </html>
