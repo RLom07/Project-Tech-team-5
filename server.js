@@ -75,6 +75,7 @@ app.get('/profile', (req, res) => { res.render(`profile`) })
 app.get('/register', (req, res) => { res.render(`register`) })
 
 app.get('/login', (req, res) => { res.render(`login`) })
+
 app.get('/vragenlijst', (req, res) => { res.render(`vragenlijst`) })
  
 app.get('/vragenlijst-vraag1', (req, res) => { res.render(`vragenlijst-vraag1`) })
@@ -89,6 +90,8 @@ app.get('/vragenlijst-vraag5', (req, res) => { res.render(`vragenlijst-vraag5`)}
 
 app.get('/vragenlijst-vraag6', (req, res) => { res.render(`vragenlijst-vraag6`)})
  
+
+// Posts
 app.post('/register', async (req, res) => {
   try {
     const { vnaam, anaam, email, wwoord } = req.body;
@@ -123,6 +126,39 @@ app.post('/register', async (req, res) => {
   }
 });
 
+app.post('/login', async (req, res) => {
+  try {
+    const { email, wwoord } = req.body;
+
+    if (!email || !wwoord) {
+      return res.status(400).send('Vul email en wachtwoord in.');
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+
+    const user = await db.collection(USERS_COLLECTION).findOne({
+      email: normalizedEmail
+    });
+
+    if (!user) {
+      return res.status(401).send('Ongeldige inloggegevens.');
+    }
+
+    const isPasswordValid = await bcrypt.compare(wwoord, user.wachtwoord);
+
+    if (!isPasswordValid) {
+      return res.status(401).send('Ongeldige inloggegevens.');
+    }
+
+    // Zonder session/JWT: alleen redirect bij succesvolle login
+    return res.redirect('/profile');
+  } catch (error) {
+    console.error('Login error:', error);
+    return res.status(500).send('Er ging iets mis bij inloggen.');
+  }
+});
+
+//Mongo Connection
 connectToMongo()
   .then(() => {
     app.listen(port, () => {
