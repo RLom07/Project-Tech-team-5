@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
     <%- include('partials/head') %>
 </head>
 <body>
-    <section class="hero">
+    <div class="hero">
         <video autoplay loop muted plays-inline class="background-video">
-            <source src="../videos/Fight club loop.mp4">
+            <source src="../videos/matrix-loop.mp4">
         </video>
 
         <header>
@@ -25,8 +26,8 @@
             </h2>
             <a href="#" class="primary-button"> Vind je match</a>
         </main>
-    </section>
-    <main>
+    </div>
+
         <section id="recentlyWatched">
             <h2>Recentelijk bekeken</h2>
             <ul>
@@ -99,79 +100,78 @@
         <section id="watchList">
             <div id="watchListNav">
                 <h2>Watchlist</h2>
-                 <aside>Sorteren op:
-                    <button class="sort" data-sort="name">Naam</button>
-                    <!-- idem -->
+                <aside>
+                    <img src="../images/list.png" alt="list icon" class="viewIcons" id="view-list" style="cursor:pointer;" onclick="showInList()">
+                    <img src="../images/grid.png" alt="grid icon" class="viewIcons" id="view-grid" style="cursor:pointer;" onclick="showInGrid()">
+                    Sorteren op:
+                    <button class="sort" data-sort="watchListName">Naam</button>
                 </aside>
             </div>
-            <ul>
-                <li>
-                    <img src="../images/CHOPPETTE.png">
-                    <section class="descriptionCards">
-                        <h3>Filmnaam</h3>
-                        <h4>Populariteit</h4>
-                        <p>Een korte beschrijving van de film/serie</p>
-                    </section>
-                </li>
-                 <li>
-                    <img src="../images/CHOPPETTE.png">
-                    <section class="descriptionCards">
-                        <h3>Filmnaam</h3>
-                        <h4>Populariteit</h4>
-                        <p>Een korte beschrijving van de film/serie</p>
-                    </section>
-                </li>
-                <li>
-                    <img src="../images/CHOPPETTE.png">
-                    <section class="descriptionCards">
-                        <h3>Filmnaam</h3>
-                        <h4>Populariteit</h4>
-                        <p>Een korte beschrijving van de film/serie</p>
-                    </section>
-                </li>
-                <li>
-                    <img src="../images/CHOPPETTE.png">
-                    <section class="descriptionCards">
-                        <h3>Filmnaam</h3>
-                        <h4>Populariteit</h4>
-                        <p>Een korte beschrijving van de film/serie</p>
-                    </section>
-                </li>
-                <li>
-                    <img src="../images/CHOPPETTE.png">
-                    <section class="descriptionCards">
-                        <h3>Filmnaam</h3>
-                        <h4>Populariteit</h4>
-                        <p>Een korte beschrijving van de film/serie</p>
-                    </section>
-                </li>
-                <li>
-                    <img src="../images/CHOPPETTE.png">
-                    <section class="descriptionCards">
-                        <h3>Filmnaam</h3>
-                        <h4>Populariteit</h4>
-                        <p>Een korte beschrijving van de film/serie</p>
-                    </section>
-                </li>
-                <li>
-                    <img src="../images/CHOPPETTE.png">
-                    <section class="descriptionCards">
-                        <h3>Filmnaam</h3>
-                        <h4>Populariteit</h4>
-                        <p>Een korte beschrijving van de film/serie</p>
-                    </section>
-                </li>
-                <li>
-                    <img src="../images/CHOPPETTE.png">
-                    <section class="descriptionCards">
-                        <h3>Filmnaam</h3>
-                        <h4>Populariteit</h4>
-                        <p>Een korte beschrijving van de film/serie</p>
-                    </section>
-                </li>               
-            </ul>
+
+            <!-- Search input -->
+            <input type="search" class="search" placeholder=" Zoek op naam">
+
+            <!-- List.js container -->
+                <ul class="list">
+                    <li>
+                        <img src="../images/CHOPPETTE.png" alt="Spiderman">
+                        <section class="descriptionCards">
+                            <h3 class="watchListName">Spiderman</h3>
+                            <h4>Populariteit</h4>
+                            <p class="watchListDescription">Een korte beschrijving van de film/serie</p>
+                        </section>
+                    </li>
+                    <li>
+                        <img src="../images/CHOPPETTE.png" alt="Avatar">
+                        <section class="descriptionCards">
+                            <h3 class="watchListName">Avatar</h3>
+                            <h4>Populariteit</h4>
+                            <p class="watchListDescription">Een korte beschrijving van de film/serie</p>
+                        </section>
+                    </li>
+                    <li>
+                        <img src="../images/CHOPPETTE.png" alt="Batman">
+                        <section class="descriptionCards">
+                            <h3 class="watchListName">Batman</h3>
+                            <h4>Populariteit</h4>
+                            <p class="watchListDescription">Een korte beschrijving van de film/serie</p>
+                        </section>
+                    </li>
+                    <!-- Add more items as needed -->
+                </ul>
         </section>
-    </main>
+
+        <!-- List.js Initialization -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const options = {
+                valueNames: ['watchListName', 'watchListDescription']
+            };
+            const watchList = new List('watchList', options);
+
+            watchList.sort('watchListName', { order: "asc" });
+        });
+
+
+        const optionList = document.getElementById("view-list");
+        const optionGrid = document.getElementById("view-grid");
+
+        optionList.addEventListener("click", showInList);
+        optionGrid.addEventListener("click", showInGrid);
+
+        function showInGrid(){
+        let view = document.querySelector('.list')
+        view.classList.remove("list")    
+        view.classList.add("grid")
+        }
+
+        function showInList(){
+        let view = document.querySelector('.grid')
+
+        view.classList.remove("grid")
+        view.classList.add("list")
+        }
+        </script>
     <footer>
         <%- include('partials/footer') %>
     </footer>

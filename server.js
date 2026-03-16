@@ -5,6 +5,9 @@ const path = require('path')
 const { MongoClient, ServerApiVersion } = require('mongodb')
 const app = express()
 const port = process.env.PORT || 3000
+
+
+
  
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/?appName=${process.env.APP_NAME}`;
  
@@ -59,11 +62,20 @@ app.use(express.urlencoded({ extended: true }))
  
 
 
+//Profile /////////////////////////////
+
+
+
+
+
 //Routes
  
 app.get('/', (req, res) => { res.render('index') })
  
 app.get('/profile', (req, res) => { res.render(`profile`) })
+
+
+
 
 app.get('/register', (req, res) => { res.render(`register`) })
 
