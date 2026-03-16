@@ -64,6 +64,10 @@
         cursor: pointer;
     }
 
+    .primary-button:hover{
+        background-color: #d94e14;
+        box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    }
 
 /* Navigatie/Header  styling  */
 
@@ -125,13 +129,13 @@
 
 /* Register Styling */
 
-.register-main {
+.lore-main {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: .1fr .37fr .37fr .1fr .01fr;
 }
 
-.h1-register {
+.h1-lore {
     color: #FFF;
     text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
     font-family: "a Big Deal";
@@ -147,15 +151,16 @@
 
 .form-rectangle {
     display: grid;
-    grid-template-rows: .1fr .1fr 1fr 3fr;
-    grid-template-columns: .1fr 1fr 1fr .1fr;
-    width: 50rem;
+    grid-template-rows: .5fr 1fr 8fr;
+    grid-template-columns: .2fr 1fr 1fr .2fr;
+    width: 45rem;
     height: 32rem;
     border-radius: 20px;
     background: rgba(255, 255, 255, 0.10);
     grid-column-start: 2;
     grid-row-start: 3;
     justify-self: center;
+    align-items: end;
 }
 
 .h2-welkom {
@@ -167,51 +172,80 @@
     grid-row-start: 2;
     grid-column: 2 / 4;
     justify-self: center;
+    align-self: start;
     margin: 0;
 }
 
-.registreer-form {
+.register-form {
     display: grid;
     grid-template-rows: .1fr .1fr .1fr .1fr .1fr .1fr .1fr .1fr;
-    grid-template-columns: .1fr 1fr 1fr .1fr;
-    grid-row-start: 3;
-    grid-column: 2 / 5;
+    grid-template-columns: .1fr 5fr 5fr .1fr;
+    grid-row: 3 / 4;
+    grid-column: 2 / 4;
     justify-self: center;
+    align-self: stretch;
+    height: 112%;
 }
 
 .vnaam {
     grid-row-start: 1;
     grid-column-start: 2;
+    justify-self: start;
+    align-self: center;
+
+    color: #FFF;
+    font-size: 18px;
+    font-weight: 600;
 }
 
 #vnaam {
     grid-row-start: 2;
     grid-column-start: 2;
+    width: 95%;
 }
 
 .anaam {
     grid-row-start: 1;
     grid-column-start: 3;
+    align-self: center;
+
+    color: #FFF;
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: .6rem;
 }
 
 #anaam {
     grid-row-start: 2;
     grid-column-start: 3;
+    width: 95%;
+    justify-self: end;
 }
 
 .email {
     grid-row-start: 3;
     grid-column-start: 2;
+    align-self: center;
+
+    color: #FFF;
+    font-size: 18px;
+    font-weight: 600
 }
 
 #email {
     grid-row-start: 4;
     grid-column: 2 / 4;
+    width: 638px;
 }
 
 .wwoord {
     grid-row-start: 5;
     grid-column-start: 2;
+    align-self: center;
+
+    color: #FFF;
+    font-size: 18px;
+    font-weight: 600
 }
 
 #wwoord {
@@ -222,11 +256,105 @@
 .alac {
     grid-row-start: 7;
     grid-column-start: 3;
+    justify-self: end;
+    align-self: center;
+
+    color: #FFF;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.tologin {
+    color: #F45A1A;
 }
 
 #register {
     grid-row-start: 8;
     grid-column: 2 / 4;
+    width: 20rem;
+    justify-self: center;
+    border-radius: 10px;
+    background-color: #F45A1A;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    color: #FFF;
+    font-size: 18px;
+    font-weight: 600;
+    border-color: transparent;
+}
+
+/* Login */
+
+.login-form {
+    display: grid;
+    grid-template-rows: .1fr .1fr .1fr .1fr .1fr .1fr .1fr .1fr;
+    grid-template-columns: .1fr 5fr 5fr .1fr;
+    grid-row: 3 / 4;
+    grid-column: 2 / 4;
+    justify-self: center;
+    align-self: stretch;
+    height: 112%;
+}
+
+.l-email {
+    grid-row-start: 1;
+    grid-column-start: 2;
+    align-self: center;
+
+    color: #FFF;
+    font-size: 18px;
+    font-weight: 600
+}
+
+#l-email {
+    grid-row-start: 2;
+    grid-column: 2 / 4;
+    width: 638px;
+}
+
+.l-wwoord {
+    grid-row-start: 4;
+    grid-column-start: 2;
+    align-self: center;
+
+    color: #FFF;
+    font-size: 18px;
+    font-weight: 600
+}
+
+#l-wwoord {
+    grid-row-start: 5;
+    grid-column: 2 / 4;
+}
+
+.l-alac {
+    grid-row: 6 / 8;
+    grid-column-start: 3;
+    justify-self: end;
+    align-self: center;
+
+    color: #FFF;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.toregister {
+    color: #F45A1A;
+}
+
+#login {
+    grid-row-start: 8;
+    grid-column: 2 / 4;
+    width: 20rem;
+    justify-self: center;
+    border-radius: 10px;
+    background-color: #F45A1A;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    color: #FFF;
+    font-size: 18px;
+    font-weight: 600;
+    border-color: transparent;
 }
 
 
@@ -280,6 +408,105 @@
         -webkit-text-stroke: 1px rgba(120,100,255,0.3);
     }
 
+
+/* vragenlijst styling */
+
+.vragenlijst main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5em;
+}
+.vragenlijst h1{
+    color: white;
+    text-align: center;
+    font-family: "a Big Deal";
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding: 1em;
+}
+
+.vragenlijst h2{
+    color: white;
+    text-align: center;
+    font-family: "a Big Deal";
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.vragenlijst p{
+    color: #FFF;
+    text-align: center;
+    font-family: "a Big Deal";
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding: 1em;
+}
+
+.vragenlijst main section{
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.10);
+    width: 60%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    padding-bottom: 5em;  
+    padding-top: 2em; 
+}
+
+.vragenlijst .primary-button{
+    font-size: 1.5em;
+}
+
+.checkbox-button{
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 100%;
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    font-family: "a Big Deal";
+}
+
+.checkbox-button:hover{
+   background-color: white;
+   color: black;
+   transition: ease-in-out .5s;
+}
+
+.checkboxbutton-list{
+    display: flex;
+    list-style: none;
+    width: min(100%, 720px);
+    gap: 1rem;
+    padding: 0;
+    margin: 0 0 1rem;
+}
+
+.checkboxbutton-list li{
+    flex: 1 1 calc((100% - 2rem) / 3);
+    display: flex;
+}
+
+.volgende-vorige{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-inline: 4rem;
+    padding-top: 2em;
+    box-sizing: border-box;
     .hero h2, #call-to-action h2{
         text-align: center;
     }
@@ -489,6 +716,8 @@
 }
 
     
+}
+
 /* Footer styling */
 
     footer{
@@ -549,7 +778,6 @@
     
 /* Profile pagina **************************************/ 
 /* Kevin's Stukje **************************************/
-
     #recentlyWatched{
         color: var(--text-color);
         display: flex;
@@ -616,8 +844,103 @@
     }
 
 
+    /* sorteer buttons */
+    *, *::after, *::before {
+        box-sizing:border-box;  
+    }
+
+    aside{
+        color: var(--text-color);
+        font-size: 24px;
+        font-family: var(--font);
+        font-weight: normal;
+    }
+
+    .sort{
+        height: auto;
+        width: auto;
+        font-size: 24px;
+        padding: 10px;
+        color: var(--text-color);
+        background-color: var(--button-color);
+        border-radius: 20px;
+    }
+
+    .sort.asc,
+    .sort.desc {
+        font-weight: bold;
+    }
+
+    .sort.asc::after {
+        content: "(az↓)";
+    }
+
+    .sort.desc::after {
+        content: "(za↓)";
+    }
+
+
+    #watchList{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        margin-top: 5em;
+        width: auto;
+        margin-left: 20em;
+        margin-right: 20em;
+    }
+
+    #watchListNav{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+/********** Watchlist lijst ************/
+    #watchList ul{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: start;
+    }
+
     #watchList h2{
         font-family: var(--font);
         font-size: 40px;
         color: var(--text-color);
+    }
+
+    #watchList h3, h4, p{
+        color: var(--text-color);
+    }
+
+    #watchList h3{
+        margin-top: 0;
+    }
+
+    #watchList li{
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: start;
+        height: 14em;
+        width: 100%;
+        gap: 1em;
+        margin-top: 1em;
+        border: 2px solid red;
+    }
+
+    #watchList li img{
+        order: -1;
+        height: 100%;
+        width: 20em;
+    }
+
+    .descriptionCards{
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
     }
