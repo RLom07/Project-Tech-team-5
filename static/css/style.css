@@ -8,12 +8,12 @@
         --body-font: Arial, Helvetica, sans-serif;
     } 
 
-   @font-face {
+    @font-face {
         font-family: "aBigDeal";
         src: url("/fonts/aBigDeal.ttf");
+ 
     }
-
-    
+ 
     body{
         margin: 0;
         font-family: var(--body-font);
@@ -24,6 +24,7 @@
         background-color: var(--background-color);
         color: var(--text-color);
     }
+ 
 
 
     h2{
@@ -514,8 +515,73 @@
 
     .hero h2, #call-to-action h2{
         text-align: center;
+    
     }
     
+.matching h1{
+    color: white;
+    font-family: "a Big Deal";
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding: 1em;
+    text-align: center;
+}
+
+.matching section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.matching h2{
+    color: white;
+    font-family: "a Big Deal";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    padding: 0;
+}
+
+.matching #beste-match-ul{
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.10);
+    width: 80%;
+    height: 80%;
+    padding-bottom: 5em;  
+    border: #d94e14 1px solid;
+    padding: 2em;
+}
+
+.matching img{
+    border: #d94e14 2px solid;
+    height: 320px;
+    width: 250px;
+    padding: 5em;
+}
+
+#meer-matches-ul{
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.10);
+    width: 80%;
+    height: 80%;
+    padding-bottom: 5em;  
+    border: #d94e14 1px solid;
+    padding: 2em;
+}
+
+.matching li{
+    display: flex;
+    padding: 1em;
+}
+
+.matching li div{
+    padding: 1em;
+}
+
+
+/*index styling */
     .info{
         position: relative;
         display: flex;
@@ -863,6 +929,9 @@
     color: #321A70;
 }
 
+.hero h2, #call-to-action h2{
+        text-align: center;
+    }
     
 
 
@@ -982,9 +1051,9 @@
     }
 
     #recentlyWatched h2{
-        font-family: var(--font);
+        font-family: var(--header-font);
         text-align: center;
-        font-size: 40px;
+        font-size: 30px;
     }
 
     #recentlyWatched h3{
@@ -997,6 +1066,46 @@
         box-sizing:border-box;  
     }
 
+    .viewIcons{
+        width: 1.5em;
+        height: 1.5em;
+        filter: brightness(0) saturate(100%) invert(56%) sepia(68%) saturate(4662%) hue-rotate(347deg) brightness(95%) contrast(102%);
+
+    }
+
+    #watchList .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 items per row */
+        gap: 20px; /* space between cards */
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        justify-content: end;
+    }
+
+    #watchList .grid li {
+        display: flex;
+        flex-direction: column;
+        height: 280px;
+        width: 200px;
+        align-items: center;
+        text-align: center;
+    }
+
+    #watchList .grid li img {
+        width: 200px;
+        height: 280px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    
+
+    #watchList .grid h4,
+    #watchList .grid p{
+        display: none;
+    }
+
+
     aside{
         color: var(--text-color);
         font-size: 24px;
@@ -1004,49 +1113,76 @@
         font-weight: normal;
     }
 
-    .sort{
+    button.sort{
         height: auto;
         width: auto;
-        font-size: 24px;
+        margin-top: 0;
+        font-size: 20px;
         padding: 10px;
         color: var(--text-color);
-        background-color: var(--button-color);
+        background-color: var(--background-color);
+        border: 1px solid var(--button-color);
         border-radius: 20px;
     }
 
-    .sort.asc,
-    .sort.desc {
+    button.sort.asc,
+    button.sort.desc {
         font-weight: bold;
     }
 
-    .sort.asc::after {
-        content: "(az↓)";
+    button.sort.asc::after {
+        content: "(A - Z↓)";
     }
 
-    .sort.desc::after {
-        content: "(za↓)";
+    button.sort.desc::after {
+        content: "(Z - A↓)";
     }
 
 
     #watchList{
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
+        justify-content: start;
         margin-top: 5em;
         width: auto;
         margin-left: 20em;
         margin-right: 20em;
     }
 
-    #watchListNav{
+    #watchListNav {
         display: flex;
         flex-direction: row;
-        flex-wrap: wrap;
         justify-content: space-between;
+        align-items: center; /* centers items vertically */
+        gap: 10px; /* optional spacing between items */
+        padding-bottom: 0;
+    }
+
+    #watchListNav h2 {
+        font-family: var(--header-font);
+        display: flex;
         align-items: center;
+        padding-right: 2em;
+
+    }
+
+
+    #watchListNav aside {
+        display: flex;
+        align-items: center; /* vertical center for images and text */
+        gap: 10px; /* spacing between icons and text */
     }
 
 /********** Watchlist lijst ************/
+    input[type="search"]{
+        width: auto;
+        height: 3em;
+        background-color: var(--background-color);
+        border-color: var(--button-color);
+        color: var(--text-color);
+        border-radius: 12px;
+    }
+
     #watchList ul{
         display: flex;
         flex-direction: column;
@@ -1055,8 +1191,8 @@
     }
 
     #watchList h2{
-        font-family: var(--font);
-        font-size: 40px;
+        font-family: var(--header-font);
+        font-size: 30px;
         color: var(--text-color);
     }
 

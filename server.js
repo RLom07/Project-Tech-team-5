@@ -5,6 +5,9 @@ const path = require('path')
 const { MongoClient, ServerApiVersion } = require('mongodb')
 const app = express()
 const port = process.env.PORT || 3000
+
+
+
  
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/?appName=${process.env.APP_NAME}`;
  
@@ -75,6 +78,12 @@ app.use(express.urlencoded({ extended: true }))
  
 
 
+//Profile /////////////////////////////
+
+
+
+
+
 //Routes
  
 app.get('/', async (req, res) => {
@@ -101,6 +110,9 @@ app.get('/movie/:id', async (req, res) => {
  
 app.get('/profile', (req, res) => { res.render(`profile`) })
 
+
+
+
 app.get('/register', (req, res) => { res.render(`register`) })
 
 app.get('/login', (req, res) => { res.render(`login`) })
@@ -119,6 +131,7 @@ app.get('/vragenlijst-vraag5', (req, res) => { res.render(`vragenlijst-vraag5`)}
 app.get('/vragenlijst-vraag6', (req, res) => { res.render(`vragenlijst-vraag6`)})
 
 
+app.get('/matching', (req, res) => { res.render(`matching`)})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
