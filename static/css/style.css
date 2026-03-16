@@ -9,14 +9,14 @@
     } 
 
     @font-face {
-        font-family: bigDeal; /* set name */
-        src: url(aBigDeal.ttf); /* url of the font */
+        font-family: "aBigDeal";
+        src: url("/fonts/aBigDeal.ttf");
+
     }
 
-    
     body{
         margin: 0;
-        font-family: aBigDeal, sans-serif;
+        font-family: var(--body-font);
         background: url("../images/background.png");
         background-repeat: repeat;
         background-size: auto;
@@ -500,9 +500,11 @@
     padding-inline: 4rem;
     padding-top: 2em;
     box-sizing: border-box;
-    .hero h2, #call-to-action h2{
-        text-align: center;
-    }
+}
+
+.hero h2, #call-to-action h2{
+    text-align: center;
+}
 
 /*index styling */
     .info{
@@ -673,9 +675,6 @@
 
 .register_h1 {
     color: #321A70;
-}
-
-    
 }
 
 /* Footer styling */
