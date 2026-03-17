@@ -98,31 +98,139 @@ app.get('/', async (req, res) => {
 
 })
 
+
+//met behulp van ChatGPT
 app.get('/movie/:id', async (req, res) => {
 
-  const movieId = req.params.id
+  const movieId = req.params.id;
 
+  //film ophalen
   const response = await fetch(
     `${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`
+  );
+  const movie = await response.json();
+
+  //credits film ophalen
+  const creditsResponse = await fetch(
+    `${process.env.BASE_URL}/movie/${movieId}/credits?api_key=${process.env.API_KEY}`
   )
 
-  const movie = await response.json()
+  const creditsData = await creditsResponse.json()
 
-  // streaming providers
+  // 🎬 Director
+  const director = creditsData.crew.find(person =>
+    person.job === "Director"
+  )
+
+  // ✍️ Writers
+  const writers = creditsData.crew
+    .filter(person =>
+      person.job === "Writer" ||
+      person.job === "Screenplay" ||
+      person.job === "Story"
+    )
+    .map(person => person.name)
+
+  // 🎭 Top 3 acteurs
+  const actors = creditsData.cast
+    .slice(0, 6)
+    .map(actor => actor.name)
+
+
+  //trailer
+  const videoResponse = await fetch(
+    `${process.env.BASE_URL}/movie/${movieId}/videos?api_key=${process.env.API_KEY}`
+  );
+
+  const videoData = await videoResponse.json();
+
+  const trailer = videoData.results.find(video =>
+    video.type === "Trailer" && video.site === "YouTube"
+  );
+
+
+  
+  //providers ophalen
   const providerResponse = await fetch(
     `${process.env.BASE_URL}/movie/${movieId}/watch/providers?api_key=${process.env.API_KEY}`
-  )
+  );
+  const providerData = await providerResponse.json();
 
-  const providerData = await providerResponse.json()
+  //alles samenvoegen (abonnement / huur / koop)
+  const allProviders = [
+    ...(providerData.results?.NL?.flatrate || []).map(p => ({ ...p, type: 'abonnement' })),
+    ...(providerData.results?.NL?.rent || []).map(p => ({ ...p, type: 'huur' })),
+    ...(providerData.results?.NL?.buy || []).map(p => ({ ...p, type: 'koop' }))
+  ];
 
-  const providers = providerData.results?.NL?.flatrate || []
+  //combineren per provider (huur + koop samen)
+  const providerMap = {};
 
+  allProviders.forEach(p => {
+    const name = p.provider_name;
+
+    if (!providerMap[name]) {
+      providerMap[name] = {
+        provider_name: p.provider_name,
+        logo_path: p.logo_path,
+        types: []
+      };
+    }
+
+    // voorkom dubbele types
+    if (!providerMap[name].types.includes(p.type)) {
+      providerMap[name].types.push(p.type);
+    }
+  });
+
+  const combinedProviders = Object.values(providerMap);
+
+  // providers filteren (jouw blacklist)
+  const excludedProviders = [
+    "KPN",
+    "HBO Max Amazon Channel",
+    "meJane"
+  ];
+
+  const filtered = combinedProviders.filter(p =>
+    !excludedProviders.some(name =>
+      p.provider_name.toLowerCase().includes(name.toLowerCase())
+    )
+  );
+
+  // sorteren → Netflix eerst
+  const priorityProviders = [
+    "Netflix",
+    "Disney Plus",
+    "Amazon Video",
+    "HBO Max",
+    "Pathé Thuis"
+  ];
+
+  const sorted = filtered.sort((a, b) => {
+    const aIndex = priorityProviders.indexOf(a.provider_name);
+    const bIndex = priorityProviders.indexOf(b.provider_name);
+
+    if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+    if (aIndex !== -1) return -1;
+    if (bIndex !== -1) return 1;
+    return 0;
+  });
+
+  
+  // renderen
   res.render('detail', {
     movie: movie,
-    providers: providers
-  })
+    providers: sorted.slice(0, 3),
+    director: director?.name || "Onbekend",
+    writers: writers,
+    actors: actors,
+    trailer: trailer
+  });
 
-})
+  console.log(filtered.map(p => p.provider_name));
+
+});
 
  
 app.get('/profile', (req, res) => { res.render(`profile`) })

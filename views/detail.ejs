@@ -94,24 +94,72 @@
 
     </section>
 
-    <section class="watch-providers">
+    <section class="movie-extra">
 
-        <h2>Waar te kijken</h2>
+        <div class="watch-section">
+            <h2>Waar te kijken</h2>
 
-        <div class="providers">
+            <% if (providers.length === 0) { %>
 
-            <% providers.forEach(provider => { %>
+                <p>Nu te zien in de bioscoop! </p>
 
-            <img 
-                src="https://image.tmdb.org/t/p/w92<%= provider.logo_path %>" 
-                alt="<%= provider.provider_name %>"
-                title="<%= provider.provider_name %>"
-            >
+            <% } else { %>
 
-            <% }) %>
+                <% providers.forEach(p => { %>
+
+                    <div class="provider-row">
+
+                        <img src="https://image.tmdb.org/t/p/w45<%= p.logo_path %>" alt="<%= p.provider_name %>">
+
+                        <div>
+                            <h3><%= p.provider_name %></h3>
+                            <p><%= p.types.join(' / ') %></p>
+                        </div>
+
+                        <a href="#" class="primary-button kijken">Kijken</a>
+
+                    </div>
+
+                <% }) %>
+
+            <% } %>
+        </div>
+
+        <div class="movie-details">
+
+            <div class="detail-block">
+                <h3>Director</h3>
+                <p><%= director %></p>
+            </div>
+
+            <div class="detail-block">
+                <h3>Writers</h3>
+                <p><%= writers.join(', ') %></p>
+            </div>
+
+            <div class="detail-block">
+                <h3>Top actors</h3>
+                <p><%= actors.join(', ') %></p>
+            </div>
 
         </div>
 
+    </section>
+
+    <section id="trailer-section">
+        <% if (trailer) { %>
+
+            <div class="trailer">
+                <iframe 
+                    width="100%" 
+                    height="400"
+                    src="https://www.youtube.com/embed/<%= trailer.key %>"
+                    frameborder="0"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+        <% } %>
     </section>
 
     
