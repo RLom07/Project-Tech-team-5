@@ -48,7 +48,7 @@ async function fetchData(url) {
 }
 
 fetchData(`${process.env.BASE_URL}/movie/popular?api_key=${process.env.API_KEY}`);
-console.log(`${process.env.BASE_URL}/movie/popular?api_key=${process.env.API_KEY}`)
+// console.log(`${process.env.BASE_URL}/movie/popular?api_key=${process.env.API_KEY}`)
 //Starter endpoints that can be used
 // /movie/popular?
 
@@ -112,8 +112,22 @@ app.get('/movie/:id', async (req, res) => {
 
 })
  
-app.get('/profile', (req, res) => { res.render(`profile`) })
+app.get('/profile', async (req, res) => { 
+  try {
+    const _id = "69b949c7c8bf607ee77a7cc9"
+    // 2. Fetch the data and store it in a variable first
+    const snapshot = await db.collection(USERS_COLLECTION).findOne(_id);
+    const userData = snapshot;
 
+    // 3. Pass the data object as the second argument to res.render
+    res.render('profile', {_id})
+
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 
 
