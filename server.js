@@ -5,10 +5,12 @@ const path = require('path')
 const { MongoClient, ServerApiVersion } = require('mongodb')
 const app = express()
 const port = process.env.PORT || 3000
+const session = require('express-session')
 
 const bcrypt = require('bcrypt');
  
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/?appName=${process.env.APP_NAME}`;
+
  
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -41,7 +43,7 @@ async function fetchData(url) {
   try {
     const response = await fetch(url);
     const data = await response.json();
-    console.log(data);
+
   } catch (error) {
     console.error('TMDB fetch error:', error.message);
   }
@@ -79,6 +81,17 @@ app.set('views', path.join(__dirname, 'views'))
 app.use('/static', express.static(path.join(__dirname, 'static')))
 app.use(express.static("static"));
 app.use(express.urlencoded({ extended: true }))
+app.use(session({
+  secret: 'secret-key',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+    maxAge: 60000 * 60,
+    secure: true 
+  },
+  
+}))
+
  
 
 
@@ -112,17 +125,30 @@ app.get('/movie/:id', async (req, res) => {
 
 })
  
+
 app.get('/profile', async (req, res) => { 
   try {
-    const _id = "69b949c7c8bf607ee77a7cc9"
+    
     // 2. Fetch the data and store it in a variable first
-    const snapshot = await db.collection(USERS_COLLECTION).findOne(_id);
-    const userData = snapshot;
+    // const snapshot = await db.collection(USERS_COLLECTION).findOne(_id);
+    // const userData = snapshot;app.set('trust proxy', 1) // trust first proxy
 
+    const { ObjectId } = require('mongodb');
+
+    const gebruiker = await db.collection(USERS_COLLECTION).findOne({
+      _id: new ObjectId(req.session.userId)
+    }); 
+
+    req.session.visited = true;
     // 3. Pass the data object as the second argument to res.render
-    res.render('profile', {_id})
+    res.render('profile',  { gebruiker }) 
+    
+    console.log(req.session)
+    console.log(req.session.id)
+    console.log("session userId:", req.session.userId);
 
-  } catch (error) {
+
+  } catch (error) {  
     console.error("Error fetching profile:", error);
 
     res.status(500).send("Internal Server Error");
@@ -210,7 +236,8 @@ app.post('/login', async (req, res) => {
     }
 
     // Zonder session/JWT: alleen redirect bij succesvolle login
-    return res.redirect('/profile');
+    req.session.userId = user._id.toString();
+    req.session.save(() => res.redirect('/profile'));
   } catch (error) {
     console.error('Login error:', error);
     return res.status(500).send('Er ging iets mis bij inloggen.');
