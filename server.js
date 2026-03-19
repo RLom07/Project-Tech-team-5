@@ -219,7 +219,7 @@ app.post('/register', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-  console.log('in login')
+
   try {
     const { email, wwoord } = req.body;
 
@@ -245,7 +245,7 @@ app.post('/login', async (req, res) => {
 
     // Zonder session/JWT: alleen redirect bij succesvolle login
     req.session.userId = user._id.toString();
-    console.log('login:'+ req.session.userId)
+
     req.session.save(() => res.redirect('/profile'));
   } catch (error) {
     console.error('Login error:', error);
