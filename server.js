@@ -5,10 +5,12 @@ const path = require('path')
 const { MongoClient, ServerApiVersion } = require('mongodb')
 const app = express()
 const port = process.env.PORT || 3000
+const session = require('express-session')
 
 const bcrypt = require('bcrypt');
  
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/?appName=${process.env.APP_NAME}`;
+
  
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -41,14 +43,14 @@ async function fetchData(url) {
   try {
     const response = await fetch(url);
     const data = await response.json();
-    console.log(data);
+
   } catch (error) {
     console.error('TMDB fetch error:', error.message);
   }
 }
 
 fetchData(`${process.env.BASE_URL}/movie/popular?api_key=${process.env.API_KEY}`);
-console.log(`${process.env.BASE_URL}/movie/popular?api_key=${process.env.API_KEY}`)
+// console.log(`${process.env.BASE_URL}/movie/popular?api_key=${process.env.API_KEY}`)
 //Starter endpoints that can be used
 // /movie/popular?
 
@@ -80,6 +82,15 @@ app.use('/static', express.static(path.join(__dirname, 'static')))
 app.use(express.static("static"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }))
+
+app.use(session({
+  secret: 'ditistest',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 60000 * 60
+  }
+}))
  
 
 
@@ -113,11 +124,52 @@ app.get('/movie/:id', async (req, res) => {
 
 })
  
-app.get('/profile', (req, res) => { res.render(`profile`) })
+
+app.get('/profile', async (req, res) => { 
+  try {
+    
+    const { ObjectId } = require('mongodb');
+
+    const gebruiker = await db.collection(USERS_COLLECTION).findOne({
+      _id: new ObjectId(req.session.userId)
+    }); 
+                
+    const hour = new Date().getHours();
+    let greeting;
+
+    if (hour < 12) {
+        greeting = "Goedemorgen";
+    } else if (hour < 18) {
+        greeting = "Goedemiddag";
+    } else {
+        greeting = "Goedenavond";
+    }
+
+    const movies = await getPopularMovies()
+
+    req.session.visited = true;
+    // 3. Pass the data object as the second argument to res.render
+    res.render('profile',  { gebruiker, greeting, movies }) 
+
+  } catch (error) {  
+    console.error("Error fetching profile:", error);
+
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+
 
 app.get('/register', (req, res) => { res.render(`register`) })
 
 app.get('/login', (req, res) => { res.render(`login`) })
+
+app.get('/uitloggen', (req, res) => {
+  req.session.destroy(() => {
+    res.clearCookie('connect.sid');
+    res.redirect('/');
+  });
+});
 
 app.get('/vragenlijst', (req, res) => { res.render(`vragenlijst`) })
  
@@ -170,6 +222,7 @@ app.post('/register', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
+
   try {
     const { email, wwoord } = req.body;
 
@@ -194,7 +247,9 @@ app.post('/login', async (req, res) => {
     }
 
     // Zonder session/JWT: alleen redirect bij succesvolle login
-    return res.redirect('/profile');
+    req.session.userId = user._id.toString();
+
+    req.session.save(() => res.redirect('/profile'));
   } catch (error) {
     console.error('Login error:', error);
     return res.status(500).send('Er ging iets mis bij inloggen.');

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Profiel</title>
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
     <%- include('partials/head') %>
@@ -21,10 +21,12 @@
         <main>
             <h1> CINEMATCH</h1>
             <h2>
-                Goedeavond .....,
+
+                <%= greeting %> <%= gebruiker.voornaam %>,
+                
                 Tijd voor je volgende match?
             </h2>
-            <a href="#" class="primary-button"> Vind je match</a>
+            <a  href="/vragenlijst" class="primary-button"> Vind je match</a>
         </main>
     </div>
 
@@ -32,67 +34,67 @@
             <h2>Recentelijk bekeken</h2>
             <ul>
                 <li>
-                    <img src="images/sleevelesshoodie.png" alt="">
+                    <img src="images/sleevelesshoodie.png" alt="" loading="lazy">
                     <h3>Filmnaam</h3>
                 </li>
                 <li>
-                    <img src="images/goldkingscap.png" alt="">
+                    <img src="images/goldkingscap.png" alt="" loading="lazy">
                     <h3>Serienaam</h3>
                 </li>
                 <li>
-                    <img src="images/purplecybermask.png" alt="">
+                    <img src="images/purplecybermask.png" alt="" loading="lazy">
                     <h3>Filmnaam</h3>
                 </li>
                 <li>
-                    <img src="images/raglanhoodie.png" alt="">
+                    <img src="images/raglanhoodie.png" alt="" loading="lazy">
                     <h3>Serienaam</h3>
                 </li>
                 <li>
-                    <img src="images/sleevelesshoodie.png" alt="">
+                    <img src="images/sleevelesshoodie.png" alt="" loading="lazy">
                     <h3>Filmnaam</h3>
                 </li>
                 <li>
-                    <img src="images/goldkingscap.png" alt="">
+                    <img src="images/goldkingscap.png" alt="" loading="lazy">
                     <h3>Serienaam</h3>
                 </li>
                 <li>
-                    <img src="images/purplecybermask.png" alt="">
+                    <img src="images/purplecybermask.png" alt="" loading="lazy">
                     <h3>Filmnaam</h3>
                 </li>
                 <li>
-                    <img src="images/raglanhoodie.png" alt="">
+                    <img src="images/raglanhoodie.png" alt="" loading="lazy">
                     <h3>Serienaam</h3>
                 </li>
                 <li>
-                    <img src="images/sleevelesshoodie.png" alt="">
+                    <img src="images/sleevelesshoodie.png" alt="" loading="lazy">
                     <h3>Filmnaam</h3>
                 </li>
                 <li>
-                    <img src="images/goldkingscap.png" alt="">
+                    <img src="images/goldkingscap.png" alt="" loading="lazy">
                     <h3>Serienaam</h3>
                 </li>
                 <li>
-                    <img src="images/purplecybermask.png" alt="">
+                    <img src="images/purplecybermask.png" alt="" loading="lazy">
                     <h3>Filmnaam</h3>
                 </li>
                 <li>
-                    <img src="images/raglanhoodie.png" alt="">
+                    <img src="images/raglanhoodie.png" alt="" loading="lazy">
                     <h3>Serienaam</h3>
                 </li>
                 <li>
-                    <img src="images/sleevelesshoodie.png" alt="">
+                    <img src="images/sleevelesshoodie.png" alt="" loading="lazy">
                     <h3>Filmnaam</h3>
                 </li>
                 <li>
-                    <img src="images/goldkingscap.png" alt="">
+                    <img src="images/goldkingscap.png" alt="" loading="lazy">
                     <h3>Serienaam</h3>
                 </li>
                 <li>
-                    <img src="images/purplecybermask.png" alt="">
+                    <img src="images/purplecybermask.png" alt="" loading="lazy">
                     <h3>Filmnaam</h3>
                 </li>
                 <li>
-                    <img src="images/raglanhoodie.png" alt="">
+                    <img src="images/raglanhoodie.png" alt="" loading="lazy">
                     <h3>Serienaam</h3>
                 </li>							
             </ul>
@@ -104,7 +106,7 @@
                     <img src="../images/list.png" alt="list icon" class="viewIcons" id="view-list" style="cursor:pointer;" onclick="showInList()">
                     <img src="../images/grid.png" alt="grid icon" class="viewIcons" id="view-grid" style="cursor:pointer;" onclick="showInGrid()">
                     Sorteren op:
-                    <button class="sort" data-sort="watchListName">Naam</button>
+                    <button class="sort" data-sort="watchListName" style="cursor:pointer;">Naam </button>
                 </aside>
             </div>
 
@@ -112,35 +114,84 @@
             <input type="search" class="search" placeholder=" Zoek op naam">
 
             <!-- List.js container -->
-                <ul class="list">
+                <ul class="list">     
                     <li>
-                        <img src="../images/CHOPPETTE.png" alt="Spiderman">
+                        <img src="../images/CHOPPETTE.png" alt="Spiderman" loading="lazy">
                         <section class="descriptionCards">
                             <h3 class="watchListName">Spiderman</h3>
                             <h4>Populariteit</h4>
-                            <p class="watchListDescription">Een korte beschrijving van de film/serie</p>
+                            <p class="watchListDescription">Een korte beschrijving van de film/serie. Dit is een korte
+                                tekst met een biografie over wat de film inhoudt.</p>
                         </section>
                     </li>
                     <li>
-                        <img src="../images/CHOPPETTE.png" alt="Avatar">
+                        <img src="../images/CHOPPETTE.png" alt="Avatar" loading="lazy">
                         <section class="descriptionCards">
                             <h3 class="watchListName">Avatar</h3>
                             <h4>Populariteit</h4>
-                            <p class="watchListDescription">Een korte beschrijving van de film/serie</p>
+                            <p class="watchListDescription">Een korte beschrijving van de film/serie. Dit is een korte
+                                tekst met een biografie over wat de film inhoudt.</p>
                         </section>
                     </li>
                     <li>
-                        <img src="../images/CHOPPETTE.png" alt="Batman">
+                        <img src="../images/CHOPPETTE.png" alt="Batman" loading="lazy">
                         <section class="descriptionCards">
                             <h3 class="watchListName">Batman</h3>
                             <h4>Populariteit</h4>
-                            <p class="watchListDescription">Een korte beschrijving van de film/serie</p>
+                            <p class="watchListDescription">Een korte beschrijving van de film/serie. Dit is een korte
+                                tekst met een biografie over wat de film inhoudt.</p>
                         </section>
                     </li>
+                   <li>
+                        <img src="../images/CHOPPETTE.png" alt="Spiderman" loading="lazy">
+                        <section class="descriptionCards">
+                            <h3 class="watchListName">Nobody</h3>
+                            <h4>Populariteit</h4>
+                            <p class="watchListDescription">Een korte beschrijving van de film/serie. Dit is een korte
+                                tekst met een biografie over wat de film inhoudt.</p>
+                        </section>
+                    </li>
+                    <li>
+                        <img src="../images/CHOPPETTE.png" alt="Avatar" loading="lazy">
+                        <section class="descriptionCards">
+                            <h3 class="watchListName">John Wick</h3>
+                            <h4>Populariteit</h4>
+                            <p class="watchListDescription">Een korte beschrijving van de film/serie. Dit is een korte
+                                tekst met een biografie over wat de film inhoudt.</p>
+                        </section>
+                    </li>
+                    <li>
+                        <img src="../images/CHOPPETTE.png" alt="Batman" loading="lazy">
+                        <section class="descriptionCards">
+                            <h3 class="watchListName">Scary Movie 6</h3>
+                            <h4>Populariteit</h4>
+                            <p class="watchListDescription">Een korte beschrijving van de film/serie. Dit is een korte
+                                tekst met een biografie over wat de film inhoudt.</p>
+                        </section>
+                    </li>                   
                     <!-- Add more items as needed -->
                 </ul>
         </section>
+        <section id="populair-movies">
 
+            <h2>Populair deze week</h2>
+
+            <div class="movie-grid">
+
+                <% movies.forEach((movie, index) => { %>
+
+                    <a href="/movie/<%= movie.id %>" class="movie-card <%= index < 2 ? 'large' : '' %>">
+
+                        <img src="https://image.tmdb.org/t/p/w780<%= movie.backdrop_path || movie.poster_path %>" alt="<%= movie.title %>" loading="lazy">
+                    
+                        <h3><%= movie.title %></h3>
+                        
+                    </a>
+
+                <% }) %>
+
+            </div>
+        </section>       
         <!-- List.js Initialization -->
         <script>
         document.addEventListener('DOMContentLoaded', function() {
