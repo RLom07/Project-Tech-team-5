@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profiel aanpassen</title>
+    <%- include('partials/head') %>
+</head>
+
+<body>
+    <main class="main-pfa">
+     <h1 class="groetgebruiker">Hallo Henry</h1> <!-- Vervang Henry later voor naam uit database -->
+     <p class="profielfoto">Profiel foto:</p>
+     <img src="/images/defaultpf.jpg" alt="profiel foto van gebruiker" class="gebruikerpf">
+     <form class="profielaanpasform">
+        <label for="vnaam" class="p-vnaam">Voornaam:</label>
+        <input type="text" id="p-vnaam" name="vnaam">
+        <label for="anaam" class="p-anaam">Achternaam:</label>
+        <input type="text" id="p-anaam" name="anaam">
+        <label for="email" class="p-email">Email:</label>
+        <input type="text" id="p-email" name="email">
+        <label for="wwoord" class="p-wwoord">Wachtwoord:</label>
+        <input type="password" id="p-wwoord" name="wwoord">
+        <input type="submit" id="update" name="update" value="update">
+     </form>
+        <button class="verwijderacc" type="button">Verwijder Account</button>
+    </main>
+</body>
