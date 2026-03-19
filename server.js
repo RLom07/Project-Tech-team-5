@@ -78,6 +78,7 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 app.use('/static', express.static(path.join(__dirname, 'static')))
 app.use(express.static("static"));
+app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }))
  
 
@@ -113,9 +114,6 @@ app.get('/movie/:id', async (req, res) => {
 })
  
 app.get('/profile', (req, res) => { res.render(`profile`) })
-
-
-
 
 app.get('/register', (req, res) => { res.render(`register`) })
 
