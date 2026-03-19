@@ -127,17 +127,26 @@ app.get('/movie/:id', async (req, res) => {
 app.get('/profile', async (req, res) => { 
   try {
     
-
     const { ObjectId } = require('mongodb');
 
     const gebruiker = await db.collection(USERS_COLLECTION).findOne({
       _id: new ObjectId(req.session.userId)
     }); 
+                
+    const hour = new Date().getHours();
+    let greeting;
+
+    if (hour < 12) {
+        greeting = "Goedemorgen";
+    } else if (hour < 18) {
+        greeting = "Goedemiddag";
+    } else {
+        greeting = "Goedenavond";
+    }
 
     req.session.visited = true;
     // 3. Pass the data object as the second argument to res.render
-    res.render('profile',  { gebruiker }) 
-
+    res.render('profile',  { gebruiker, greeting }) 
 
   } catch (error) {  
     console.error("Error fetching profile:", error);
@@ -151,6 +160,13 @@ app.get('/profile', async (req, res) => {
 app.get('/register', (req, res) => { res.render(`register`) })
 
 app.get('/login', (req, res) => { res.render(`login`) })
+
+app.get('/uitloggen', (req, res) => {
+  req.session.destroy(() => {
+    res.clearCookie('connect.sid');
+    res.redirect('/');
+  });
+});
 
 app.get('/vragenlijst', (req, res) => { res.render(`vragenlijst`) })
  

@@ -21,18 +21,7 @@
         <main>
             <h1> CINEMATCH</h1>
             <h2>
-                <% 
-                    const hour = new Date().getHours();
-                    let greeting;
 
-                    if (hour < 12) {
-                        greeting = "Goedemorgen";
-                    } else if (hour < 18) {
-                        greeting = "Goedemiddag";
-                    } else {
-                        greeting = "Goedenavond";
-                    }
-                %>
                 <%= greeting %> <%= gebruiker.voornaam %>,
                 
                 Tijd voor je volgende match?
