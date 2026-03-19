@@ -11,13 +11,16 @@
         <h1 class="h1-lore">Registreer</h1>
         <div class="form-rectangle">
             <h2 class="h2-welkom">Welkom !</h2>
+            <% if (error) { %>
+                <div class="form-error" role="alert"><%= error %></div>
+            <% } %>
             <form class="register-form" action="/register" method="POST">
                 <label for="vnaam" class="vnaam">Voornaam:</label>
-                <input type="text" id="vnaam" name="vnaam">
+                <input type="text" id="vnaam" name="vnaam" value="<%= formData && formData.vnaam ? formData.vnaam : '' %>">
                 <label for="anaam" class="anaam">Achternaam:</label>
-                <input type="text" id="anaam" name="anaam">
+                <input type="text" id="anaam" name="anaam" value="<%= formData && formData.anaam ? formData.anaam : '' %>">
                 <label for="email" class="email">Email:</label>
-                <input type="text" id="email" name="email">
+                <input type="text" id="email" name="email" value="<%= formData && formData.email ? formData.email : '' %>">
                 <label for="wwoord" class="wwoord">Wachtwoord:</label>
                 <input type="password" id="wwoord" name="wwoord">
                 <p class="alac">Heb je al een account? <a href="login" class="tologin">Login</a></p>
