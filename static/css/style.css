@@ -419,6 +419,7 @@
     align-items: center;
     padding-top: 5em;
 }
+
 .vragenlijst h1{
     color: white;
     text-align: center;
@@ -459,7 +460,7 @@
     display: flex;
     flex-direction: column;
     align-items: center; 
-    padding-bottom: 5em;  
+    padding-bottom: 3em;  
     padding-top: 2em; 
 }
 
@@ -511,14 +512,65 @@
     box-sizing: border-box;
 }
 
-    
+.container{
+    max-width: 700px;
+    width: 100%;
+    margin-top: 1em;
+    padding-top: 1em ;
+}
 
-/*index styling */
-
-    .hero h2, #call-to-action h2{
-        text-align: center;
     
-    }
+.container .stappen{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    position: relative;
+}
+
+.stappen .cirkel{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:black;
+    font-size: 22px;
+    font-weight: 400;
+    font-family: abigdeal;  
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+    border: 4px solid transparent;
+    position: relative;
+    z-index: 1;
+    background: white;
+    transition: all 600ms ease;
+}
+
+.stappen .cirkel.actief{
+    border-color:#d94e14;
+    background:#d94e14;
+    color:white; 
+}
+
+.stappen .progressie-bar{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    height: 4px;
+    width: 100%;
+    background: white;
+    z-index: -1;
+}
+
+.progressie-bar .indicator{
+    position: absolute;
+    height: 100%;
+    width: 0%;
+    background:#F45A1A;
+    transition: all 800ms ease;
+    
+}
     
 .matching h1{
     color: white;
@@ -531,29 +583,75 @@
     text-align: center;
 }
 
+.matching h2{
+    color: white;
+    font-family: "a Big Deal";
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 400;
+    padding: 0;
+    margin: .5em;
+    align-self: flex-start;
+    padding-left: 6em;
+}
+
+.matching h3{
+    color: white;
+    font-family: "a Big Deal";
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    padding: 0;
+    margin: 0;
+}
+
+.matching h4{
+    color: white;
+    font-family: "a Big Deal";
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    padding:0;
+    margin:0;
+}
+
+#oranje {
+    color: #d94e14;
+    font-size: 60px;
+}
+
 .matching section{
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.matching h2{
-    color: white;
-    font-family: "a Big Deal";
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 400;
-    padding: 0;
+#beste-match{
+    padding-bottom: 2em;
 }
 
 .matching #beste-match-ul{
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.10);
+    background: black;
     width: 80%;
     height: 80%;
-    padding-bottom: 5em;  
     border: #d94e14 1px solid;
     padding: 2em;
+    padding-bottom: 1em;
+}
+
+.matching button{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F45A1A;
+    color: white;
+    font-family: var(--body-font);
+    font-weight: bold;
+    padding: 25px 85px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
 }
 
 .matching img{
@@ -563,14 +661,33 @@
     padding: 5em;
 }
 
-#meer-matches-ul{
+.beste-match-div{
+    padding-left: 2em;
+}
+
+.meer-matches-ul{
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.10);
+    background: black;  
     width: 80%;
-    height: 80%;
-    padding-bottom: 5em;  
     border: #d94e14 1px solid;
     padding: 2em;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1em;
+}
+
+.meer-matches-ul button{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F45A1A;
+    color: white;
+    font-family: var(--body-font);
+    font-weight: bold;
+    padding: 15px 55px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
 }
 
 .matching li{
@@ -578,10 +695,51 @@
     padding: 1em;
 }
 
-.matching li div{
-    padding: 1em;
+.meer-matches-ul li{
+    flex-direction: row;
+    align-items: stretch;
+    text-align: left;
+    border-radius: 20px;
+    margin: 0;
+    gap: 2em;
 }
 
+.meer-matches-ul div{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.meer-matches-ul h3{
+    font-size: 28px;
+}
+
+.meer-matches-ul h4{
+    font-size: 24px;
+}
+
+.meer-matches-ul p{
+    font-size: 16px;
+    margin: 0.4em 0;
+}
+
+.meer-matches-ul button{
+    margin-top: auto;
+    align-self: flex-start;
+}
+
+.meer-matches-ul img{
+    width: 250px;
+    height: 320px;
+    padding: 5em;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .meer-matches-ul{
+        grid-template-columns: 1fr;
+    }
+}
 
 /*index styling */
     .info{
