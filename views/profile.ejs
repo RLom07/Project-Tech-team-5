@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Profiel</title>
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
     <%- include('partials/head') %>
@@ -21,7 +21,20 @@
         <main>
             <h1> CINEMATCH</h1>
             <h2>
-                Goedeavond ...<%= gebruiker.voornaam %>
+                <% 
+                    const hour = new Date().getHours();
+                    let greeting;
+
+                    if (hour < 12) {
+                        greeting = "Goedemorgen";
+                    } else if (hour < 18) {
+                        greeting = "Goedemiddag";
+                    } else {
+                        greeting = "Goedenavond";
+                    }
+                %>
+                <%= greeting %> <%= gebruiker.voornaam %>,
+                
                 Tijd voor je volgende match?
             </h2>
             <a  href="/vragenlijst" class="primary-button"> Vind je match</a>
