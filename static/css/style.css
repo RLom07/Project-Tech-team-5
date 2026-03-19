@@ -348,7 +348,7 @@
     cursor: pointer;
 }
 
-/* Login */
+/* Login styling */
 
 .login-form {
     display: grid;
@@ -423,6 +423,18 @@
     cursor: pointer;
 }
 
+
+/* Profielaanpassen Styling */
+
+.main-pfa {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 3fr 1fr;
+}
+
+.groetgebruiker {
+    grid-column-start: 2;
+}
 
 /* vragenlijst styling */
 
