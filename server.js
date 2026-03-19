@@ -81,17 +81,15 @@ app.set('views', path.join(__dirname, 'views'))
 app.use('/static', express.static(path.join(__dirname, 'static')))
 app.use(express.static("static"));
 app.use(express.urlencoded({ extended: true }))
+
 app.use(session({
-  secret: 'secret-key',
+  secret: 'ditistest',
   resave: false,
   saveUninitialized: false,
-  cookie: { 
-    maxAge: 60000 * 60,
-    secure: true 
-  },
-  
+  cookie: {
+    maxAge: 60000 * 60
+  }
 }))
-
  
 
 
@@ -129,9 +127,6 @@ app.get('/movie/:id', async (req, res) => {
 app.get('/profile', async (req, res) => { 
   try {
     
-    // 2. Fetch the data and store it in a variable first
-    // const snapshot = await db.collection(USERS_COLLECTION).findOne(_id);
-    // const userData = snapshot;app.set('trust proxy', 1) // trust first proxy
 
     const { ObjectId } = require('mongodb');
 
@@ -142,10 +137,6 @@ app.get('/profile', async (req, res) => {
     req.session.visited = true;
     // 3. Pass the data object as the second argument to res.render
     res.render('profile',  { gebruiker }) 
-    
-    console.log(req.session)
-    console.log(req.session.id)
-    console.log("session userId:", req.session.userId);
 
 
   } catch (error) {  
@@ -212,6 +203,7 @@ app.post('/register', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
+  console.log('in login')
   try {
     const { email, wwoord } = req.body;
 
@@ -237,6 +229,7 @@ app.post('/login', async (req, res) => {
 
     // Zonder session/JWT: alleen redirect bij succesvolle login
     req.session.userId = user._id.toString();
+    console.log('login:'+ req.session.userId)
     req.session.save(() => res.redirect('/profile'));
   } catch (error) {
     console.error('Login error:', error);
