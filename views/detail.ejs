@@ -22,13 +22,13 @@
 
             <img class="movie-poster" src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>">
 
-            <div class="movie-info">
+            <section class="movie-info">
                 <h1><%= movie.title %></h1>
 
                 <p class="movie-meta">
                     <%= movie.release_date.slice(0,4) %> • 
                     <%= movie.runtime %> min • 
-                    Actie/Crime
+                    <%= movie.genres.slice(0,2).map(g => g.name).join(' / ') %>
                 </p>
 
                 <div class="movie-description">
@@ -40,22 +40,20 @@
                     Ik ga deze kijken!
                 </a>
 
-                </div>
+            </section>
 
-                <div class="movie-actions">
+            <div class="movie-actions">
 
 
+                <button class="save-button">
+                    <img src="/images/favoriet.svg" alt="">
+                    Voeg toe aan favoriet
+                </button>
 
-                    <button class="save-button">
-                        <img src="/images/favoriet.svg" alt="">
-                        Voeg toe aan favoriet
-                    </button>
-
-                    <button class="save-button">
-                        <img src="/images/watchlater.svg" alt="">
-                        Voeg toe aan <br>later bekijken
-                    </button>
-                </div>
+                <button class="save-button">
+                    <img src="/images/watchlater.svg" alt="">
+                    Voeg toe aan <br>later bekijken
+                </button>
             </div>
 
         </section>
@@ -64,7 +62,7 @@
 
     <section class="movie-stats">
 
-        <div class="stat">
+        <section class="stat">
 
             <h3>Rating</h3>
 
@@ -72,19 +70,16 @@
 
                 <img src="../images/star.svg" alt=star icon aria-hidden="true"> 
                 <p><%= movie.vote_average.toFixed(1) %> /10 <br>
-                <span class="vote-count">
-                    <%= movie.vote_count %> votes
-                </span>
-            </p>
-
-                
-
+                    <span class="vote-count">
+                        <%= movie.vote_count %> votes
+                    </span>
+                </p>
             </div>
 
-        </div>
+        </section>
 
 
-        <div class="stat">
+        <section class="stat">
 
             <h3>Popularity</h3>
 
@@ -95,9 +90,79 @@
 
             </div>
 
+        </section>
+
+    </section>
+
+    <section class="movie-extra">
+
+        <div class="watch-section">
+            <h2>Waar te kijken</h2>
+
+            <% if (providers.length === 0) { %>
+
+                <p>Nu te zien in de bioscoop! </p>
+
+            <% } else { %>
+
+                <% providers.forEach(p => { %>
+
+                    <div class="provider-row">
+
+                        <img src="https://image.tmdb.org/t/p/w45<%= p.logo_path %>" alt="<%= p.provider_name %>">
+
+                        <div>
+                            <h3><%= p.provider_name %></h3>
+                            <p><%= p.types.join(' / ') %></p>
+                        </div>
+
+                        <a href="#" class="primary-button kijken">Kijken</a>
+
+                    </div>
+
+                <% }) %>
+
+            <% } %>
+        </div>
+
+        <div class="movie-details">
+
+            <div class="detail-block">
+                <h3>Director</h3>
+                <p><%= director %></p>
+            </div>
+
+            <div class="detail-block">
+                <h3>Writers</h3>
+                <p><%= writers.join(', ') %></p>
+            </div>
+
+            <div class="detail-block">
+                <h3>Top actors</h3>
+                <p><%= actors.join(', ') %></p>
+            </div>
+
         </div>
 
     </section>
+
+    <section id="trailer-section">
+        <% if (trailer) { %>
+
+            <div class="trailer">
+                <iframe 
+                    width="100%" 
+                    height="400"
+                    src="https://www.youtube.com/embed/<%= trailer.key %>"
+                    frameborder="0"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+        <% } %>
+    </section>
+
+    
     
 </body>
 </html>
