@@ -172,7 +172,26 @@
                     <!-- Add more items as needed -->
                 </ul>
         </section>
+        <section id="populair-movies">
 
+            <h2>Populair deze week</h2>
+
+            <div class="movie-grid">
+
+                <% movies.forEach((movie, index) => { %>
+
+                    <a href="/movie/<%= movie.id %>" class="movie-card <%= index < 2 ? 'large' : '' %>">
+
+                        <img src="https://image.tmdb.org/t/p/w780<%= movie.backdrop_path || movie.poster_path %>" alt="<%= movie.title %>" loading="lazy">
+                    
+                        <h3><%= movie.title %></h3>
+                        
+                    </a>
+
+                <% }) %>
+
+            </div>
+        </section>       
         <!-- List.js Initialization -->
         <script>
         document.addEventListener('DOMContentLoaded', function() {

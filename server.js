@@ -144,9 +144,11 @@ app.get('/profile', async (req, res) => {
         greeting = "Goedenavond";
     }
 
+    const movies = await getPopularMovies()
+
     req.session.visited = true;
     // 3. Pass the data object as the second argument to res.render
-    res.render('profile',  { gebruiker, greeting }) 
+    res.render('profile',  { gebruiker, greeting, movies }) 
 
   } catch (error) {  
     console.error("Error fetching profile:", error);

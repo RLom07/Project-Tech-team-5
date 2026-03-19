@@ -942,6 +942,7 @@
     footer{
         background-color: var(--background-color);
         height: 12em;
+        margin-top: 7em;
     }
 
     footer a{
