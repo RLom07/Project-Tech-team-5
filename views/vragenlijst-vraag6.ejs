@@ -6,7 +6,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="vragenlijst">
+<body class="vragenlijst" data-stap="6">
     <main>
         <section>
             <h1>Zijn er onderwerpen die je wilt vermijden?</h1>
@@ -26,10 +26,25 @@
                 <li><button class="checkbox-button">Geen voorkeur</button></li>
             </ul>
             <div class="volgende-vorige">
-                <button class="primary-button">vorige</button>    
-                <button class="primary-button">volgende</button>
-            </div>    
+                <button onclick="window.location.href='/vragenlijst-vraag5'" id="vorige" class="primary-button">vorige</button>    
+                <button onclick="window.location.href='/matching'" id="volgende" class="primary-button">volgende</button>
+            </div>  
+                 
         </section>
+        <div class="container">
+            <div class="stappen">
+                <span class="cirkel actief">1</span>
+                <span class="cirkel actief">2</span>
+                <span class="cirkel actief">3</span>
+                <span class="cirkel actief">4</span>
+                <span class="cirkel actief">5</span>
+                <span class="cirkel actief">6</span>
+                <div class="progressie-bar">
+                    <span class="indicator"></span>
+                </div>
+            </div>
+        </div>
     </main>
+    <script src="/scripts/main.js"></script>
 </body>
 </html>

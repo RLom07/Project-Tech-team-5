@@ -512,9 +512,64 @@
     box-sizing: border-box;
 }
 
+.container{
+    max-width: 700px;
+    width: 100%;
+    padding-top: 4em;
     
+}
+    
+.container .stappen{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    position: relative;
+}
 
-/*index styling */
+.stappen .cirkel{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:black;
+    font-size: 22px;
+    font-weight: 400;
+    font-family: abigdeal;  
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+    border: 4px solid transparent;
+    position: relative;
+    z-index: 1;
+    background: white;
+    transition: all 600ms ease;
+}
+
+.stappen .cirkel.actief{
+    border-color:#d94e14;
+    background:#d94e14;
+    color:white; 
+}
+
+.stappen .progressie-bar{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    height: 4px;
+    width: 100%;
+    background: white;
+    z-index: -1;
+}
+
+.progressie-bar .indicator{
+    position: absolute;
+    height: 100%;
+    width: 0%;
+    background:#F45A1A;
+    transition: all 800ms ease;
+    
+}
     
 .matching h1{
     color: white;
@@ -605,6 +660,10 @@
     padding: 5em;
 }
 
+.beste-match-div{
+    padding-left: 2em;
+}
+
 .meer-matches-ul{
     border-radius: 20px;
     background: black;  
@@ -635,11 +694,6 @@
     padding: 1em;
 }
 
-.matching li div{
-    padding: 2em;
-    
-}
-
 .meer-matches-ul li{
     flex-direction: row;
     align-items: stretch;
@@ -650,7 +704,6 @@
 }
 
 .meer-matches-ul div{
-    padding: 0.5em 1em;
     display: flex;
     flex-direction: column;
     gap: 0.5em;
