@@ -11,19 +11,14 @@
         <section>
             <h1>Welke filmperiode spreekt je aan?</h1>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Geen voorkeur</button></li>
-                <li><button class="checkbox-button">60s</button></li>
-                <li><button class="checkbox-button">70s</button></li>
+                <li><button class="checkbox-button" onclick="kiesPeriode('Geen voorkeur')">Geen voorkeur</button></li>
+                <li><button class="checkbox-button" onclick="kiesPeriode('Nieuwste films')">Nieuwste films</button></li>
+                <li><button class="checkbox-button" onclick="kiesPeriode('Vanaf 2020')">vanaf 2020</button></li>
             </ul>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">80s</button></li>
-                <li><button class="checkbox-button">90s</button></li>
-                <li><button class="checkbox-button">00s</button></li>
-            </ul>
-            <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">2000-2010</button></li>
-                <li><button class="checkbox-button">2010-2020</button></li>
-                <li><button class="checkbox-button">2020+</button></li>
+                <li><button class="checkbox-button" onclick="kiesPeriode('2010-2019')">2010-2019</button></li>
+                <li><button class="checkbox-button" onclick="kiesPeriode('2000-2009')">2000-2009</button></li>
+                <li><button class="checkbox-button" onclick="kiesPeriode('Klassiekers')">Klassiekers</button></li>
             </ul>
             <div class="volgende-vorige">
                 <button onclick="window.location.href='/vragenlijst-vraag3'" id="vorige" class="primary-button">vorige</button>    

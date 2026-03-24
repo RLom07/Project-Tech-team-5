@@ -9,26 +9,16 @@
 <body class="vragenlijst" data-stap="2">
     <main>
         <section>
-            <h1>In welke stemming ben je?</h1>
+            <h1>Wat voor sfeer zoek je?</h1>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Feel good</button></li>
-                <li><button class="checkbox-button">Romantisch</button></li>
-                <li><button class="checkbox-button">Avontuurlijk</button></li>
+                <li><button class="checkbox-button" onclick="kiesSfeer('Spannend')">Spannend</button></li>
+                <li><button class="checkbox-button" onclick="kiesSfeer('Vrolijk')">Vrolijk</button></li>
+                <li><button class="checkbox-button" onclick="kiesSfeer('Romantisch')">Romantisch</button></li>
             </ul>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Sentimenteel</button></li>
-                <li><button class="checkbox-button">Spanning</button></li>
-                <li><button class="checkbox-button">Luchtig</button></li> 
-            </ul>
-            <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Nostalgisch</button></li>
-                <li><button class="checkbox-button">Chill</button></li>
-                <li><button class="checkbox-button">Hartverwarmend</button></li>
-            </ul>
-            <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Psychologisch</button></li>
-                <li><button class="checkbox-button">Diepgaand</button></li>
-                <li><button class="checkbox-button">Mysterieus</button></li>
+                <li><button class="checkbox-button" onclick="kiesSfeer('Donker')">Donker</button></li>
+                <li><button class="checkbox-button" onclick="kiesSfeer('Avontuurlijk')">Avontuurlijk</button></li>
+                <li><button class="checkbox-button" onclick="kiesSfeer('Ontspannend')">Ontspannend</button></li> 
             </ul>
             <div class="volgende-vorige">
                 <button onclick="window.location.href='/vragenlijst-vraag1'" id="vorige" class="primary-button">vorige</button>    

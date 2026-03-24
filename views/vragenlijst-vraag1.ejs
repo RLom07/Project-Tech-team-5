@@ -11,24 +11,19 @@
         <section>
             <h1>Welk genre heb je zin in?</h1>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Anime</button></li>
-                <li><button class="checkbox-button">Comedy</button></li>
-                <li><button class="checkbox-button">Documentaire</button></li>
+                <li><button class="checkbox-button" onclick="kiesGenre('Actie')">Actie</button></li>
+                <li><button class="checkbox-button" onclick="kiesGenre('Comedy')">Comedy</button></li>
+                <li><button class="checkbox-button" onclick="kiesGenre('Horror')">Horror</button></li>
             </ul>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Actie</button></li>
-                <li><button class="checkbox-button">Horror</button></li>
-                <li><button class="checkbox-button">Fantasy</button></li> 
+                <li><button class="checkbox-button" onclick="kiesGenre('Drama')">Drama</button></li>
+                <li><button class="checkbox-button" onclick="kiesGenre('Romantiek')">Romantiek</button></li>
+                <li><button class="checkbox-button" onclick="kiesGenre('Sci-fi')">Sci-fi</button></li> 
             </ul>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Critic’s choice</button></li>
-                <li><button class="checkbox-button">sci-fi</button></li>
-                <li><button class="checkbox-button">Romantiek</button></li>
-            </ul>
-            <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Drama</button></li>
-                <li><button class="checkbox-button">misdaad</button></li>
-                <li><button class="checkbox-button">thrillers</button></li>
+                <li><button class="checkbox-button" onclick="kiesGenre('Animatie')">Animatie</button></li>
+                <li><button class="checkbox-button" onclick="kiesGenre('Misdaad')">Misdaad</button></li>
+                <li><button class="checkbox-button" onclick="kiesGenre('Fantasy')">Fantasy</button></li>
             </ul>
             <div class="volgende-vorige">
                 <button onclick="window.location.href='/vragenlijst'" id="vorige" class="primary-button">vorige</button>    

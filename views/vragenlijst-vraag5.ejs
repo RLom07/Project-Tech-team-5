@@ -9,14 +9,13 @@
 <body class="vragenlijst" data-stap="5">
     <main>
         <section>
-            <h1>Welke leeftijdscategorie?</h1>
+            <h1>Voor welke doelgroep zoek je een film?</h1>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">AL</button></li>
-                <li><button class="checkbox-button">12+</button></li>
+                <li><button class="checkbox-button" onclick="kiesDoelgroep('Voor iedereen')">Voor iedereen</button></li>
+                <li><button class="checkbox-button" onclick="kiesDoelgroep('Voor volwassenen')">Voor volwassenen</button></li>
             </ul>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">16+</button></li>
-                <li><button class="checkbox-button">Geen voorkeur</button></li>
+                <li><button class="checkbox-button" onclick="kiesDoelgroep('Geen voorkeur')">Geen voorkeur</button></li>
             </ul>
             <div class="volgende-vorige">
                 <button onclick="window.location.href='/vragenlijst-vraag4'" id="vorige" class="primary-button">vorige</button>    

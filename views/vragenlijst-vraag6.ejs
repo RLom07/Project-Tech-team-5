@@ -9,21 +9,14 @@
 <body class="vragenlijst" data-stap="6">
     <main>
         <section>
-            <h1>Zijn er onderwerpen die je wilt vermijden?</h1>
+            <h1>Welke taal heeft je voorkeur?</h1>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Dood/verlies</button></li>
-                <li><button class="checkbox-button">Hartbreuk</button></li>
-                <li><button class="checkbox-button">Geweld</button></li>
+                <li><button class="checkbox-button" onclick="kiesTaal('Engels')">Engels</button></li>
+                <li><button class="checkbox-button" onclick="kiesTaal('Nederlands')">Nederlands</button></li>
             </ul>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Dierenleed</button></li>
-                <li><button class="checkbox-button">Mentale problemen</button></li>
-                <li><button class="checkbox-button">Trauma</button></li>
-            </ul>
-            <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Verslaving</button></li>
-                <li><button class="checkbox-button">Discriminatie</button></li>
-                <li><button class="checkbox-button">Geen voorkeur</button></li>
+                <li><button class="checkbox-button" onclick="kiesTaal('Japans')">Japans</button></li>
+                <li><button class="checkbox-button" onclick="kiesTaal('Geen voorkeur')">Geen voorkeur</button></li>
             </ul>
             <div class="volgende-vorige">
                 <button onclick="window.location.href='/vragenlijst-vraag5'" id="vorige" class="primary-button">vorige</button>    
