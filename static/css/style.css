@@ -592,10 +592,21 @@
     font-family: "a Big Deal";
 }
 
+.checkbox-input{
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
 .checkbox-button:hover{
    background-color: white;
    color: black;
    transition: ease-in-out .5s;
+}
+
+.checkbox-input:checked + .checkbox-button{
+   background: white;
+   color: black;
 }
 
 .checkboxbutton-list{
@@ -610,6 +621,7 @@
 .checkboxbutton-list li{
     flex: 1 1 calc((100% - 2rem) / 3);
     display: flex;
+    position: relative;
 }
 
 .volgende-vorige{
