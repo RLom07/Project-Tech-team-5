@@ -11,14 +11,32 @@
         <section>
             <h1>Wat voor sfeer zoek je?</h1>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button" onclick="kiesSfeer('Spannend')">Spannend</button></li>
-                <li><button class="checkbox-button" onclick="kiesSfeer('Vrolijk')">Vrolijk</button></li>
-                <li><button class="checkbox-button" onclick="kiesSfeer('Romantisch')">Romantisch</button></li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="sfeer-spannend" name="sfeer" value="Spannend" onchange="kiesSfeer('Spannend')">
+                    <label class="checkbox-button" for="sfeer-spannend">Spannend</label>
+                </li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="sfeer-vrolijk" name="sfeer" value="Vrolijk" onchange="kiesSfeer('Vrolijk')">
+                    <label class="checkbox-button" for="sfeer-vrolijk">Vrolijk</label>
+                </li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="sfeer-romantisch" name="sfeer" value="Romantisch" onchange="kiesSfeer('Romantisch')">
+                    <label class="checkbox-button" for="sfeer-romantisch">Romantisch</label>
+                </li>
             </ul>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button" onclick="kiesSfeer('Donker')">Donker</button></li>
-                <li><button class="checkbox-button" onclick="kiesSfeer('Avontuurlijk')">Avontuurlijk</button></li>
-                <li><button class="checkbox-button" onclick="kiesSfeer('Ontspannend')">Ontspannend</button></li> 
+                <li>
+                    <input class="checkbox-input" type="radio" id="sfeer-donker" name="sfeer" value="Donker" onchange="kiesSfeer('Donker')">
+                    <label class="checkbox-button" for="sfeer-donker">Donker</label>
+                </li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="sfeer-avontuurlijk" name="sfeer" value="Avontuurlijk" onchange="kiesSfeer('Avontuurlijk')">
+                    <label class="checkbox-button" for="sfeer-avontuurlijk">Avontuurlijk</label>
+                </li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="sfeer-ontspannend" name="sfeer" value="Ontspannend" onchange="kiesSfeer('Ontspannend')">
+                    <label class="checkbox-button" for="sfeer-ontspannend">Ontspannend</label>
+                </li> 
             </ul>
             <div class="volgende-vorige">
                 <button onclick="window.location.href='/vragenlijst-vraag1'" id="vorige" class="primary-button">vorige</button>    

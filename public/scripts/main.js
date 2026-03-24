@@ -14,7 +14,7 @@ function slaAntwoordOp(vraag, waarde) {
 
 function kiesGenre(genre) {
     slaAntwoordOp("genre", genre);
-}
+}   
 
 function kiesSfeer(sfeer) {
     slaAntwoordOp("sfeer", sfeer);
@@ -34,4 +34,13 @@ function kiesDoelgroep(doelgroep) {
 
 function kiesTaal(taal) {
     slaAntwoordOp("taal", taal);
+}
+
+const vragenForm = document.querySelector("#vragenForm");
+const antwoordenInput = document.querySelector("#antwoordenInput");
+
+if (vragenForm && antwoordenInput) {
+    vragenForm.addEventListener("submit", () => {
+        antwoordenInput.value = localStorage.getItem("vragenlijst") || "{}";
+    });
 }

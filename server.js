@@ -41,7 +41,7 @@ async function fetchData(url) {
   try {
     const response = await fetch(url);
     const data = await response.json();
-    console.log(data);
+    //console.log(data);
   } catch (error) {
     console.error('TMDB fetch error:', error.message);
   }
@@ -132,9 +132,21 @@ app.get('/vragenlijst-vraag4', (req, res) => { res.render(`vragenlijst-vraag4`)}
 app.get('/vragenlijst-vraag5', (req, res) => { res.render(`vragenlijst-vraag5`)})
 
 app.get('/vragenlijst-vraag6', (req, res) => { res.render(`vragenlijst-vraag6`)})
+
+app.get('/matching', (req, res) => {
+  res.render('matching')
+})
  
 
 // Posts
+app.post('/matching', async (req, res) => {
+  const antwoorden = JSON.parse(req.body.antwoorden || '{}')
+  const response = await fetch(`${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`);
+  const movies = await response.json()
+  console.log(movies)   
+  res.render('matching', { antwoorden })
+})
+
 app.post('/register', async (req, res) => {
   try {
     const { vnaam, anaam, email, wwoord } = req.body;
@@ -212,9 +224,4 @@ connectToMongo()
     console.error('Failed to start server:', error);
     process.exit(1);
   });
-app.get('/matching', (req, res) => { res.render(`matching`)})
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
  
