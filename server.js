@@ -115,6 +115,8 @@ app.get('/movie/:id', async (req, res) => {
  
 app.get('/profile', (req, res) => { res.render(`profile`) })
 
+app.get('/profielaanpassen', (req, res) => { res.render(`profielaanpassen`) })
+
 app.get('/register', (req, res) => { res.render(`register`) })
 
 app.get('/login', (req, res) => { res.render(`login`) })
