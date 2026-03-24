@@ -11,24 +11,46 @@
         <section>
             <h1>Welk genre heb je zin in?</h1>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Anime</button></li>
-                <li><button class="checkbox-button">Comedy</button></li>
-                <li><button class="checkbox-button">Documentaire</button></li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="genre-actie" name="genre" value="Actie" onchange="kiesGenre('Actie')">
+                    <label class="checkbox-button" for="genre-actie">Actie</label>
+                </li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="genre-comedy" name="genre" value="Comedy" onchange="kiesGenre('Comedy')">
+                    <label class="checkbox-button" for="genre-comedy">Comedy</label>
+                </li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="genre-horror" name="genre" value="Horror" onchange="kiesGenre('Horror')">
+                    <label class="checkbox-button" for="genre-horror">Horror</label>
+                </li>
             </ul>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Actie</button></li>
-                <li><button class="checkbox-button">Horror</button></li>
-                <li><button class="checkbox-button">Fantasy</button></li> 
+                <li>
+                    <input class="checkbox-input" type="radio" id="genre-drama" name="genre" value="Drama" onchange="kiesGenre('Drama')">
+                    <label class="checkbox-button" for="genre-drama">Drama</label>
+                </li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="genre-romantiek" name="genre" value="Romantiek" onchange="kiesGenre('Romantiek')">
+                    <label class="checkbox-button" for="genre-romantiek">Romantiek</label>
+                </li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="genre-sci-fi" name="genre" value="Sci-fi" onchange="kiesGenre('Sci-fi')">
+                    <label class="checkbox-button" for="genre-sci-fi">Sci-fi</label>
+                </li> 
             </ul>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Critic’s choice</button></li>
-                <li><button class="checkbox-button">sci-fi</button></li>
-                <li><button class="checkbox-button">Romantiek</button></li>
-            </ul>
-            <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Drama</button></li>
-                <li><button class="checkbox-button">misdaad</button></li>
-                <li><button class="checkbox-button">thrillers</button></li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="genre-animatie" name="genre" value="Animatie" onchange="kiesGenre('Animatie')">
+                    <label class="checkbox-button" for="genre-animatie">Animatie</label>
+                </li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="genre-misdaad" name="genre" value="Misdaad" onchange="kiesGenre('Misdaad')">
+                    <label class="checkbox-button" for="genre-misdaad">Misdaad</label>
+                </li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="genre-fantasy" name="genre" value="Fantasy" onchange="kiesGenre('Fantasy')">
+                    <label class="checkbox-button" for="genre-fantasy">Fantasy</label>
+                </li>
             </ul>
             <div class="volgende-vorige">
                 <button onclick="window.location.href='/vragenlijst'" id="vorige" class="primary-button">vorige</button>    

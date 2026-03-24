@@ -9,11 +9,20 @@
 <body class="vragenlijst" data-stap="3">
     <main>
         <section>
-            <h1>Hoe lang mag de film duren?</h1>
+            <h1>Wat vind je belangrijk?</h1>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">90 min en korter</button></li>
-                <li><button class="checkbox-button">90 tot 120 min</button></li>
-                <li><button class="checkbox-button">120 min en langer</button></li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="belangrijk-hoog-beoordeeld" name="belangrijk" value="Hoog beoordeeld" onchange="kiesBelangrijk('Hoog beoordeeld')">
+                    <label class="checkbox-button" for="belangrijk-hoog-beoordeeld">Hoog beoordeeld</label>
+                </li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="belangrijk-populair" name="belangrijk" value="Populair" onchange="kiesBelangrijk('Populair')">
+                    <label class="checkbox-button" for="belangrijk-populair">Populair</label>
+                </li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="belangrijk-maakt-niet-uit" name="belangrijk" value="Maakt niet uit" onchange="kiesBelangrijk('Maakt niet uit')">
+                    <label class="checkbox-button" for="belangrijk-maakt-niet-uit">Maakt niet uit</label>
+                </li>
             </ul>
             <div class="volgende-vorige">
                 <button onclick="window.location.href='/vragenlijst-vraag2'" id="vorige" class="primary-button">vorige</button>    
