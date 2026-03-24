@@ -122,8 +122,21 @@ app.use(session({
 
 //Routes
  
-app.get('/', (req, res) => { res.render('index') })
- 
+app.get('/', async (req, res) => {
+  const movies = await getPopularMovies()
+  res.render('index', { movies })
+})
+
+// API index populair movies /////////////////////////////////
+async function getPopularMovies() {
+
+  const url = `${process.env.BASE_URL}/trending/movie/week?api_key=${process.env.API_KEY}`
+
+  const response = await fetch(url)
+  const data = await response.json()
+
+  return data.results.slice(0, 5) // eerste 5 films
+}
 
 
 //met behulp van ChatGPT
@@ -158,7 +171,7 @@ app.get('/movie/:id', async (req, res) => {
     )
     .map(person => person.name)
 
-  // 🎭 Top 3 acteurs
+  //Top 3 acteurs
   const actors = creditsData.cast
     .slice(0, 6)
     .map(actor => actor.name)
@@ -244,6 +257,14 @@ app.get('/movie/:id', async (req, res) => {
     return 0;
   });
 
+  //reccomendation lijst
+  const recommendationsResponse = await fetch(
+    `${process.env.BASE_URL}/movie/${movieId}/recommendations?api_key=${process.env.API_KEY}`
+  );
+
+  const recommendationsData = await recommendationsResponse.json();
+
+  const recommendations = recommendationsData.results.slice(0, 6);
   
   // renderen
   res.render('detail', {
@@ -252,7 +273,8 @@ app.get('/movie/:id', async (req, res) => {
     director: director?.name || "Onbekend",
     writers: writers,
     actors: actors,
-    trailer: trailer
+    trailer: trailer,
+    recommendations: recommendations
   });
 
   console.log(filtered.map(p => p.provider_name));
