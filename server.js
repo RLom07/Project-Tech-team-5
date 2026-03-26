@@ -142,14 +142,31 @@ async function getPopularMovies() {
 }
 
 
-
-
-
 //Routes
- 
-app.get('/', async (req, res) => {
 
-  // ✍️ Writers
+app.get('/movie/:id', async (req, res) => {
+ 
+  const movieId = req.params.id;
+ 
+  //film ophalen
+  const response = await fetch(
+    `${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`
+  );
+  const movie = await response.json();
+ 
+  //credits film ophalen
+  const creditsResponse = await fetch(
+    `${process.env.BASE_URL}/movie/${movieId}/credits?api_key=${process.env.API_KEY}`
+  )
+ 
+  const creditsData = await creditsResponse.json()
+ 
+  // Director
+  const director = creditsData.crew.find(person =>
+    person.job === "Director"
+  )
+ 
+  // Writers
   const writers = creditsData.crew
     .filter(person =>
       person.job === "Writer" ||
@@ -157,45 +174,45 @@ app.get('/', async (req, res) => {
       person.job === "Story"
     )
     .map(person => person.name)
-
+ 
   //Top 3 acteurs
   const actors = creditsData.cast
     .slice(0, 6)
     .map(actor => actor.name)
-
-
+ 
+ 
   //trailer
   const videoResponse = await fetch(
     `${process.env.BASE_URL}/movie/${movieId}/videos?api_key=${process.env.API_KEY}`
   );
-
+ 
   const videoData = await videoResponse.json();
-
+ 
   const trailer = videoData.results.find(video =>
     video.type === "Trailer" && video.site === "YouTube"
   );
-
-
+ 
+ 
   
   //providers ophalen
   const providerResponse = await fetch(
     `${process.env.BASE_URL}/movie/${movieId}/watch/providers?api_key=${process.env.API_KEY}`
   );
   const providerData = await providerResponse.json();
-
+ 
   //alles samenvoegen (abonnement / huur / koop)
   const allProviders = [
     ...(providerData.results?.NL?.flatrate || []).map(p => ({ ...p, type: 'abonnement' })),
     ...(providerData.results?.NL?.rent || []).map(p => ({ ...p, type: 'huur' })),
     ...(providerData.results?.NL?.buy || []).map(p => ({ ...p, type: 'koop' }))
   ];
-
+ 
   //combineren per provider (huur + koop samen)
   const providerMap = {};
-
+ 
   allProviders.forEach(p => {
     const name = p.provider_name;
-
+ 
     if (!providerMap[name]) {
       providerMap[name] = {
         provider_name: p.provider_name,
@@ -203,18 +220,54 @@ app.get('/', async (req, res) => {
         types: []
       };
     }
-
-  res.render('index', { movies })
-
-})
-
+ 
+    // voorkom dubbele types
+    if (!providerMap[name].types.includes(p.type)) {
+      providerMap[name].types.push(p.type);
+    }
+  });
+ 
+  const combinedProviders = Object.values(providerMap);
+ 
+  // providers filteren (jouw blacklist)
+  const excludedProviders = [
+    "KPN",
+    "HBO Max Amazon Channel",
+    "meJane"
+  ];
+ 
+  const filtered = combinedProviders.filter(p =>
+    !excludedProviders.some(name =>
+      p.provider_name.toLowerCase().includes(name.toLowerCase())
+    )
+  );
+ 
+  // sorteren → Netflix eerst
+  const priorityProviders = [
+    "Netflix",
+    "Disney Plus",
+    "Amazon Video",
+    "HBO Max",
+    "Pathé Thuis"
+  ];
+ 
+  const sorted = filtered.sort((a, b) => {
+    const aIndex = priorityProviders.indexOf(a.provider_name);
+    const bIndex = priorityProviders.indexOf(b.provider_name);
+ 
+    if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+    if (aIndex !== -1) return -1;
+    if (bIndex !== -1) return 1;
+    return 0;
+  });
+ 
   //reccomendation lijst
   const recommendationsResponse = await fetch(
     `${process.env.BASE_URL}/movie/${movieId}/recommendations?api_key=${process.env.API_KEY}`
   );
-
+ 
   const recommendationsData = await recommendationsResponse.json();
-
+ 
   const recommendations = recommendationsData.results.slice(0, 6);
   
   // renderen
@@ -227,19 +280,10 @@ app.get('/', async (req, res) => {
     trailer: trailer,
     recommendations: recommendations
   });
-app.get('/movie/:id', async (req, res) => {
-
-  const movieId = req.params.id
-
-  const response = await fetch(
-    `${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`
-  )
-
-  const movie = await response.json()
-
-  res.render('detail', { movie })
-
-})
+ 
+  console.log(filtered.map(p => p.provider_name));
+ 
+});
 
 app.get('/', (req, res) => { res.render('index') })
  
@@ -420,4 +464,3 @@ connectToMongo()
     console.error('Failed to start server:', error);
     process.exit(1);
   });
- 
