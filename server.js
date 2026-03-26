@@ -11,7 +11,6 @@ const dns = require('node:dns/promises');
 const session = require('express-session');
 
 const bcrypt = require('bcrypt');
- 
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/?appName=${process.env.APP_NAME}`;
  
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -91,7 +90,7 @@ async function fetchData(url) {
 }
 
 fetchData(`${process.env.BASE_URL}/movie/popular?api_key=${process.env.API_KEY}`);
-console.log(`${process.env.BASE_URL}/movie/popular?api_key=${process.env.API_KEY}`)
+
 //Starter endpoints that can be used
 // /movie/popular?
 
@@ -117,8 +116,7 @@ app.use(session({
   cookie: {
     maxAge: 60000 * 60
   }
-}));
-
+}))
 
 //Routes
 app.get('/', async (req, res) => {
@@ -179,7 +177,7 @@ app.get('/movie/:id', async (req, res) => {
       person.job === "Story"
     )
     .map(person => person.name)
-
+ 
   //Top 3 acteurs
   const actors = creditsData.cast
     .slice(0, 6)
@@ -190,14 +188,14 @@ app.get('/movie/:id', async (req, res) => {
   const videoResponse = await fetch(
     `${process.env.BASE_URL}/movie/${movieId}/videos?api_key=${process.env.API_KEY}`
   );
-
+ 
   const videoData = await videoResponse.json();
-
+ 
   const trailer = videoData.results.find(video =>
     video.type === "Trailer" && video.site === "YouTube"
   );
-
-
+ 
+ 
   
   //Providers ophalen /////
     const providerResponse = await fetch(
@@ -237,7 +235,7 @@ app.get('/movie/:id', async (req, res) => {
   const recommendationsResponse = await fetch(
     `${process.env.BASE_URL}/movie/${movieId}/recommendations?api_key=${process.env.API_KEY}`
   );
-
+ 
   const recommendationsData = await recommendationsResponse.json();
   const recommendations = recommendationsData.results.slice(0, 6);
   
@@ -307,6 +305,13 @@ app.get('/register', (req, res) => {
 app.get('/login', (req, res) => {
   res.render('login', { error: null, formData: {} });
 })
+
+app.get('/uitloggen', (req, res) => {
+  req.session.destroy(() => {
+    res.clearCookie('connect.sid');
+    res.redirect('/');
+  });
+});
 
 app.get('/vragenlijst', (req, res) => { res.render(`vragenlijst`) })
  
