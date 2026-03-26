@@ -363,6 +363,7 @@ app.get('/movie/:id', async (req, res) => {
   );
  
   const recommendationsData = await recommendationsResponse.json();
+ 
   const recommendations = recommendationsData.results.slice(0, 6);
   
   // renderen
@@ -653,4 +654,3 @@ connectToMongo()
     console.error('Failed to start server:', error);
     process.exit(1);
   });
- 
