@@ -162,6 +162,32 @@
         <% } %>
     </section>
 
+    <section class="recommendations">
+
+        <h2>Vergelijkbare films</h2>
+
+        <div class="movie-grid">
+
+            <% recommendations.forEach(movie => { %>
+
+            <a href="/movie/<%= movie.id %>" class="movie-card">
+
+                <img src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>">
+
+                <h3><%= movie.title %></h3>
+
+            </a>
+
+            <% }) %>
+
+        </div>
+
+    </section>
+
+    <footer>
+        <%- include('partials/footer') %>
+    </footer>
+
     
     
 </body>

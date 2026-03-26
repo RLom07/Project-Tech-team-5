@@ -9,25 +9,33 @@
 <body class="vragenlijst" data-stap="6">
     <main>
         <section>
-            <h1>Zijn er onderwerpen die je wilt vermijden?</h1>
+            <h1>Welke taal heeft je voorkeur?</h1>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Dood/verlies</button></li>
-                <li><button class="checkbox-button">Hartbreuk</button></li>
-                <li><button class="checkbox-button">Geweld</button></li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="taal-engels" name="taal" value="Engels" onchange="kiesTaal('Engels')">
+                    <label class="checkbox-button" for="taal-engels">Engels</label>
+                </li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="taal-nederlands" name="taal" value="Nederlands" onchange="kiesTaal('Nederlands')">
+                    <label class="checkbox-button" for="taal-nederlands">Nederlands</label>
+                </li>
             </ul>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Dierenleed</button></li>
-                <li><button class="checkbox-button">Mentale problemen</button></li>
-                <li><button class="checkbox-button">Trauma</button></li>
-            </ul>
-            <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Verslaving</button></li>
-                <li><button class="checkbox-button">Discriminatie</button></li>
-                <li><button class="checkbox-button">Geen voorkeur</button></li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="taal-japans" name="taal" value="Japans" onchange="kiesTaal('Japans')">
+                    <label class="checkbox-button" for="taal-japans">Japans</label>
+                </li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="taal-geen-voorkeur" name="taal" value="Geen voorkeur" onchange="kiesTaal('Geen voorkeur')">
+                    <label class="checkbox-button" for="taal-geen-voorkeur">Geen voorkeur</label>
+                </li>
             </ul>
             <div class="volgende-vorige">
-                <button onclick="window.location.href='/vragenlijst-vraag5'" id="vorige" class="primary-button">vorige</button>    
-                <button onclick="window.location.href='/matching'" id="volgende" class="primary-button">volgende</button>
+                <button onclick="window.location.href='/vragenlijst-vraag5'" id="vorige" class="primary-button" type="button">vorige</button>
+                <form action="/matching" method="POST" id="vragenForm">
+                    <input type="hidden" name="antwoorden" id="antwoordenInput">
+                    <button type="submit" id="volgende" class="primary-button">Resultaat</button>
+                </form>
             </div>  
                  
         </section>
