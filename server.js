@@ -140,6 +140,7 @@ async function getPopularMovies() {
   return data.results.slice(0, 5) // eerste 5 films
 }
 
+//gegenereerde code voor de matching functie//
 function parseAntwoorden(rawAntwoorden) {
   try {
     return JSON.parse(rawAntwoorden || '{}')
@@ -439,6 +440,8 @@ app.get('/uitloggen', (req, res) => {
     res.redirect('/');
   });
 });
+
+app.get('/review', (req, res) => { res.render(`review`) })
 
 app.get('/vragenlijst', (req, res) => { res.render(`vragenlijst`) })
  
