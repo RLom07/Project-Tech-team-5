@@ -1472,6 +1472,7 @@
         margin: 0;
         list-style: none;
         justify-content: end;
+        margin-bottom: 3em;
     }
 
     #watchList .grid li {
@@ -1496,6 +1497,9 @@
         display: none;
     }
 
+    #watchList .grid h3{
+        font-size: 18px;
+    }
 
     aside{
         color: var(--text-color);
@@ -1538,7 +1542,7 @@
         width: auto;
         margin-left: 20em;
         margin-right: 20em;
-        margin-bottom: 5em;
+        margin-bottom: 12em;
     }
 
     #watchListNav {
@@ -1575,7 +1579,7 @@
         border-radius: 12px;
     }
 
-    #watchList ul{
+    #watchList ul.list{
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -1594,13 +1598,15 @@
 
     #watchList h3{
         margin-top: 0;
+        font-family: var(--header-font);
+        font-size: 30px;
     }
 
     #watchList li{
         display: flex;
         flex-direction: row;
         justify-content: start;
-        align-items: center;
+        align-items: start;
         width: 100%;
         gap: 1em;
         margin-top: 1em;
@@ -1610,15 +1616,16 @@
 
     #watchList li img{
         order: -1;
-        height: 100%;
+        height: 18em;
         width: auto;
+        border-radius: 12px;
     }
-
-
 
     .descriptionCards{
         display: flex;
         flex-direction: column;
-        justify-content: start;
+        justify-content: flex-start;
         align-items: start;
     }
+
+
