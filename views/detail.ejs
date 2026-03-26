@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>detailpagina</title>
+    <title><%= movie.title %> | Cinematch</title>
     <%- include('partials/head') %>
 </head>
 
@@ -11,7 +11,7 @@
    <header>
         <%- include('partials/header') %>
     </header>
-    <main class="movie-detail">
+    <main>
 
         <button onclick="history.back()" class="back-button">
             <img src="../images/icoon-pijl-wit.svg" alt="witte pijl naar rechts" aria-hidden="true">
@@ -21,6 +21,7 @@
         <section class="movie-hero">
 
             <img class="movie-poster" src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>">
+            
 
             <section class="movie-info">
                 <h1><%= movie.title %></h1>
@@ -44,18 +45,27 @@
 
             <div class="movie-actions">
 
+                <!-- FAVORIETEN -->
+                <form action="/favorites/add" method="POST">
+                    <input type="hidden" name="movieId" value="<%= movie.id %>">
 
-                <button class="save-button">
-                    <img src="/images/favoriet.svg" alt="">
-                    Voeg toe aan favoriet
-                </button>
+                    <button class="save-button">
+                        <img src="/images/favoriet.svg" alt="">
+                        Voeg toe aan favoriet
+                    </button>
+                </form>
 
-                <button class="save-button">
-                    <img src="/images/watchlater.svg" alt="">
-                    Voeg toe aan <br>later bekijken
-                </button>
+                <!-- WATCHLIST -->
+                <form action="/watchlist/add" method="POST">
+                    <input type="hidden" name="movieId" value="<%= movie.id %>">
+
+                    <button class="save-button">
+                        <img src="/images/watchlater.svg" alt="">
+                        Voeg toe aan later bekijken
+                    </button>
+                </form>
             </div>
-
+            <img class=background-dots src="../images/movie-background.png" alt="info background" aria-hidden="true">
         </section>
 
     </main>
@@ -101,7 +111,7 @@
 
             <% if (providers.length === 0) { %>
 
-                <p>Nu te zien in de bioscoop! </p>
+                <p>Niet beschikbaar</p>
 
             <% } else { %>
 
@@ -113,7 +123,7 @@
 
                         <div>
                             <h3><%= p.provider_name %></h3>
-                            <p><%= p.types.join(' / ') %></p>
+                            <p>Nu beschikbaar</p>
                         </div>
 
                         <a href="#" class="primary-button kijken">Kijken</a>
