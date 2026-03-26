@@ -1,13 +1,16 @@
-  require('dotenv').config()
+require('dotenv').config()
  
 const express = require('express')
 const path = require('path')
 const { MongoClient, ServerApiVersion } = require('mongodb')
+const xss = require('xss')
 const app = express()
 const port = process.env.PORT || 3000
+const validator = require('validator');
+const dns = require('node:dns/promises');
+const session = require('express-session');
 
 const bcrypt = require('bcrypt');
- 
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/?appName=${process.env.APP_NAME}`;
  
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -23,7 +26,33 @@ const client = new MongoClient(uri, {
 
 const SALT_ROUNDS = 12;
 const USERS_COLLECTION = 'users';
+const ALLOWED_EMAIL_PROVIDERS = new Set([
+  'gmail.com',
+  'googlemail.com',
+  'proton.me',
+  'passmail.net',
+  'passmail.com',
+  'passinbox.com',
+  'passfwd.com',
+  'protonmail.com',
+  'outlook.com',
+  'hotmail.com',
+  'live.com',
+  'icloud.com',
+  'yahoo.com',
+  'hva.nl'
+]);
 let db;
+
+function sanitizeTextInput(value) {
+  if (typeof value !== 'string') return '';
+
+  return xss(value, {
+    whiteList: {},
+    stripIgnoreTag: true,
+    stripIgnoreTagBody: ['script']
+  }).trim();
+}
 
 async function connectToMongo() {
   await client.connect();
@@ -34,6 +63,19 @@ async function connectToMongo() {
   await db.collection(USERS_COLLECTION).createIndex({ email: 1 }, { unique: true });
 
   console.log(`Connected to MongoDB database: ${process.env.DB_NAME}`);
+}
+
+async function hasValidMailProvider(email) {
+  if (!validator.isEmail(email)) return false;
+
+  const domain = email.split('@')[1].toLowerCase();
+
+  try {
+    const mx = await dns.resolveMx(domain);
+    return mx.length > 0;
+  } catch {
+    return false;
+  }
 }
 
 //API//////////////////////////////
@@ -48,7 +90,7 @@ async function fetchData(url) {
 }
 
 fetchData(`${process.env.BASE_URL}/movie/popular?api_key=${process.env.API_KEY}`);
-console.log(`${process.env.BASE_URL}/movie/popular?api_key=${process.env.API_KEY}`)
+
 //Starter endpoints that can be used
 // /movie/popular?
 
@@ -60,7 +102,34 @@ console.log(`${process.env.BASE_URL}/movie/popular?api_key=${process.env.API_KEY
 //////////////////////////////////// 
 
 
-//API index populair movies//////////////////////////////
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'views'))
+app.use('/static', express.static(path.join(__dirname, 'static')))
+app.use(express.static("static"));
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }))
+ 
+app.use(session({
+  secret: 'ditistest',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 60000 * 60
+  }
+}))
+
+//Routes
+app.get('/', async (req, res) => {
+
+  if (req.session && req.session.userId) {
+    return res.redirect('/profile');
+  }
+
+  const movies = await getPopularMovies();
+  res.render('index', { movies });
+});
+
+// API index populair movies /////////////////////////////////
 async function getPopularMovies() {
 
   const url = `${process.env.BASE_URL}/trending/movie/week?api_key=${process.env.API_KEY}`
@@ -68,8 +137,7 @@ async function getPopularMovies() {
   const response = await fetch(url)
   const data = await response.json()
 
-  return data.results.slice(0,5) // eerste 5 films
-
+  return data.results.slice(0, 5) // eerste 5 films
 }
 
 function parseAntwoorden(rawAntwoorden) {
@@ -200,60 +268,176 @@ async function getMatchingMovies(antwoorden = {}) {
 
 
 
-app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, 'views'))
-app.use('/static', express.static(path.join(__dirname, 'static')))
-app.use(express.static("static"));
-app.use(express.static("public"));
-app.use(express.urlencoded({ extended: true }))
- 
 
 
-//Profile /////////////////////////////
+// API detail info movies /////////////////////////////////
 
-
-
-
-
-//Routes
- 
-app.get('/', async (req, res) => {
-
-  const movies = await getPopularMovies()
-
-  res.render('index', { movies })
-
-})
-
+//met behulp van ChatGPT
 app.get('/movie/:id', async (req, res) => {
-  try {
-    const movieId = req.params.id
 
-    const [movieResponse, providersResponse] = await Promise.all([
-      fetch(`${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}&language=nl-NL`),
-      fetch(`${process.env.BASE_URL}/movie/${movieId}/watch/providers?api_key=${process.env.API_KEY}`)
-    ])
+  const movieId = req.params.id;
 
-    const movie = await movieResponse.json()
-    const providersData = await providersResponse.json()
-    const nlProviders = providersData?.results?.NL?.flatrate || []
+  //film ophalen /////
+  const response = await fetch(
+    `${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`
+  );
+  const movie = await response.json();
 
-    res.render('detail', {
-      movie,
-      providers: nlProviders
-    })
-  } catch (error) {
-    console.error('Detail error:', error)
-    res.status(500).send('Er ging iets mis bij het laden van de detailpagina.')
-  }
+  //credits film ophalen /////
+  const creditsResponse = await fetch(
+    `${process.env.BASE_URL}/movie/${movieId}/credits?api_key=${process.env.API_KEY}`
+  )
 
-})
+  const creditsData = await creditsResponse.json()
+
+  // Director
+  const director = creditsData.crew.find(person =>
+    person.job === "Director"
+  )
+
+  // Writers
+  const writers = creditsData.crew
+    .filter(person =>
+      person.job === "Writer" ||
+      person.job === "Screenplay" ||
+      person.job === "Story"
+    )
+    .map(person => person.name)
  
-app.get('/profile', (req, res) => { res.render(`profile`) })
+  //Top 3 acteurs
+  const actors = creditsData.cast
+    .slice(0, 6)
+    .map(actor => actor.name)
 
-app.get('/register', (req, res) => { res.render(`register`) })
 
-app.get('/login', (req, res) => { res.render(`login`) })
+  //trailer ophalen /////
+  const videoResponse = await fetch(
+    `${process.env.BASE_URL}/movie/${movieId}/videos?api_key=${process.env.API_KEY}`
+  );
+ 
+  const videoData = await videoResponse.json();
+ 
+  const trailer = videoData.results.find(video =>
+    video.type === "Trailer" && video.site === "YouTube"
+  );
+ 
+ 
+  
+  //Providers ophalen /////
+    const providerResponse = await fetch(
+      `${process.env.BASE_URL}/movie/${movieId}/watch/providers?api_key=${process.env.API_KEY}`
+    );
+    const providerData = await providerResponse.json();
+
+    const providers = [
+      ...(providerData.results?.NL?.flatrate || []),
+      ...(providerData.results?.NL?.rent || []),
+      ...(providerData.results?.NL?.buy || [])
+    ];
+
+    // Priority providers
+    const priorityProviders = [
+      "Netflix",
+      "Disney Plus",
+      "Amazon Prime Video",
+      "HBO Max",
+      "Pathé Thuis"
+    ];
+
+    // lege array om code beneden erin te pushen
+    const sorted = [];
+
+    // eerst priority providers
+    priorityProviders.forEach(name => {
+      const found = providers.find(p => p.provider_name === name);
+      if (found) {
+        sorted.push(found);
+      }
+    });
+
+    const topProviders = sorted.slice(0, 3);
+
+  //reccomendation lijst ophalen /////
+  const recommendationsResponse = await fetch(
+    `${process.env.BASE_URL}/movie/${movieId}/recommendations?api_key=${process.env.API_KEY}`
+  );
+ 
+  const recommendationsData = await recommendationsResponse.json();
+  const recommendations = recommendationsData.results.slice(0, 6);
+  
+  // renderen
+  res.render('detail', {
+    movie,
+    providers: topProviders,
+    director: director?.name || 'Onbekend',
+    writers,
+    actors,
+    trailer,
+    recommendations
+  });
+
+});
+
+
+ 
+app.get('/profile', async (req, res) => { 
+  try {
+    
+    const { ObjectId } = require('mongodb');
+
+    const gebruiker = await db.collection(USERS_COLLECTION).findOne({
+      _id: new ObjectId(req.session.userId)
+    }); 
+                
+    const hour = new Date().getHours();
+    let greeting;
+
+    if (hour < 12) {
+        greeting = "Goedemorgen";
+    } else if (hour < 18) {
+        greeting = "Goedemiddag";
+    } else {
+        greeting = "Goedenavond";
+    }
+
+    const watchlist = [];
+
+    for (const movieId of gebruiker.watchlist) {
+      const url = `${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`;
+      const response = await fetch(url);
+      const movie = await response.json();
+      watchlist.push(movie);
+    }
+
+    const movies = await getPopularMovies()
+
+    req.session.visited = true;
+    // 3. Pass the data object as the second argument to res.render
+    res.render('profile',  { gebruiker, greeting, movies, watchlist}) 
+
+  } catch (error) {  
+    console.error("Error fetching profile:", error);
+
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.get('/profielaanpassen', (req, res) => { res.render(`profielaanpassen`) })
+
+app.get('/register', (req, res) => {
+  res.render('register', { error: null, formData: {} });
+})
+
+app.get('/login', (req, res) => {
+  res.render('login', { error: null, formData: {} });
+})
+
+app.get('/uitloggen', (req, res) => {
+  req.session.destroy(() => {
+    res.clearCookie('connect.sid');
+    res.redirect('/');
+  });
+});
 
 app.get('/vragenlijst', (req, res) => { res.render(`vragenlijst`) })
  
@@ -299,18 +483,52 @@ app.post('/matching', async (req, res) => {
 app.post('/register', async (req, res) => {
   try {
     const { vnaam, anaam, email, wwoord } = req.body;
+    const sanitizedVnaam = sanitizeTextInput(vnaam);
+    const sanitizedAnaam = sanitizeTextInput(anaam);
+    const sanitizedEmail = sanitizeTextInput(email).toLowerCase();
 
-    if (!vnaam || !anaam || !email || !wwoord) {
-      return res.status(400).send('Vul alle velden in.');
+    const formData = {
+      vnaam: sanitizedVnaam,
+      anaam: sanitizedAnaam,
+      email: sanitizedEmail
+    };
+
+    if (!sanitizedVnaam || !sanitizedAnaam || !sanitizedEmail || !wwoord) {
+      return res.status(400).render('register', {
+        error: 'Vul alle velden in.',
+        formData
+      });
     }
 
-    const normalizedEmail = email.trim().toLowerCase();
+    if (!validator.isEmail(sanitizedEmail)) {
+      return res.status(400).render('register', {
+        error: 'Voer een geldig e-mailadres in.',
+        formData
+      });
+    }
+
+    const emailDomain = sanitizedEmail.split('@')[1].toLowerCase();
+    if (!ALLOWED_EMAIL_PROVIDERS.has(emailDomain)) {
+      return res.status(400).render('register', {
+        error: 'Gebruik een ondersteunde mailprovider bijvoorbeeld Gmail of ProtonMail',
+        formData
+      });
+    }
+
+    const providerOk = await hasValidMailProvider(sanitizedEmail);
+    if (!providerOk) {
+      return res.status(400).render('register', {
+        error: 'Deze mailprovider heeft geen geldige MX-records.',
+        formData
+      });
+    }
+
     const hashedPassword = await bcrypt.hash(wwoord, SALT_ROUNDS);
 
     const user = {
-      voornaam: vnaam.trim(),
-      achternaam: anaam.trim(),
-      email: normalizedEmail,
+      voornaam: sanitizedVnaam,
+      achternaam: sanitizedAnaam,
+      email: sanitizedEmail,
       wachtwoord: hashedPassword,
       watchlist: [],
       recentlyWatched: [],
@@ -322,44 +540,106 @@ app.post('/register', async (req, res) => {
     return res.redirect('/login');
   } catch (error) {
     if (error.code === 11000) {
-      return res.status(409).send('Dit e-mailadres is al geregistreerd.');
+      return res.status(409).render('register', {
+        error: 'Dit e-mailadres is al geregistreerd.',
+        formData: {
+          vnaam: sanitizeTextInput(req.body.vnaam),
+          anaam: sanitizeTextInput(req.body.anaam),
+          email: sanitizeTextInput(req.body.email).toLowerCase()
+        }
+      });
     }
 
     console.error('Register error:', error);
-    return res.status(500).send('Er ging iets mis bij registreren.');
+    return res.status(500).render('register', {
+      error: 'Er ging iets mis bij registreren.',
+      formData: {
+        vnaam: sanitizeTextInput(req.body.vnaam),
+        anaam: sanitizeTextInput(req.body.anaam),
+        email: sanitizeTextInput(req.body.email).toLowerCase()
+      }
+    });
   }
 });
 
 app.post('/login', async (req, res) => {
+
   try {
     const { email, wwoord } = req.body;
+    const sanitizedEmail = sanitizeTextInput(email).toLowerCase();
+    const formData = { email: sanitizedEmail };
 
-    if (!email || !wwoord) {
-      return res.status(400).send('Vul email en wachtwoord in.');
+    if (!sanitizedEmail || !wwoord) {
+      return res.status(400).render('login', {
+        error: 'Vul email en wachtwoord in.',
+        formData
+      });
     }
 
-    const normalizedEmail = email.trim().toLowerCase();
-
     const user = await db.collection(USERS_COLLECTION).findOne({
-      email: normalizedEmail
+      email: sanitizedEmail
     });
 
     if (!user) {
-      return res.status(401).send('Ongeldige inloggegevens.');
+      return res.status(401).render('login', {
+        error: 'Ongeldige inloggegevens.',
+        formData: { email: sanitizedEmail }
+      });
     }
 
     const isPasswordValid = await bcrypt.compare(wwoord, user.wachtwoord);
 
     if (!isPasswordValid) {
-      return res.status(401).send('Ongeldige inloggegevens.');
+      return res.status(401).render('login', {
+        error: 'Ongeldige inloggegevens.',
+        formData: { email: sanitizedEmail }
+      });
     }
 
     // Zonder session/JWT: alleen redirect bij succesvolle login
-    return res.redirect('/profile');
+    req.session.userId = user._id.toString();
+
+    req.session.save(() => res.redirect('/profile'));
   } catch (error) {
     console.error('Login error:', error);
-    return res.status(500).send('Er ging iets mis bij inloggen.');
+    return res.status(500).render('login', {
+      error: 'Er ging iets mis bij inloggen.',
+      formData: { email: sanitizeTextInput(req.body.email).toLowerCase() }
+    });
   }
+});
+
+
+// make sure your route is protected (user logged in)
+app.post('/watchlist/add', async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    const { movieId } = req.body;
+
+    // niet ingelogd
+    if (!userId) {
+      return res.status(401).json({ notLoggedIn: true });
+    }
+
+    const { ObjectId } = require('mongodb');
+
+    await db.collection(USERS_COLLECTION).updateOne(
+      { _id: new ObjectId(userId) },
+      {
+        $addToSet: { watchlist: movieId } // voorkomt duplicates
+      }
+    );
+
+    res.json({ success: true });
+
+  } catch (error) {
+    console.error('Watchlist error:', error);
+    res.json({ success: false });
+  }
+
+    // Redirect back to the movie detail page or watchlist
+    res.redirect('back');
+
 });
 
 //Mongo Connection
