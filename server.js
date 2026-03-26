@@ -1,4 +1,4 @@
-  require('dotenv').config()
+require('dotenv').config()
  
 const express = require('express')
 const path = require('path')
@@ -11,7 +11,6 @@ const dns = require('node:dns/promises');
 const session = require('express-session')
 
 const bcrypt = require('bcrypt');
- 
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/?appName=${process.env.APP_NAME}`;
  
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
