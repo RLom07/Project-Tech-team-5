@@ -11,19 +11,32 @@
         <section>
             <h1>Welke filmperiode spreekt je aan?</h1>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">Geen voorkeur</button></li>
-                <li><button class="checkbox-button">60s</button></li>
-                <li><button class="checkbox-button">70s</button></li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="periode-geen-voorkeur" name="periode" value="Geen voorkeur" onchange="kiesPeriode('Geen voorkeur')">
+                    <label class="checkbox-button" for="periode-geen-voorkeur">Geen voorkeur</label>
+                </li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="periode-nieuwste-films" name="periode" value="Nieuwste films" onchange="kiesPeriode('Nieuwste films')">
+                    <label class="checkbox-button" for="periode-nieuwste-films">Nieuwste films</label>
+                </li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="periode-vanaf-2020" name="periode" value="Vanaf 2020" onchange="kiesPeriode('Vanaf 2020')">
+                    <label class="checkbox-button" for="periode-vanaf-2020">vanaf 2020</label>
+                </li>
             </ul>
             <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">80s</button></li>
-                <li><button class="checkbox-button">90s</button></li>
-                <li><button class="checkbox-button">00s</button></li>
-            </ul>
-            <ul class="checkboxbutton-list">
-                <li><button class="checkbox-button">2000-2010</button></li>
-                <li><button class="checkbox-button">2010-2020</button></li>
-                <li><button class="checkbox-button">2020+</button></li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="periode-2010-2019" name="periode" value="2010-2019" onchange="kiesPeriode('2010-2019')">
+                    <label class="checkbox-button" for="periode-2010-2019">2010-2019</label>
+                </li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="periode-2000-2009" name="periode" value="2000-2009" onchange="kiesPeriode('2000-2009')">
+                    <label class="checkbox-button" for="periode-2000-2009">2000-2009</label>
+                </li>
+                <li>
+                    <input class="checkbox-input" type="radio" id="periode-klassiekers" name="periode" value="Klassiekers" onchange="kiesPeriode('Klassiekers')">
+                    <label class="checkbox-button" for="periode-klassiekers">Klassiekers</label>
+                </li>
             </ul>
             <div class="volgende-vorige">
                 <button onclick="window.location.href='/vragenlijst-vraag3'" id="vorige" class="primary-button">vorige</button>    
