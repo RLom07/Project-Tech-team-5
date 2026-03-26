@@ -1,4 +1,4 @@
-  require('dotenv').config()
+require('dotenv').config()
  
 const express = require('express')
 const path = require('path')
@@ -8,6 +8,7 @@ const app = express()
 const port = process.env.PORT || 3000
 const validator = require('validator');
 const dns = require('node:dns/promises');
+const session = require('express-session');
 
 const bcrypt = require('bcrypt');
  
@@ -102,20 +103,6 @@ console.log(`${process.env.BASE_URL}/movie/popular?api_key=${process.env.API_KEY
 //////////////////////////////////// 
 
 
-//API index populair movies//////////////////////////////
-async function getPopularMovies() {
-
-  const url = `${process.env.BASE_URL}/trending/movie/week?api_key=${process.env.API_KEY}`
-
-  const response = await fetch(url)
-  const data = await response.json()
-
-  return data.results.slice(0,5) // eerste 5 films
-
-}
-
-
-
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 app.use('/static', express.static(path.join(__dirname, 'static')))
@@ -123,14 +110,26 @@ app.use(express.static("static"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }))
  
+app.use(session({
+  secret: 'ditistest',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 60000 * 60
+  }
+}));
 
 
 //Routes
- 
 app.get('/', async (req, res) => {
-  const movies = await getPopularMovies()
-  res.render('index', { movies })
-})
+
+  if (req.session && req.session.userId) {
+    return res.redirect('/profile');
+  }
+
+  const movies = await getPopularMovies();
+  res.render('index', { movies });
+});
 
 // API index populair movies /////////////////////////////////
 async function getPopularMovies() {
@@ -147,11 +146,32 @@ async function getPopularMovies() {
 
 
 
-//Routes
- 
-app.get('/', async (req, res) => {
+// API detail info movies /////////////////////////////////
 
-  // ✍️ Writers
+//met behulp van ChatGPT
+app.get('/movie/:id', async (req, res) => {
+
+  const movieId = req.params.id;
+
+  //film ophalen /////
+  const response = await fetch(
+    `${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`
+  );
+  const movie = await response.json();
+
+  //credits film ophalen /////
+  const creditsResponse = await fetch(
+    `${process.env.BASE_URL}/movie/${movieId}/credits?api_key=${process.env.API_KEY}`
+  )
+
+  const creditsData = await creditsResponse.json()
+
+  // Director
+  const director = creditsData.crew.find(person =>
+    person.job === "Director"
+  )
+
+  // Writers
   const writers = creditsData.crew
     .filter(person =>
       person.job === "Writer" ||
@@ -166,7 +186,7 @@ app.get('/', async (req, res) => {
     .map(actor => actor.name)
 
 
-  //trailer
+  //trailer ophalen /////
   const videoResponse = await fetch(
     `${process.env.BASE_URL}/movie/${movieId}/videos?api_key=${process.env.API_KEY}`
   );
@@ -179,73 +199,104 @@ app.get('/', async (req, res) => {
 
 
   
-  //providers ophalen
-  const providerResponse = await fetch(
-    `${process.env.BASE_URL}/movie/${movieId}/watch/providers?api_key=${process.env.API_KEY}`
-  );
-  const providerData = await providerResponse.json();
+  //Providers ophalen /////
+    const providerResponse = await fetch(
+      `${process.env.BASE_URL}/movie/${movieId}/watch/providers?api_key=${process.env.API_KEY}`
+    );
+    const providerData = await providerResponse.json();
 
-  //alles samenvoegen (abonnement / huur / koop)
-  const allProviders = [
-    ...(providerData.results?.NL?.flatrate || []).map(p => ({ ...p, type: 'abonnement' })),
-    ...(providerData.results?.NL?.rent || []).map(p => ({ ...p, type: 'huur' })),
-    ...(providerData.results?.NL?.buy || []).map(p => ({ ...p, type: 'koop' }))
-  ];
+    const providers = [
+      ...(providerData.results?.NL?.flatrate || []),
+      ...(providerData.results?.NL?.rent || []),
+      ...(providerData.results?.NL?.buy || [])
+    ];
 
-  //combineren per provider (huur + koop samen)
-  const providerMap = {};
+    // Priority providers
+    const priorityProviders = [
+      "Netflix",
+      "Disney Plus",
+      "Amazon Prime Video",
+      "HBO Max",
+      "Pathé Thuis"
+    ];
 
-  allProviders.forEach(p => {
-    const name = p.provider_name;
+    // lege array om code beneden erin te pushen
+    const sorted = [];
 
-    if (!providerMap[name]) {
-      providerMap[name] = {
-        provider_name: p.provider_name,
-        logo_path: p.logo_path,
-        types: []
-      };
-    }
+    // eerst priority providers
+    priorityProviders.forEach(name => {
+      const found = providers.find(p => p.provider_name === name);
+      if (found) {
+        sorted.push(found);
+      }
+    });
 
-  res.render('index', { movies })
+    const topProviders = sorted.slice(0, 3);
 
-})
-
-  //reccomendation lijst
+  //reccomendation lijst ophalen /////
   const recommendationsResponse = await fetch(
     `${process.env.BASE_URL}/movie/${movieId}/recommendations?api_key=${process.env.API_KEY}`
   );
 
   const recommendationsData = await recommendationsResponse.json();
-
   const recommendations = recommendationsData.results.slice(0, 6);
   
   // renderen
   res.render('detail', {
-    movie: movie,
-    providers: sorted.slice(0, 3),
-    director: director?.name || "Onbekend",
-    writers: writers,
-    actors: actors,
-    trailer: trailer,
-    recommendations: recommendations
+    movie,
+    providers: topProviders,
+    director: director?.name || 'Onbekend',
+    writers,
+    actors,
+    trailer,
+    recommendations
   });
-app.get('/movie/:id', async (req, res) => {
 
-  const movieId = req.params.id
+});
 
-  const response = await fetch(
-    `${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`
-  )
 
-  const movie = await response.json()
-
-  res.render('detail', { movie })
-
-})
-
-app.get('/', (req, res) => { res.render('index') })
  
-app.get('/profile', (req, res) => { res.render(`profile`) })
+app.get('/profile', async (req, res) => { 
+  try {
+    
+    const { ObjectId } = require('mongodb');
+
+    const gebruiker = await db.collection(USERS_COLLECTION).findOne({
+      _id: new ObjectId(req.session.userId)
+    }); 
+                
+    const hour = new Date().getHours();
+    let greeting;
+
+    if (hour < 12) {
+        greeting = "Goedemorgen";
+    } else if (hour < 18) {
+        greeting = "Goedemiddag";
+    } else {
+        greeting = "Goedenavond";
+    }
+
+    const watchlist = [];
+
+    for (const movieId of gebruiker.watchlist) {
+      const url = `${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`;
+      const response = await fetch(url);
+      const movie = await response.json();
+      watchlist.push(movie);
+    }
+
+    const movies = await getPopularMovies()
+
+    req.session.visited = true;
+    // 3. Pass the data object as the second argument to res.render
+    res.render('profile',  { gebruiker, greeting, movies, watchlist}) 
+
+  } catch (error) {  
+    console.error("Error fetching profile:", error);
+
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 app.get('/profielaanpassen', (req, res) => { res.render(`profielaanpassen`) })
 
@@ -368,6 +419,7 @@ app.post('/register', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
+
   try {
     const { email, wwoord } = req.body;
     const sanitizedEmail = sanitizeTextInput(email).toLowerCase();
@@ -401,7 +453,9 @@ app.post('/login', async (req, res) => {
     }
 
     // Zonder session/JWT: alleen redirect bij succesvolle login
-    return res.redirect('/profile');
+    req.session.userId = user._id.toString();
+
+    req.session.save(() => res.redirect('/profile'));
   } catch (error) {
     console.error('Login error:', error);
     return res.status(500).render('login', {
@@ -409,6 +463,39 @@ app.post('/login', async (req, res) => {
       formData: { email: sanitizeTextInput(req.body.email).toLowerCase() }
     });
   }
+});
+
+
+// make sure your route is protected (user logged in)
+app.post('/watchlist/add', async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    const { movieId } = req.body;
+
+    // niet ingelogd
+    if (!userId) {
+      return res.status(401).json({ notLoggedIn: true });
+    }
+
+    const { ObjectId } = require('mongodb');
+
+    await db.collection(USERS_COLLECTION).updateOne(
+      { _id: new ObjectId(userId) },
+      {
+        $addToSet: { watchlist: movieId } // voorkomt duplicates
+      }
+    );
+
+    res.json({ success: true });
+
+  } catch (error) {
+    console.error('Watchlist error:', error);
+    res.json({ success: false });
+  }
+
+    // Redirect back to the movie detail page or watchlist
+    res.redirect('back');
+
 });
 
 //Mongo Connection
