@@ -786,10 +786,8 @@
 }
 
 .matching img{
-    border: #d94e14 2px solid;
     height: 320px;
     width: 250px;
-    padding: 5em;
 }
 
 .beste-match-div{
@@ -862,7 +860,6 @@
 .meer-matches-ul img{
     width: 250px;
     height: 320px;
-    padding: 5em;
     object-fit: cover;
 }
 
