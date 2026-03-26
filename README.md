@@ -28,12 +28,6 @@ npm install validator
 npm install bcrypt
 ```
 
-### Opmerking
-
-De modules `path` en `dns` zijn ingebouwde Node.js modules en hoeven daarom niet apart geïnstalleerd te worden.
-
----
-
 ## .env bestand toevoegen
 
 Maak in de hoofdmap van het project een bestand aan met de naam:
