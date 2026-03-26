@@ -402,6 +402,15 @@ app.get('/profile', async (req, res) => {
     }
 
     const watchlist = [];
+    const recentlyWatched = [];
+
+    for (const movieId of gebruiker.recentlyWatched) {
+      const url = `${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`;
+      const response = await fetch(url);
+      const movie = await response.json();
+      recentlyWatched.push(movie);
+    }
+
 
     for (const movieId of gebruiker.watchlist) {
       const url = `${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`;
@@ -414,7 +423,7 @@ app.get('/profile', async (req, res) => {
 
     req.session.visited = true;
     // 3. Pass the data object as the second argument to res.render
-    res.render('profile',  { gebruiker, greeting, movies, watchlist}) 
+    res.render('profile',  { gebruiker, greeting, movies, recentlyWatched, watchlist}) 
 
   } catch (error) {  
     console.error("Error fetching profile:", error);

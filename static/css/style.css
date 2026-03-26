@@ -1464,6 +1464,7 @@
         list-style: none;
         width: auto;
         display: flex;
+        justify-content: center;
         flex-direction: row;
         align-items: flex-start;
         margin-left: 0;
@@ -1504,9 +1505,10 @@
         margin-right: 1em;
     }
 
-    #recentlyWatched ul li > img{
-        height: 280px;
-        width: 200px;
+    #recentlyWatched ul li .recentlyWatchedPosters{
+        height: 18em;
+        width: auto;
+        border-radius: 12px;
         object-fit: cover;
     }
 
@@ -1518,6 +1520,7 @@
 
     #recentlyWatched h3{
         font-size: 16px;
+        font-family: var(--header-font);
     }
 
 
