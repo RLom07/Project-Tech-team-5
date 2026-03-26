@@ -123,7 +123,23 @@ app.use(express.urlencoded({ extended: true }))
  
 
 
-//Profile /////////////////////////////
+//Routes
+ 
+app.get('/', async (req, res) => {
+  const movies = await getPopularMovies()
+  res.render('index', { movies })
+})
+
+// API index populair movies /////////////////////////////////
+async function getPopularMovies() {
+
+  const url = `${process.env.BASE_URL}/trending/movie/week?api_key=${process.env.API_KEY}`
+
+  const response = await fetch(url)
+  const data = await response.json()
+
+  return data.results.slice(0, 5) // eerste 5 films
+}
 
 
 
@@ -133,12 +149,84 @@ app.use(express.urlencoded({ extended: true }))
  
 app.get('/', async (req, res) => {
 
-  const movies = await getPopularMovies()
+  // ✍️ Writers
+  const writers = creditsData.crew
+    .filter(person =>
+      person.job === "Writer" ||
+      person.job === "Screenplay" ||
+      person.job === "Story"
+    )
+    .map(person => person.name)
+
+  //Top 3 acteurs
+  const actors = creditsData.cast
+    .slice(0, 6)
+    .map(actor => actor.name)
+
+
+  //trailer
+  const videoResponse = await fetch(
+    `${process.env.BASE_URL}/movie/${movieId}/videos?api_key=${process.env.API_KEY}`
+  );
+
+  const videoData = await videoResponse.json();
+
+  const trailer = videoData.results.find(video =>
+    video.type === "Trailer" && video.site === "YouTube"
+  );
+
+
+  
+  //providers ophalen
+  const providerResponse = await fetch(
+    `${process.env.BASE_URL}/movie/${movieId}/watch/providers?api_key=${process.env.API_KEY}`
+  );
+  const providerData = await providerResponse.json();
+
+  //alles samenvoegen (abonnement / huur / koop)
+  const allProviders = [
+    ...(providerData.results?.NL?.flatrate || []).map(p => ({ ...p, type: 'abonnement' })),
+    ...(providerData.results?.NL?.rent || []).map(p => ({ ...p, type: 'huur' })),
+    ...(providerData.results?.NL?.buy || []).map(p => ({ ...p, type: 'koop' }))
+  ];
+
+  //combineren per provider (huur + koop samen)
+  const providerMap = {};
+
+  allProviders.forEach(p => {
+    const name = p.provider_name;
+
+    if (!providerMap[name]) {
+      providerMap[name] = {
+        provider_name: p.provider_name,
+        logo_path: p.logo_path,
+        types: []
+      };
+    }
 
   res.render('index', { movies })
 
 })
 
+  //reccomendation lijst
+  const recommendationsResponse = await fetch(
+    `${process.env.BASE_URL}/movie/${movieId}/recommendations?api_key=${process.env.API_KEY}`
+  );
+
+  const recommendationsData = await recommendationsResponse.json();
+
+  const recommendations = recommendationsData.results.slice(0, 6);
+  
+  // renderen
+  res.render('detail', {
+    movie: movie,
+    providers: sorted.slice(0, 3),
+    director: director?.name || "Onbekend",
+    writers: writers,
+    actors: actors,
+    trailer: trailer,
+    recommendations: recommendations
+  });
 app.get('/movie/:id', async (req, res) => {
 
   const movieId = req.params.id
