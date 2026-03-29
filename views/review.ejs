@@ -4,10 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/public/styles/styles.css">
+    <link rel="stylesheet" href="/css/">
 </head>
 <body>
-    <h1>schrijf een review</h1>
-    <textarea name="review" id="review-vak"></textarea>
+    <form action="/reviews" method="POST" id="reviewForm">  
+        <h1>schrijf een review</h1>
+        <h2>Naam</h2>
+        <textarea name="name" id="name"></textarea>
+        <h2>Deel je ervaring</h2>
+        <textarea name="text" id="text"></textarea>
+        <h2>rating</h2>
+        <label for="rating">rating (1 t/m 5)</label>
+        <input name="rating" type="number" id="rating" min="1" max="7">
+        <button type="submit">Schrijf review</button>
+    </form>
 </body>
 </html>

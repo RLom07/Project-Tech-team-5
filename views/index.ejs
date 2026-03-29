@@ -88,8 +88,32 @@
             <img src="../images/trustpilot-stars.svg" alt="trustpilot stars" aria-hidden="true">
             <p>see our reviews</p>
         </div>
+        
+        <section class="reviews-rating">
+            <% if (reviews.length > 0) { %>
+            <% reviews.forEach(review => { %>
+            <article>
+                <h3><%= review.name %></h3>
+                <p><%= review.text %></p>
+                <p>Rating: <%= review.rating %></p>
+                <form action="/reviews/<%= review.id %>/delete" method="POST">
+                    <button type="submit">verwijder review</button>
+                </form>
+            </article>
+            <% }) %>
+            <% } else { %>
+            <p>Er zijn nog geen reviews.</p>
+            <% } %>
+           
+        </section>
+      
 
-        <section id="reviews">
+       
+        <a href="/review" class="primary-button">Schrijf een review</a>
+
+
+    </section>
+        <!-- <section id="reviews">
 
             <div id="reviews-header">
                 <div>
@@ -155,12 +179,8 @@
                         Ik wist nooit wat ik moest kijken tussen al die streamingdiensten. <br>
                         Met Cinematch krijg je snel een goede aanbeveling op basis van je mood. Echt een aanrader!
                     </p>
-                </article>
-            </section>
-
-        </section>
-
-    </section>
+                </article> -->
+       
 
     <section id="call-to-action">
         <h2>

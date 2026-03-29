@@ -126,7 +126,7 @@ app.get('/', async (req, res) => {
   }
 
   const movies = await getPopularMovies();
-  res.render('index', { movies });
+  res.render('index', { movies, reviews});
 });
 
 // API index populair movies /////////////////////////////////
@@ -139,6 +139,62 @@ async function getPopularMovies() {
 
   return data.results.slice(0, 5) // eerste 5 films
 }
+
+//oefenen review pagina
+
+let reviews = [
+  {
+    id: 1,
+    name: "Anna",
+    text: "Hele goede website",
+    rating: "5",
+  },
+];
+
+let currentId = 2;
+
+//read- haalt de reviews op
+app.get("/reviews", (req, res) => {
+  res.json(reviews);
+});
+
+//Create- nieuwe review toevoegen
+app.post("/reviews", (req, res) => {
+
+    if (!req.session.userId) {
+    return res.redirect('/login?next=/review');
+  }
+  
+  const { name, text, rating } = req.body;
+  const nummerRating = Number(rating);
+
+  if (!name || !text || !rating) {
+    return res.status(400).json({error:"vul alle velden in."});
+  }
+
+  if (isNaN(nummerRating) || nummerRating < 1 || nummerRating > 5) {
+  return res.status(400).json({ error: "vul een getal tussen 1 en 5 in." });
+  }
+  
+  const newReview = {
+    id: currentId++,
+    userId: req.session.userId,
+    name,
+    text,
+    rating: nummerRating,
+  };
+
+  reviews.push(newReview);
+  res.redirect('/');
+});
+
+//delete van een review
+
+app.post('/reviews/:id/delete', (req, res) =>{
+  const id = Number(req.params.id) 
+  reviews = reviews.filter((review) => review.id !== id)
+  res.redirect('/')
+})
 
 //gegenereerde code voor de matching functie//
 function parseAntwoorden(rawAntwoorden) {
@@ -431,7 +487,7 @@ app.get('/register', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
-  res.render('login', { error: null, formData: {} });
+  res.render('login', { error: null, formData: {}, next: req.query.next || '' });
 })
 
 app.get('/uitloggen', (req, res) => {
@@ -441,7 +497,13 @@ app.get('/uitloggen', (req, res) => {
   });
 });
 
-app.get('/review', (req, res) => { res.render(`review`) })
+app.get('/review', (req, res) => { 
+    if (!req.session.userId) {
+      return res.redirect('/login?next=/review');
+  }
+
+  res.render(`review`)
+});
 
 app.get('/vragenlijst', (req, res) => { res.render(`vragenlijst`) })
  
@@ -569,7 +631,7 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
 
   try {
-    const { email, wwoord } = req.body;
+    const { email, wwoord, next } = req.body;
     const sanitizedEmail = sanitizeTextInput(email).toLowerCase();
     const formData = { email: sanitizedEmail };
 
@@ -603,7 +665,7 @@ app.post('/login', async (req, res) => {
     // Zonder session/JWT: alleen redirect bij succesvolle login
     req.session.userId = user._id.toString();
 
-    req.session.save(() => res.redirect('/profile'));
+    req.session.save(() => res.redirect(next || '/profile'));
   } catch (error) {
     console.error('Login error:', error);
     return res.status(500).render('login', {
