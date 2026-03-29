@@ -1573,27 +1573,28 @@
 
     #watchList .grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr); /* 3 items per row */
-        gap: 20px; /* space between cards */
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 80px;
         padding: 0;
-        margin: 0;
+        margin: 0 auto; /* center the grid container */
         list-style: none;
-        justify-content: end;
+        justify-content: center;
         margin-bottom: 3em;
+        max-width: 1400px; /* optional: prevent stretching too wide */
     }
 
     #watchList .grid li {
         display: flex;
         flex-direction: column;
-        height: 280px;
-        width: 200px;
+        height: 480px;
+        width: 400px;
         align-items: center;
         text-align: center;
     }
 
     #watchList .grid li img {
-        width: 200px;
-        height: 280px;
+        width: 400px;
+        height: 480px;
         object-fit: cover;
         border-radius: 8px;
     }
