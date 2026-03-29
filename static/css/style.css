@@ -1460,18 +1460,18 @@
         margin-bottom: 4em;
     }
 
-    #recentlyWatched ul{
-        list-style: none;
-        width: auto;
+    #recentlyWatched ul {
         display: flex;
-        justify-content: center;
         flex-direction: row;
         align-items: flex-start;
-        margin-left: 0;
-        margin-right: 2.5em;
+        list-style: none;
+        padding-left: 2em;  /* give space at start */
+        padding-right: 2em; /* give space at end */
+        margin: 0;          /* remove offsets */
         box-sizing: border-box;
         overflow-x: auto;     
         overflow-y: hidden;
+        scroll-behavior: smooth; /* optional smooth scroll */
     }
 
     #recentlyWatched ul::-webkit-scrollbar{
@@ -1497,14 +1497,15 @@
         background: var(--text-color);
     }
 
-    #recentlyWatched ul li{
+    #recentlyWatched ul li {
         width: 200px;
+        flex: 0 0 auto;      /* prevent shrinking */
         display: flex;
         flex-direction: column;
         text-align: center;
-        margin-right: 1em;
+        margin-right: 1em;   /* spacing between items */
     }
-
+    
     #recentlyWatched ul li .recentlyWatchedPosters{
         height: 18em;
         width: auto;
