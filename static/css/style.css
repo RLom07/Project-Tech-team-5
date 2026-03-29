@@ -1523,6 +1523,41 @@
         font-family: var(--header-font);
     }
 
+/* Verwijderen uit recentlywatched knop *********/
+/* ******************************************** */
+    .posterWrapper {
+        position: relative;
+    }
+
+    .removeBtn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+
+        background: var(--background-color);
+        color: var(--button-color);
+        border: none;
+        border-radius: 50%;
+
+        width: 28px;
+        height: 28px;
+        cursor: pointer;
+
+        font-size: 16px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        transition: 0.2s ease;
+    }
+
+    .removeBtn:hover {
+        background: var(--button-color);
+        color: var(--background-color);
+        transform: scale(1.1);
+    }
+
 
     /* sorteer buttons */
     *, *::after, *::before {

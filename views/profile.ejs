@@ -46,11 +46,15 @@
             <ul>
                 <% recentlyWatched.forEach((movie) => { %>
                 <li>
-                    <a href="/movie/<%= movie.id %>">
-                        <img class="recentlyWatchedPosters" src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>" loading="lazy">
-                    </a>
+                    <div class="posterWrapper">
+                        <a href="/movie/<%= movie.id %>">
+                            <img class="recentlyWatchedPosters" src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>" loading="lazy">
+                        </a>
+                        <!-- Remove button -->
+                        <button class="removeBtn" data-id="<%= movie.id %>" aria-label="Verwijder film">✕</button>
+                    </div>
                     <h3><%= movie.title %></h3>
-                </li>  	
+                </li>
                 <% }) %>
             </ul>
             <% } else { %>
@@ -112,6 +116,43 @@
         </section>       
         <!-- List.js Initialization -->
         <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const buttons = document.querySelectorAll(".removeBtn");
+
+            buttons.forEach(button => {
+                button.addEventListener("click", async (e) => {
+                    e.preventDefault();
+
+                    const movieId = button.dataset.id;
+
+                    // Confirmation popup
+                    const confirmed = confirm("Weet je zeker dat je deze film wilt verwijderen?");
+                    if (!confirmed) return;
+
+                    try {
+                        const response = await fetch(`/recently-watched/${movieId}`, {
+                            method: "DELETE"
+                        });
+
+                        if (response.ok) {
+                            // Smooth removal animation
+                            const li = button.closest("li");
+                            li.style.transition = "0.3s";
+                            li.style.opacity = "0";
+
+                            setTimeout(() => li.remove(), 300);
+                        } else {
+                            alert("Verwijderen mislukt");
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        alert("Er ging iets mis");
+                    }
+                });
+            });
+        });
+
+
         document.addEventListener('DOMContentLoaded', function() {
             const options = {
                 valueNames: ['watchListName', 'watchListDescription']

@@ -432,6 +432,34 @@ app.get("/profile", async (req, res) => {
   }
 })
 
+app.delete("/recently-watched/:id", async (req, res) => {
+  try {
+    const { ObjectId } = require("mongodb");
+    const userId = req.session.userId;
+    const movieId = parseInt(req.params.id);
+
+    console.log("DELETE hit", { userId, movieId });
+
+    if (!userId) return res.sendStatus(401);
+
+    const result = await db.collection(USERS_COLLECTION).updateOne(
+      { _id: new ObjectId(userId) },
+      { $pull: { recentlyWatched: movieId } }
+    );
+
+    console.log("MongoDB result:", result);
+
+    if (result.modifiedCount > 0) {
+      res.sendStatus(200);
+    } else {
+      res.status(404).send("Movie not found in recentlyWatched");
+    }
+  } catch (err) {
+    console.error("Error removing movie:", err);
+    res.sendStatus(500);
+  }
+});
+
 app.get("/profielaanpassen", (req, res) => { res.render("profielaanpassen") })
 
 app.get("/register", (req, res) => {
