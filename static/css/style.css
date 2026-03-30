@@ -50,7 +50,7 @@
         list-style: none;
     }
 
-    .primary-button{
+    .primary-button, #watch-button{
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -65,7 +65,7 @@
         cursor: pointer;
     }
 
-    .primary-button:hover{
+    .primary-button:hover, #watch-button:hover{
         background-color: #d94e14;
         box-shadow: 0 6px 14px rgba(0,0,0,0.15);
     }
@@ -860,6 +860,16 @@
     width: 250px;
 }
 
+.matching .poster-link{
+    display: inline-block;
+    transition: none;
+}
+
+.matching .poster-link:hover{
+    transform: none;
+    box-shadow: none;
+}
+
 .beste-match-div{
     padding-left: 2em;
 }
@@ -1210,6 +1220,7 @@
         justify-content:space-evenly;
     }
 
+    
     .save-button{
         display:flex;
         flex-direction:column;
@@ -1229,16 +1240,24 @@
 
         border:1px solid rgba(255,255,255,0.25);
 
-    }   
+    } 
+
     
     .save-button img{
         width: 3em;
     }
     
-    .watch-button{
+    #watch-button{
         margin-top:10px;
         width:320px;
     }
+
+    .save-button.active {
+        background-color: var(--outline-color);
+
+    }
+
+    
 
     .movie-stats{
         display:flex;
@@ -1733,5 +1752,3 @@
         justify-content: flex-start;
         align-items: start;
     }
-
-

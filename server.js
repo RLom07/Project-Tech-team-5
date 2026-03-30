@@ -122,12 +122,12 @@ app.use(session({
 app.get("/", async (req, res) => {
 
   if (req.session && req.session.userId) {
-    return res.redirect("/profile")
+    return res.redirect('/indexingelogd');
   }
 
-  const movies = await getPopularMovies()
-  res.render("index", { movies })
-})
+  const movies = await getPopularMovies();
+  res.render('index', { movies, reviews});
+});
 
 // API index populair movies /////////////////////////////////
 async function getPopularMovies() {
@@ -140,6 +140,63 @@ async function getPopularMovies() {
   return data.results.slice(0, 5) // eerste 5 films
 }
 
+//oefenen review pagina
+
+let reviews = [
+  {
+    id: 1,
+    name: "Anna",
+    text: "Hele goede website",
+    rating: "5",
+  },
+];
+
+let currentId = 2;
+
+//read- haalt de reviews op
+app.get("/reviews", (req, res) => {
+  res.json(reviews);
+});
+
+//Create- nieuwe review toevoegen
+app.post("/reviews", (req, res) => {
+
+    if (!req.session.userId) {
+    return res.redirect('/login?next=/review');
+  }
+  
+  const { name, text, rating } = req.body;
+  const nummerRating = Number(rating);
+
+  if (!name || !text || !rating) {
+    return res.status(400).json({error:"vul alle velden in."});
+  }
+
+  if (isNaN(nummerRating) || nummerRating < 1 || nummerRating > 5) {
+  return res.status(400).json({ error: "vul een getal tussen 1 en 5 in." });
+  }
+  
+  const newReview = {
+    id: currentId++,
+    userId: req.session.userId,
+    name,
+    text,
+    rating: nummerRating,
+  };
+
+  reviews.push(newReview);
+  res.redirect('/');
+});
+
+//delete van een review
+
+app.post('/reviews/:id/delete', (req, res) =>{
+  const id = Number(req.params.id) 
+  reviews = reviews.filter((review) => review.id !== id)
+  res.redirect('/')
+})
+
+//gegenereerde code voor de matching functie//
 function parseAntwoorden(rawAntwoorden) {
   try {
     return JSON.parse(rawAntwoorden || "{}")
@@ -273,9 +330,17 @@ async function getMatchingMovies(antwoorden = {}) {
 // API detail info movies /////////////////////////////////
 
 //met behulp van ChatGPT
-app.get("/movie/:id", async (req, res) => {
+app.get('/movie/:id', async (req, res) => {
+  
+  const movieId = req.params.id;
+  const added = req.query.added;
 
-  const movieId = req.params.id
+  const { ObjectId } = require('mongodb');
+
+    const gebruiker = await db.collection(USERS_COLLECTION).findOne({
+      _id: new ObjectId(req.session.userId)
+    }); 
+
 
   //film ophalen /////
   const response = await fetch(
@@ -374,8 +439,10 @@ app.get("/movie/:id", async (req, res) => {
     writers,
     actors,
     trailer,
-    recommendations
-  })
+    recommendations,
+    added,
+    gebruiker
+  });
 
 })
 
@@ -466,8 +533,8 @@ app.get("/register", (req, res) => {
   res.render("register", { error: null, formData: {} })
 })
 
-app.get("/login", (req, res) => {
-  res.render("login", { error: null, formData: {} })
+app.get('/login', (req, res) => {
+  res.render('login', { error: null, formData: {}, next: req.query.next || '' });
 })
 
 app.get("/uitloggen", (req, res) => {
@@ -477,7 +544,25 @@ app.get("/uitloggen", (req, res) => {
   })
 })
 
-app.get("/vragenlijst", (req, res) => { res.render("vragenlijst") })
+app.get('/review', (req, res) => { 
+    if (!req.session.userId) {
+      return res.redirect('/login?next=/review');
+  }
+
+  res.render(`review`)
+});
+
+app.get('/indexingelogd', async (req, res) => {
+
+  if (!req.session || !req.session.userId) {
+    return res.redirect('/login');
+  }
+
+  const movies = await getPopularMovies();
+  res.render('indexingelogd', { movies, reviews });
+});
+
+app.get('/vragenlijst', (req, res) => { res.render(`vragenlijst`) })
  
 app.get("/vragenlijst-vraag1", (req, res) => { res.render("vragenlijst-vraag1") })
 
@@ -603,9 +688,9 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
 
   try {
-    const { email, wwoord } = req.body
-    const sanitizedEmail = sanitizeTextInput(email).toLowerCase()
-    const formData = { email: sanitizedEmail }
+    const { email, wwoord, next } = req.body;
+    const sanitizedEmail = sanitizeTextInput(email).toLowerCase();
+    const formData = { email: sanitizedEmail };
 
     if (!sanitizedEmail || !wwoord) {
       return res.status(400).render("login", {
@@ -637,7 +722,7 @@ app.post("/login", async (req, res) => {
     // Zonder session/JWT: alleen redirect bij succesvolle login
     req.session.userId = user._id.toString()
 
-    req.session.save(() => res.redirect("/profile"))
+    req.session.save(() => res.redirect(next || '/indexingelogd'));
   } catch (error) {
     console.error("Login error:", error)
     return res.status(500).render("login", {
@@ -668,17 +753,14 @@ app.post("/watchlist/add", async (req, res) => {
       }
     )
 
-    res.json({ success: true })
+   // blijf op zelfde pagina
+    res.redirect(`/movie/${movieId}?added=true`);
 
   } catch (error) {
-    console.error("Watchlist error:", error)
-    res.json({ success: false })
+    console.error(error);
+    res.redirect('back');
   }
-
-    // Redirect back to the movie detail page or watchlist
-    res.redirect("back")
-
-})
+});
 
 //Mongo Connection
 connectToMongo()
