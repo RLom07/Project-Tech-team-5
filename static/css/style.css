@@ -1460,19 +1460,19 @@
         margin-bottom: 4em;
     }
 
-    #recentlyWatched ul {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        list-style: none;
-        padding-left: 2em;  /* give space at start */
-        padding-right: 2em; /* give space at end */
-        margin: 0;          /* remove offsets */
-        box-sizing: border-box;
-        overflow-x: auto;     
-        overflow-y: hidden;
-        scroll-behavior: smooth; /* optional smooth scroll */
-    }
+#recentlyWatched ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-start; /* items start from left */
+    flex-direction: row;
+    align-items: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-left: 2em;   /* match container margin */
+    padding-right: 2em;  /* ensures last item is fully visible */
+    box-sizing: border-box;
+    margin: 0; /* remove extra margins */
+}
 
     #recentlyWatched ul::-webkit-scrollbar{
         height: 8px; /* horizontal scrollbar height */
@@ -1497,15 +1497,14 @@
         background: var(--text-color);
     }
 
-    #recentlyWatched ul li {
-        width: 200px;
-        flex: 0 0 auto;      /* prevent shrinking */
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-        margin-right: 1em;   /* spacing between items */
-    }
-    
+#recentlyWatched ul li {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-right: 1em; /* spacing between items */
+}
+
     #recentlyWatched ul li .recentlyWatchedPosters{
         height: 18em;
         width: auto;
@@ -1524,7 +1523,7 @@
         font-family: var(--header-font);
     }
 
-/* Verwijderen uit recentlywatched knop *********/
+    /* Verwijderen uit recentlywatched knop *********/
 /* ******************************************** */
     .posterWrapper {
         position: relative;
@@ -1560,6 +1559,7 @@
     }
 
 
+
     /* sorteer buttons */
     *, *::after, *::before {
         box-sizing:border-box;  
@@ -1572,34 +1572,31 @@
 
     }
 
-    #watchList .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 80px;
-        padding: 0;
-        margin: 0 auto; /* center the grid container */
-        list-style: none;
-        justify-content: center;
-        margin-bottom: 3em;
-        max-width: 1400px; /* optional: prevent stretching too wide */
-    }
+#watchList .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 300px); /* exactly 3 columns of 300px */
+    gap: 40px; /* space between cards */
+    justify-content: center; /* center the 3 columns horizontally */
+    padding: 0;
+    list-style: none;
+    margin-bottom: 3em;
+}
 
-    #watchList .grid li {
-        display: flex;
-        flex-direction: column;
-        height: 480px;
-        width: 400px;
-        align-items: center;
-        text-align: center;
-    }
+#watchList .grid li {
+    display: flex;
+    flex-direction: column;
+    width: 300px; /* fixed card width */
+    height: 380px;
+    align-items: center;
+    text-align: center;
+}
 
-    #watchList .grid li img {
-        width: 400px;
-        height: 480px;
-        object-fit: cover;
-        border-radius: 8px;
-    }
-    
+#watchList .grid li img {
+    width: 300px;
+    height: 380px;
+    object-fit: cover;
+    border-radius: 8px;
+}
 
     #watchList .grid h4,
     #watchList .grid p{
