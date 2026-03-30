@@ -37,9 +37,14 @@
                     <p><%= movie.overview %></p>
                 </div>
 
-                <a href="#" class="primary-button watch-button">
-                    Ik ga deze kijken!
-                </a>
+                <!-- bekijken -->
+                <form action="/recentlywatched/add" method="POST">
+                    <input type="hidden" name="movieId" value="<%= movie.id %>">
+
+                    <button id="watch-button">
+                        Ik ga deze kijken!
+                    </button>
+                </form>
 
             </section>
 
@@ -49,9 +54,13 @@
                 <form action="/favorites/add" method="POST">
                     <input type="hidden" name="movieId" value="<%= movie.id %>">
 
-                    <button class="save-button">
-                        <img src="/images/favoriet.svg" alt="">
-                        Voeg toe aan favoriet
+                    <button class="save-button <%= added ? 'active' : '' %>">
+
+                        <img src="/images/favoriet.svg" 
+                            class="<%= added ? 'active-icon' : '' %>">
+
+                        <%= added ? 'Toegevoegd aan favorieten' : 'Voeg toe aan favoriet' %>
+
                     </button>
                 </form>
 
@@ -59,9 +68,13 @@
                 <form action="/watchlist/add" method="POST">
                     <input type="hidden" name="movieId" value="<%= movie.id %>">
 
-                    <button class="save-button">
-                        <img src="/images/watchlater.svg" alt="">
-                        Voeg toe aan later bekijken
+                    <button class="save-button <%= added ? 'active' : '' %>">
+
+                        <img src="/images/watchlater.svg" alt=""
+                            class="<%= added ? 'active-icon' : '' %>">
+
+                        <%= added ? 'Toegevoegd aan watchlist' : 'Voeg toe aan watchlist' %>
+
                     </button>
                 </form>
             </div>
