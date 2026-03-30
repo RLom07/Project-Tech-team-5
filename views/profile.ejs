@@ -29,75 +29,37 @@
             <a  href="/vragenlijst" class="primary-button"> Vind je match</a>
         </main>
     </div>
-
         <section id="recentlyWatched">
-            <h2>Recentelijk bekeken</h2>
+            <h2>Favorites</h2>
             <ul>
                 <li>
-                    <img src="images/goldkingscap.png" alt="">
+                    <a href>
+                        <img>
+                    </a>
                     <h3></h3>
-                </li>  
-                <li>
-                    <img src="images/goldkingscap.png" alt="" loading="lazy">
-                    <h3>Serienaam</h3>
-                </li>
-                <li>
-                    <img src="images/purplecybermask.png" alt="" loading="lazy">
-                    <h3>Filmnaam</h3>
-                </li>
-                <li>
-                    <img src="images/raglanhoodie.png" alt="" loading="lazy">
-                    <h3>Serienaam</h3>
-                </li>
-                <li>
-                    <img src="images/sleevelesshoodie.png" alt="" loading="lazy">
-                    <h3>Filmnaam</h3>
-                </li>
-                <li>
-                    <img src="images/goldkingscap.png" alt="" loading="lazy">
-                    <h3>Serienaam</h3>
-                </li>
-                <li>
-                    <img src="images/purplecybermask.png" alt="" loading="lazy">
-                    <h3>Filmnaam</h3>
-                </li>
-                <li>
-                    <img src="images/raglanhoodie.png" alt="" loading="lazy">
-                    <h3>Serienaam</h3>
-                </li>
-                <li>
-                    <img src="images/sleevelesshoodie.png" alt="" loading="lazy">
-                    <h3>Filmnaam</h3>
-                </li>
-                <li>
-                    <img src="images/goldkingscap.png" alt="" loading="lazy">
-                    <h3>Serienaam</h3>
-                </li>
-                <li>
-                    <img src="images/purplecybermask.png" alt="" loading="lazy">
-                    <h3>Filmnaam</h3>
-                </li>
-                <li>
-                    <img src="images/raglanhoodie.png" alt="" loading="lazy">
-                    <h3>Serienaam</h3>
-                </li>
-                <li>
-                    <img src="images/sleevelesshoodie.png" alt="" loading="lazy">
-                    <h3>Filmnaam</h3>
-                </li>
-                <li>
-                    <img src="images/goldkingscap.png" alt="" loading="lazy">
-                    <h3>Serienaam</h3>
-                </li>
-                <li>
-                    <img src="images/purplecybermask.png" alt="" loading="lazy">
-                    <h3>Filmnaam</h3>
-                </li>
-                <li>
-                    <img src="images/raglanhoodie.png" alt="" loading="lazy">
-                    <h3>Serienaam</h3>
-                </li>							
+                </li>  						
             </ul>
+        </section>
+        <section id="recentlyWatched">
+            <h2>Recentelijk bekeken</h2>
+            <% if (recentlyWatched && recentlyWatched.length > 0) { %>
+            <ul>
+                <% recentlyWatched.forEach((movie) => { %>
+                <li>
+                    <div class="posterWrapper">
+                        <a href="/movie/<%= movie.id %>">
+                            <img class="recentlyWatchedPosters" src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>" loading="lazy">
+                        </a>
+                        <!-- Remove button -->
+                        <button class="removeBtn" data-id="<%= movie.id %>" aria-label="Verwijder film">✕</button>
+                    </div>
+                    <h3><%= movie.title %></h3>
+                </li>
+                <% }) %>
+            </ul>
+            <% } else { %>
+                <p>Je hebt nog geen films in je watchlist.</p>
+            <% } %>
         </section>
         <section id="watchList">
             <div id="watchListNav">
@@ -109,10 +71,8 @@
                     <button class="sort" data-sort="watchListName" style="cursor:pointer;">Naam </button>
                 </aside>
             </div>
-
             <!-- Search input -->
             <input type="search" class="search" placeholder=" Zoek op naam">
-
             <!-- List.js container -->
             <% if (watchlist && watchlist.length > 0) { %>
                 <ul class="list">
@@ -124,8 +84,8 @@
                     <section class="descriptionCards">
                         <h3 class="watchListName"><%= movie.title %></h3>
                         <h4><%= movie.release_date.slice(0,4) %> • 
-                                <%= movie.runtime %> min • 
-                                <%= movie.genres.slice(0,2).map(g => g.name).join(' / ') %></h4>
+                            <%= movie.runtime %> min • 
+                            <%= movie.genres.slice(0,2).map(g => g.name).join(' / ') %></h4>
                         <p class="watchListDescription"><%= movie.overview %></p>
                     </section>    
                     </li>
@@ -136,7 +96,6 @@
             <% } %>
         </section>
         <section id="populair-movies">
-
             <h2>Populair deze week</h2>
 
             <div class="movie-grid">
@@ -157,6 +116,43 @@
         </section>       
         <!-- List.js Initialization -->
         <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const buttons = document.querySelectorAll(".removeBtn");
+
+            buttons.forEach(button => {
+                button.addEventListener("click", async (e) => {
+                    e.preventDefault();
+
+                    const movieId = button.dataset.id;
+
+                    // Confirmation popup
+                    const confirmed = confirm("Weet je zeker dat je deze film wilt verwijderen?");
+                    if (!confirmed) return;
+
+                    try {
+                        const response = await fetch(`/recently-watched/${movieId}`, {
+                            method: "DELETE"
+                        });
+
+                        if (response.ok) {
+                            // Smooth removal animation
+                            const li = button.closest("li");
+                            li.style.transition = "0.3s";
+                            li.style.opacity = "0";
+
+                            setTimeout(() => li.remove(), 300);
+                        } else {
+                            alert("Verwijderen mislukt");
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        alert("Er ging iets mis");
+                    }
+                });
+            });
+        });
+
+
         document.addEventListener('DOMContentLoaded', function() {
             const options = {
                 valueNames: ['watchListName', 'watchListDescription']
