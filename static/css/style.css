@@ -990,6 +990,31 @@
         align-items: center;
     }
 
+    .info img{
+        transform-origin: 50% 50%; 
+        animation: wobble 1s ease-in-out infinite;
+    }
+
+    @keyframes wobble {
+        0%, 100% {
+            transform: rotate(0deg) translateX(0);
+        }
+        15% {
+            transform: rotate(5deg) translateX(5px);
+        }
+        30% {
+            transform: rotate(-0deg) translateX(-5px);
+        }
+        45% {
+            transform: rotate(5deg) translateX(5px);
+        }
+        60% {
+            transform: rotate(-0deg) translateX(-5px);
+        }
+        75% {
+            transform: rotate(5deg) translateX(3px);
+        }
+    }
   
     .background-dots{
         position: absolute;
