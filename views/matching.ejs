@@ -19,16 +19,16 @@
             <h2>Jouw beste match!</h2>
             <ul id="beste-match-ul">
                 <li>
-                    <img
+                    <a href="/movie/<%= bestMatch.id %>" class="poster-link"><img 
                         src="<%= bestMatch.poster_path ? `https://image.tmdb.org/t/p/w342${bestMatch.poster_path}` : '' %>"
-                        alt="<%= bestMatch.title %> poster">
+                        alt="<%= bestMatch.title %> poster"></a>
                     <div class="beste-match-div">
                         <h3><%= bestMatch.title %></h3>
                         <h4 id="oranje"><%= bestMatch.matchPercentage %>%</h4>
                         <h4>Match</h4>
                         <p><%= bestMatch.runtimeLabel %></p>
                         <p><%= bestMatch.overview %></p>
-                        <a href="/movie/<%= bestMatch.id %>">Bekijk details</a>
+                        <a href="/movie/<%= bestMatch.id %>" class="primary-button">Bekijk details</a>
                     </div>
                 </li>
             </ul>
@@ -40,16 +40,16 @@
                 <ul class="meer-matches-ul">
                     <% otherMatches.forEach((movie) => { %>
                         <li>
-                            <img
+                           <a href="/movie/<%= movie.id %>" class="poster-link"><img
                                 src="<%= movie.poster_path ? `https://image.tmdb.org/t/p/w342${movie.poster_path}` : '' %>"
-                                alt="<%= movie.title %> poster">
+                                alt="<%= movie.title %> poster"></a>
                             <div>
                                 <h3><%= movie.title %></h3>
                                 <h4 id="oranje"><%= movie.matchPercentage %>%</h4>
                                 <h4>Match</h4>
                                 <p><%= movie.runtimeLabel %></p>
                                 <p><%= movie.overview %></p>
-                                <a href="/movie/<%= movie.id %>">Bekijk details</a>
+                                <a href="/movie/<%= movie.id %>" class="primary-button">Bekijk details</a>
                             </div>
                         </li>
                     <% }) %>

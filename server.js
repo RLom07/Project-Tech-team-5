@@ -122,7 +122,7 @@ app.use(session({
 app.get('/', async (req, res) => {
 
   if (req.session && req.session.userId) {
-    return res.redirect('/profile');
+    return res.redirect('/indexingelogd');
   }
 
   const movies = await getPopularMovies();
@@ -505,6 +505,16 @@ app.get('/review', (req, res) => {
   res.render(`review`)
 });
 
+app.get('/indexingelogd', async (req, res) => {
+
+  if (!req.session || !req.session.userId) {
+    return res.redirect('/login');
+  }
+
+  const movies = await getPopularMovies();
+  res.render('indexingelogd', { movies, reviews });
+});
+
 app.get('/vragenlijst', (req, res) => { res.render(`vragenlijst`) })
  
 app.get('/vragenlijst-vraag1', (req, res) => { res.render(`vragenlijst-vraag1`) })
@@ -665,7 +675,7 @@ app.post('/login', async (req, res) => {
     // Zonder session/JWT: alleen redirect bij succesvolle login
     req.session.userId = user._id.toString();
 
-    req.session.save(() => res.redirect(next || '/profile'));
+    req.session.save(() => res.redirect(next || '/indexingelogd'));
   } catch (error) {
     console.error('Login error:', error);
     return res.status(500).render('login', {
