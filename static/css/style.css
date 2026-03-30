@@ -860,6 +860,16 @@
     width: 250px;
 }
 
+.matching .poster-link{
+    display: inline-block;
+    transition: none;
+}
+
+.matching .poster-link:hover{
+    transform: none;
+    box-shadow: none;
+}
+
 .beste-match-div{
     padding-left: 2em;
 }
@@ -1742,5 +1752,3 @@
         justify-content: flex-start;
         align-items: start;
     }
-
-
