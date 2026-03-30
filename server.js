@@ -450,7 +450,11 @@ app.get('/movie/:id', async (req, res) => {
  
 app.get("/profile", async (req, res) => { 
   try {
-    
+    // Check if user is logged in
+    if (!req.session.userId) {
+      return res.redirect("/login");
+    }
+
     const { ObjectId } = require("mongodb")
 
     const gebruiker = await db.collection(USERS_COLLECTION).findOne({
@@ -468,8 +472,16 @@ app.get("/profile", async (req, res) => {
         greeting = "Goedenavond"
     }
 
+    const favorites = []
     const watchlist = []
     const recentlyWatched = []
+
+    for (const movieId of gebruiker.favorites) {
+      const url = `${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`
+      const response = await fetch(url)
+      const movie = await response.json()
+      favorites.push(movie)
+    }
 
     for (const movieId of gebruiker.recentlyWatched) {
       const url = `${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`
@@ -490,7 +502,7 @@ app.get("/profile", async (req, res) => {
 
     req.session.visited = true
     // 3. Pass the data object as the second argument to res.render
-    res.render("profile",  { gebruiker, greeting, movies, recentlyWatched, watchlist}) 
+    res.render("profile",  { gebruiker, greeting, movies, favorites, recentlyWatched, watchlist}) 
 
   } catch (error) {  
     console.error("Error fetching profile:", error)
@@ -499,7 +511,7 @@ app.get("/profile", async (req, res) => {
   }
 })
 
-app.delete("/recently-watched/:id", async (req, res) => {
+app.delete("/favorites/:id", async (req, res) => {
   try {
     const { ObjectId } = require("mongodb");
     const userId = req.session.userId;
@@ -511,7 +523,7 @@ app.delete("/recently-watched/:id", async (req, res) => {
 
     const result = await db.collection(USERS_COLLECTION).updateOne(
       { _id: new ObjectId(userId) },
-      { $pull: { recentlyWatched: movieId } }
+      { $pull: { favorites: movieId } }
     );
 
     console.log("MongoDB result:", result);
@@ -519,7 +531,31 @@ app.delete("/recently-watched/:id", async (req, res) => {
     if (result.modifiedCount > 0) {
       res.sendStatus(200);
     } else {
-      res.status(404).send("Movie not found in recentlyWatched");
+      res.status(404).send("Movie not found in favorites");
+    }
+  } catch (err) {
+    console.error("Error removing movie:", err);
+    res.sendStatus(500);
+  }
+});
+
+app.delete("/watchlist/:id", async (req, res) => {
+  try {
+    const { ObjectId } = require("mongodb");
+    const userId = req.session.userId;
+    const movieId = parseInt(req.params.id);
+
+    if (!userId) return res.sendStatus(401);
+
+    const result = await db.collection(USERS_COLLECTION).updateOne(
+      { _id: new ObjectId(userId) },
+      { $pull: { watchlist: movieId } }
+    );
+
+    if (result.modifiedCount > 0) {
+      res.sendStatus(200);
+    } else {
+      res.status(404).send("Movie not found in watchlist");
     }
   } catch (err) {
     console.error("Error removing movie:", err);
@@ -655,6 +691,7 @@ app.post("/register", async (req, res) => {
       wachtwoord: hashedPassword,
       watchlist: [],
       recentlyWatched: [],
+      favorites: [],
       createdAt: new Date()
     }
 

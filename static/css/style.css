@@ -116,6 +116,11 @@
         padding-bottom: 0.5em;
     }
 
+    nav ul li img:hover{
+        scale: 110%;
+        transition: 250ms ease-in-out;
+    }
+
     nav ul li a, #call-to-action ul li a:last-child{
         font-family: var(--body-font);
         border-radius: 22px;
@@ -1468,7 +1473,7 @@
     
 /* Profile pagina **************************************/ 
 /* Kevin's Stukje **************************************/
-    #recentlyWatched{
+    .moviesCarousel{
         color: var(--text-color);
         display: flex;
         flex-direction: column;
@@ -1479,7 +1484,7 @@
         margin-bottom: 4em;
     }
 
-#recentlyWatched ul {
+.moviesCarousel ul {
     list-style: none;
     display: flex;
     justify-content: flex-start; /* items start from left */
@@ -1493,53 +1498,57 @@
     margin: 0; /* remove extra margins */
 }
 
-    #recentlyWatched ul::-webkit-scrollbar{
+    .moviesCarousel ul::-webkit-scrollbar{
         height: 8px; /* horizontal scrollbar height */
         opacity: 0;
     }
 
-    #recentlyWatched ul:hover::-webkit-scrollbar{
+    .moviesCarousel ul:hover::-webkit-scrollbar{
         opacity: 100;
         transition: 350ms ease-in-out;
     }
 
-    #recentlyWatched ul::-webkit-scrollbar-track{
+    .moviesCarousel ul::-webkit-scrollbar-track{
         background: transparent;
     }
 
-    #recentlyWatched ul::-webkit-scrollbar-thumb{
+    .moviesCarousel ul::-webkit-scrollbar-thumb{
         background: var(--button-color);
         border-radius: 10px;
     }
 
-    #recentlyWatched ul::-webkit-scrollbar-thumb:hover{
+    .moviesCarousel ul::-webkit-scrollbar-thumb:hover{
         background: var(--text-color);
     }
 
-#recentlyWatched ul li {
-    width: 200px;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    margin-right: 1em; /* spacing between items */
-}
+    .moviesCarousel ul li {
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        margin-right: 1em; /* spacing between items */
+    }
 
-    #recentlyWatched ul li .recentlyWatchedPosters{
+    .moviesCarousel ul li .recentlyWatchedPosters{
         height: 18em;
         width: auto;
         border-radius: 12px;
         object-fit: cover;
     }
 
-    #recentlyWatched h2{
+    .moviesCarousel h2{
         font-family: var(--header-font);
         text-align: center;
         font-size: 30px;
     }
 
-    #recentlyWatched h3{
+    .moviesCarousel h3{
         font-size: 16px;
         font-family: var(--header-font);
+    }
+
+    .moviesCarousel p{
+        text-align: center;
     }
 
     /* Verwijderen uit recentlywatched knop *********/
@@ -1591,31 +1600,31 @@
 
     }
 
-#watchList .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 300px); /* exactly 3 columns of 300px */
-    gap: 40px; /* space between cards */
-    justify-content: center; /* center the 3 columns horizontally */
-    padding: 0;
-    list-style: none;
-    margin-bottom: 3em;
-}
+    #watchList .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 300px); /* exactly 3 columns of 300px */
+        gap: 60px; /* space between cards */
+        justify-content: center; /* center the 3 columns horizontally */
+        padding: 0;
+        list-style: none;
+        margin-bottom: 3em;
+    }
 
-#watchList .grid li {
-    display: flex;
-    flex-direction: column;
-    width: 300px; /* fixed card width */
-    height: 380px;
-    align-items: center;
-    text-align: center;
-}
+    #watchList .grid li {
+        display: flex;
+        flex-direction: column;
+        width: 300px; /* fixed card width */
+        height: 380px;
+        align-items: center;
+        text-align: center;
+    }
 
-#watchList .grid li img {
-    width: 300px;
-    height: 380px;
-    object-fit: cover;
-    border-radius: 8px;
-}
+    #watchList .grid li img {
+        width: 300px;
+        height: 380px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
 
     #watchList .grid h4,
     #watchList .grid p{
@@ -1717,8 +1726,12 @@
         color: var(--text-color);
     }
 
-    #watchList h3, h4, p{
+    #watchList h3, p{
         color: var(--text-color);
+    }
+
+    #watchList h4{
+        color: var(--button-color);
     }
 
     #watchList h3{
@@ -1726,6 +1739,7 @@
         font-family: var(--header-font);
         font-size: 30px;
     }
+
 
     #watchList li{
         display: flex;
@@ -1735,7 +1749,7 @@
         width: 100%;
         gap: 1em;
         margin-top: 1em;
-        border: 2px solid red;
+
         padding-right: 1em;
     }
 
