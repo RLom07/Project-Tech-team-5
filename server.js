@@ -273,9 +273,17 @@ async function getMatchingMovies(antwoorden = {}) {
 // API detail info movies /////////////////////////////////
 
 //met behulp van ChatGPT
-app.get("/movie/:id", async (req, res) => {
+app.get('/movie/:id', async (req, res) => {
+  
+  const movieId = req.params.id;
+  const added = req.query.added;
 
-  const movieId = req.params.id
+  const { ObjectId } = require('mongodb');
+
+    const gebruiker = await db.collection(USERS_COLLECTION).findOne({
+      _id: new ObjectId(req.session.userId)
+    }); 
+
 
   //film ophalen /////
   const response = await fetch(
@@ -374,8 +382,10 @@ app.get("/movie/:id", async (req, res) => {
     writers,
     actors,
     trailer,
-    recommendations
-  })
+    recommendations,
+    added,
+    gebruiker
+  });
 
 })
 
@@ -668,17 +678,14 @@ app.post("/watchlist/add", async (req, res) => {
       }
     )
 
-    res.json({ success: true })
+   // blijf op zelfde pagina
+    res.redirect(`/movie/${movieId}?added=true`);
 
   } catch (error) {
-    console.error("Watchlist error:", error)
-    res.json({ success: false })
+    console.error(error);
+    res.redirect('back');
   }
-
-    // Redirect back to the movie detail page or watchlist
-    res.redirect("back")
-
-})
+});
 
 //Mongo Connection
 connectToMongo()
