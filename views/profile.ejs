@@ -29,30 +29,36 @@
             <a  href="/vragenlijst" class="primary-button"> Vind je match</a>
         </main>
     </div>
-        <section id="recentlyWatched">
-            <h2>Favorites</h2>
+       <section class="moviesCarousel">
+            <h2>Favorieten</h2>
+            <% if (favorites && favorites.length > 0) { %>
             <ul>
-                <li>
-                    <a href>
-                        <img>
-                    </a>
-                    <h3></h3>
-                </li>  						
-            </ul>
-        </section>
-        <section id="recentlyWatched">
-            <h2>Recentelijk bekeken</h2>
-            <% if (recentlyWatched && recentlyWatched.length > 0) { %>
-            <ul>
-                <% recentlyWatched.forEach((movie) => { %>
+                <% favorites.forEach((movie) => { %>
                 <li>
                     <div class="posterWrapper">
                         <a href="/movie/<%= movie.id %>">
                             <img class="recentlyWatchedPosters" src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>" loading="lazy">
                         </a>
                         <!-- Remove button -->
-                        <button class="removeBtn" data-id="<%= movie.id %>" aria-label="Verwijder film">✕</button>
+                        <button id="removeFavorite" class="removeBtn" data-id="<%= movie.id %>" aria-label="Verwijder film">✕</button>
                     </div>
+                    <h3><%= movie.title %></h3>
+                </li>
+                <% }) %>
+            </ul>
+            <% } else { %>
+                <p>Je hebt nog geen films toegevoegd aan uw favorieten.</p>
+            <% } %>
+        </section>
+        <section class="moviesCarousel">
+            <h2>Recentelijk bekeken</h2>
+            <% if (recentlyWatched && recentlyWatched.length > 0) { %>
+            <ul>
+                <% recentlyWatched.slice(-6).reverse().forEach((movie) => { %>
+                <li>
+                    <a href="/movie/<%= movie.id %>">
+                        <img class="recentlyWatchedPosters" src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>" loading="lazy">
+                    </a>
                     <h3><%= movie.title %></h3>
                 </li>
                 <% }) %>
@@ -65,8 +71,8 @@
             <div id="watchListNav">
                 <h2>Watchlist</h2>
                 <aside>
-                    <img src="../images/list.png" alt="list icon" class="viewIcons" id="view-list" style="cursor:pointer;" onclick="showInList()">
-                    <img src="../images/grid.png" alt="grid icon" class="viewIcons" id="view-grid" style="cursor:pointer;" onclick="showInGrid()">
+                    <img src="../images/list.png" alt="list icon" class="viewIcons" id="view-list" style="cursor:pointer;" onclick="showInList()" loading="lazy">
+                    <img src="../images/grid.png" alt="grid icon" class="viewIcons" id="view-grid" style="cursor:pointer;" onclick="showInGrid()" loading="lazy">
                     Sorteren op:
                     <button class="sort" data-sort="watchListName" style="cursor:pointer;">Naam </button>
                 </aside>
