@@ -91,16 +91,6 @@ async function fetchData(url) {
 
 fetchData(`${process.env.BASE_URL}/movie/popular?api_key=${process.env.API_KEY}`)
 
-//Starter endpoints that can be used
-// /movie/popular?
-
-// /trending/movie/day?
-
-// /search/movie?
-
-// /movie/top_rated?
-//////////////////////////////////// 
-
 
 app.set("view engine", "ejs")
 app.set("views", path.join(__dirname, "views"))
@@ -122,12 +112,12 @@ app.use(session({
 app.get("/", async (req, res) => {
 
   if (req.session && req.session.userId) {
-    return res.redirect('/indexingelogd');
+    return res.redirect("/indexingelogd")
   }
 
-  const movies = await getPopularMovies();
-  res.render('index', { movies, reviews});
-});
+  const movies = await getPopularMovies()
+  res.render("index", { movies, reviews})
+})
 
 // API index populair movies /////////////////////////////////
 async function getPopularMovies() {
@@ -149,31 +139,31 @@ let reviews = [
     text: "Hele goede website",
     rating: "5",
   },
-];
+]
 
-let currentId = 2;
+let currentId = 2
 
 //read- haalt de reviews op
 app.get("/reviews", (req, res) => {
-  res.json(reviews);
-});
+  res.json(reviews)
+})
 
 //Create- nieuwe review toevoegen
 app.post("/reviews", (req, res) => {
 
     if (!req.session.userId) {
-    return res.redirect('/login?next=/review');
+    return res.redirect("/login?next=/review")
   }
   
-  const { name, text, rating } = req.body;
-  const nummerRating = Number(rating);
+  const { name, text, rating } = req.body
+  const nummerRating = Number(rating)
 
   if (!name || !text || !rating) {
-    return res.status(400).json({error:"vul alle velden in."});
+    return res.status(400).json({error:"vul alle velden in."})
   }
 
   if (isNaN(nummerRating) || nummerRating < 1 || nummerRating > 5) {
-  return res.status(400).json({ error: "vul een getal tussen 1 en 5 in." });
+  return res.status(400).json({ error: "vul een getal tussen 1 en 5 in." })
   }
   
   const newReview = {
@@ -182,18 +172,18 @@ app.post("/reviews", (req, res) => {
     name,
     text,
     rating: nummerRating,
-  };
+  }
 
-  reviews.push(newReview);
-  res.redirect('/');
-});
+  reviews.push(newReview)
+  res.redirect("/")
+})
 
 //delete van een review
 
-app.post('/reviews/:id/delete', (req, res) =>{
+app.post("/reviews/:id/delete", (req, res) =>{
   const id = Number(req.params.id) 
   reviews = reviews.filter((review) => review.id !== id)
-  res.redirect('/')
+  res.redirect("/")
 })
 
 //gegenereerde code voor de matching functie//
@@ -330,16 +320,16 @@ async function getMatchingMovies(antwoorden = {}) {
 // API detail info movies /////////////////////////////////
 
 //met behulp van ChatGPT
-app.get('/movie/:id', async (req, res) => {
+app.get("/movie/:id", async (req, res) => {
   
-  const movieId = req.params.id;
-  const added = req.query.added;
+  const movieId = req.params.id
+  const added = req.query.added
 
-  const { ObjectId } = require('mongodb');
+  const { ObjectId } = require("mongodb")
 
     const gebruiker = await db.collection(USERS_COLLECTION).findOne({
       _id: new ObjectId(req.session.userId)
-    }); 
+    }) 
 
 
   //film ophalen /////
@@ -442,7 +432,7 @@ app.get('/movie/:id', async (req, res) => {
     recommendations,
     added,
     gebruiker
-  });
+  })
 
 })
 
@@ -452,7 +442,7 @@ app.get("/profile", async (req, res) => {
   try {
     // Check if user is logged in
     if (!req.session.userId) {
-      return res.redirect("/login");
+      return res.redirect("/login")
     }
 
     const { ObjectId } = require("mongodb")
@@ -513,55 +503,55 @@ app.get("/profile", async (req, res) => {
 
 app.delete("/favorites/:id", async (req, res) => {
   try {
-    const { ObjectId } = require("mongodb");
-    const userId = req.session.userId;
-    const movieId = parseInt(req.params.id);
+    const { ObjectId } = require("mongodb")
+    const userId = req.session.userId
+    const movieId = parseInt(req.params.id)
 
-    console.log("DELETE hit", { userId, movieId });
+    console.log("DELETE hit", { userId, movieId })
 
-    if (!userId) return res.sendStatus(401);
+    if (!userId) return res.sendStatus(401)
 
     const result = await db.collection(USERS_COLLECTION).updateOne(
       { _id: new ObjectId(userId) },
       { $pull: { favorites: movieId } }
-    );
+    )
 
-    console.log("MongoDB result:", result);
+    console.log("MongoDB result:", result)
 
     if (result.modifiedCount > 0) {
-      res.sendStatus(200);
+      res.sendStatus(200)
     } else {
-      res.status(404).send("Movie not found in favorites");
+      res.status(404).send("Movie not found in favorites")
     }
   } catch (err) {
-    console.error("Error removing movie:", err);
-    res.sendStatus(500);
+    console.error("Error removing movie:", err)
+    res.sendStatus(500)
   }
-});
+})
 
 app.delete("/watchlist/:id", async (req, res) => {
   try {
-    const { ObjectId } = require("mongodb");
-    const userId = req.session.userId;
-    const movieId = parseInt(req.params.id);
+    const { ObjectId } = require("mongodb")
+    const userId = req.session.userId
+    const movieId = parseInt(req.params.id)
 
-    if (!userId) return res.sendStatus(401);
+    if (!userId) return res.sendStatus(401)
 
     const result = await db.collection(USERS_COLLECTION).updateOne(
       { _id: new ObjectId(userId) },
       { $pull: { watchlist: movieId } }
-    );
+    )
 
     if (result.modifiedCount > 0) {
-      res.sendStatus(200);
+      res.sendStatus(200)
     } else {
-      res.status(404).send("Movie not found in watchlist");
+      res.status(404).send("Movie not found in watchlist")
     }
   } catch (err) {
-    console.error("Error removing movie:", err);
-    res.sendStatus(500);
+    console.error("Error removing movie:", err)
+    res.sendStatus(500)
   }
-});
+})
 
 app.get("/profielaanpassen", (req, res) => { res.render("profielaanpassen") })
 
@@ -569,8 +559,8 @@ app.get("/register", (req, res) => {
   res.render("register", { error: null, formData: {} })
 })
 
-app.get('/login', (req, res) => {
-  res.render('login', { error: null, formData: {}, next: req.query.next || '' });
+app.get("/login", (req, res) => {
+  res.render("login", { error: null, formData: {}, next: req.query.next || "" })
 })
 
 app.get("/uitloggen", (req, res) => {
@@ -580,25 +570,25 @@ app.get("/uitloggen", (req, res) => {
   })
 })
 
-app.get('/review', (req, res) => { 
+app.get("/review", (req, res) => { 
     if (!req.session.userId) {
-      return res.redirect('/login?next=/review');
+      return res.redirect("/login?next=/review")
   }
 
-  res.render(`review`)
-});
+  res.render("review")
+})
 
-app.get('/indexingelogd', async (req, res) => {
+app.get("/indexingelogd", async (req, res) => {
 
   if (!req.session || !req.session.userId) {
-    return res.redirect('/login');
+    return res.redirect("/login")
   }
 
-  const movies = await getPopularMovies();
-  res.render('indexingelogd', { movies, reviews });
-});
+  const movies = await getPopularMovies()
+  res.render("indexingelogd", { movies, reviews })
+})
 
-app.get('/vragenlijst', (req, res) => { res.render(`vragenlijst`) })
+app.get("/vragenlijst", (req, res) => { res.render("vragenlijst") })
  
 app.get("/vragenlijst-vraag1", (req, res) => { res.render("vragenlijst-vraag1") })
 
@@ -725,9 +715,9 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
 
   try {
-    const { email, wwoord, next } = req.body;
-    const sanitizedEmail = sanitizeTextInput(email).toLowerCase();
-    const formData = { email: sanitizedEmail };
+    const { email, wwoord, next } = req.body
+    const sanitizedEmail = sanitizeTextInput(email).toLowerCase()
+    const formData = { email: sanitizedEmail }
 
     if (!sanitizedEmail || !wwoord) {
       return res.status(400).render("login", {
@@ -759,7 +749,7 @@ app.post("/login", async (req, res) => {
     // Zonder session/JWT: alleen redirect bij succesvolle login
     req.session.userId = user._id.toString()
 
-    req.session.save(() => res.redirect(next || '/indexingelogd'));
+    req.session.save(() => res.redirect(next || "/indexingelogd"))
   } catch (error) {
     console.error("Login error:", error)
     return res.status(500).render("login", {
@@ -791,13 +781,13 @@ app.post("/watchlist/add", async (req, res) => {
     )
 
    // blijf op zelfde pagina
-    res.redirect(`/movie/${movieId}?added=true`);
+    res.redirect(`/movie/${movieId}?added=true`)
 
   } catch (error) {
-    console.error(error);
-    res.redirect('back');
+    console.error(error)
+    res.redirect("back")
   }
-});
+})
 
 //Mongo Connection
 connectToMongo()

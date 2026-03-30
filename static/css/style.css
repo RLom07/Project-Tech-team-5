@@ -1718,24 +1718,28 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        align-items: center; /* centers items vertically */
-        gap: 10px; /* optional spacing between items */
+        margin-right: 2em;
+        align-items: start; /* vertical center all children */
+        gap: 10px;
         padding-bottom: 0;
     }
 
     #watchListNav h2 {
         font-family: var(--header-font);
+        margin: 0;   
+        margin-top: 0.2em;            /* remove default heading margins */
+        line-height: 1;          /* tighten the line height to reduce extra space */
+        padding-right: 2em;      /* optional spacing */
         display: flex;
-        align-items: center;
-        padding-right: 2em;
-
+        align-items: end;      /* vertically center content inside h2 */
     }
+
 
 
     #watchListNav aside {
         display: flex;
-        align-items: center; /* vertical center for images and text */
-        gap: 10px; /* spacing between icons and text */
+        align-items: start; /* vertical center for images and text */
+        gap: 10px;
     }
 
 /********** Watchlist lijst ************/
