@@ -969,6 +969,11 @@
         font-size: 28px;
     }
 
+    .info h1{
+        font-family: var(--header-font);
+        font-size: 1.5em;
+    }
+
     .info li, #call-to-action ul, #call-to-action li, #trustpilot{
         display: flex;
         flex-direction: column;
@@ -978,11 +983,39 @@
   
     .background-dots{
         position: absolute;
-        inset: 0;
-        height: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60%;
     
         z-index: -1;
         pointer-events: none;
+    }
+
+    .verwijder-button{
+        margin-top: 1em;
+        width: 3rem;
+        height: 3rem;
+        border: 1px solid var(--button-color);
+        border-radius: 50%;
+        background: transparent;
+        color: var(--button-color);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .verwijder-button:hover{
+        background: var(--button-color);
+        color: var(--text-color);
+        box-shadow: 0 10px 25px rgba(244, 90, 26, 0.25);
+    }
+
+    .verwijder-button svg{
+        width: 1.2rem;
+        height: 1.2rem;
+        fill: currentColor;
     }
 
    

@@ -2,7 +2,7 @@ require("dotenv").config()
  
 const express = require("express")
 const path = require("path")
-const { MongoClient, ServerApiVersion } = require("mongodb")
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb")
 const xss = require("xss")
 const app = express()
 const port = process.env.PORT || 3000
@@ -26,6 +26,7 @@ const client = new MongoClient(uri, {
 
 const SALT_ROUNDS = 12
 const USERS_COLLECTION = "users"
+const REVIEWS_COLLECTION = "reviews"
 const ALLOWED_EMAIL_PROVIDERS = new Set([
   "gmail.com",
   "googlemail.com",
@@ -126,6 +127,7 @@ app.get("/", async (req, res) => {
   }
 
   const movies = await getPopularMovies();
+  const reviews = await db.collection(REVIEWS_COLLECTION).find().toArray();
   res.render('index', { movies, reviews});
 });
 
@@ -142,24 +144,14 @@ async function getPopularMovies() {
 
 //oefenen review pagina
 
-let reviews = [
-  {
-    id: 1,
-    name: "Anna",
-    text: "Hele goede website",
-    rating: "5",
-  },
-];
-
-let currentId = 2;
-
+let currentId = 2
 //read- haalt de reviews op
 app.get("/reviews", (req, res) => {
   res.json(reviews);
 });
 
 //Create- nieuwe review toevoegen
-app.post("/reviews", (req, res) => {
+app.post("/reviews", async (req, res) => {
 
     if (!req.session.userId) {
     return res.redirect('/login?next=/review');
@@ -184,17 +176,39 @@ app.post("/reviews", (req, res) => {
     rating: nummerRating,
   };
 
-  reviews.push(newReview);
+  await db.collection(REVIEWS_COLLECTION).insertOne(newReview)
   res.redirect('/');
 });
 
 //delete van een review
 
-app.post('/reviews/:id/delete', (req, res) =>{
-  const id = Number(req.params.id) 
-  reviews = reviews.filter((review) => review.id !== id)
-  res.redirect('/')
+app.post('/reviews/:id/delete', async (req, res) =>{
+  const { ObjectId } = require("mongodb")  
+
+   console.log("Delete id:", req.params.id)
+  
+  await db.collection(REVIEWS_COLLECTION).deleteOne({
+    _id: new ObjectId(req.params.id)
+  })
+
+  res.redirect('/indexingelogd')
 })
+
+app.get('/indexingelogd', async (req, res) => {
+  const { ObjectId } = require("mongodb")
+
+  if (!req.session || !req.session.userId) {
+    return res.redirect('/login');
+  }
+
+  const gebruiker = await db.collection(USERS_COLLECTION).findOne({
+    _id: new ObjectId(req.session.userId)
+  })
+
+  const movies = await getPopularMovies();
+  const reviews = await db.collection(REVIEWS_COLLECTION).find().toArray();
+  res.render('indexingelogd', { movies, reviews, gebruiker });
+});
 
 //gegenereerde code voor de matching functie//
 function parseAntwoorden(rawAntwoorden) {
@@ -552,15 +566,6 @@ app.get('/review', (req, res) => {
   res.render(`review`)
 });
 
-app.get('/indexingelogd', async (req, res) => {
-
-  if (!req.session || !req.session.userId) {
-    return res.redirect('/login');
-  }
-
-  const movies = await getPopularMovies();
-  res.render('indexingelogd', { movies, reviews });
-});
 
 app.get('/vragenlijst', (req, res) => { res.render(`vragenlijst`) })
  
