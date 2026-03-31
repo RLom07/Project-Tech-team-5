@@ -332,14 +332,26 @@ async function getMatchingMovies(antwoorden = {}) {
 //met behulp van ChatGPT
 app.get('/movie/:id', async (req, res) => {
   
-  const movieId = req.params.id;
-  const added = req.query.added;
+  const movieId = parseInt(req.params.id);
 
-  const { ObjectId } = require('mongodb');
+  let gebruiker = null;
+  let isInWatchlist = false;
+  let isInFavorites = false;
+  let isInWatched = false;
 
-    const gebruiker = await db.collection(USERS_COLLECTION).findOne({
+  if (req.session.userId) {
+    const { ObjectId } = require('mongodb');
+
+    gebruiker = await db.collection(USERS_COLLECTION).findOne({
       _id: new ObjectId(req.session.userId)
-    }); 
+    });
+
+    if (gebruiker) {
+      isInWatchlist = gebruiker.watchlist?.includes(movieId);
+      isInFavorites = gebruiker.favorites?.includes(movieId);
+      isInWatched = gebruiker.recentlyWatched?.includes(movieId);
+    }
+  }
 
 
   //film ophalen /////
@@ -440,12 +452,131 @@ app.get('/movie/:id', async (req, res) => {
     actors,
     trailer,
     recommendations,
-    added,
-    gebruiker
+    gebruiker,
+    isInFavorites,
+    isInWatchlist,
+    isInWatched
   });
 
 })
 
+app.post('/favorites/toggle', async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    const movieId = parseInt(req.body.movieId);
+
+  if (!userId) {
+    req.session.redirectTo = `/movie/${movieId}`;
+    return res.redirect('/login');
+  }
+
+    const { ObjectId } = require('mongodb');
+
+    const gebruiker = await db.collection(USERS_COLLECTION).findOne({
+      _id: new ObjectId(userId)
+    });
+
+    const zitErin = gebruiker.favorites?.includes(movieId);
+
+    if (zitErin) {
+      await db.collection(USERS_COLLECTION).updateOne(
+        { _id: new ObjectId(userId) },
+        { $pull: { favorites: movieId } }
+      );
+    } else {
+      await db.collection(USERS_COLLECTION).updateOne(
+        { _id: new ObjectId(userId) },
+        { $addToSet: { favorites: movieId } }
+      );
+    }
+
+    res.redirect(`/movie/${movieId}`);
+
+  } catch (error) {
+    console.error(error);
+    res.redirect('back');
+  }
+});
+
+app.post('/watchlist/toggle', async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    const movieId = parseInt(req.body.movieId);
+
+  if (!userId) {
+    req.session.redirectTo = `/movie/${movieId}`;
+    return res.redirect('/login');
+  }
+
+    const { ObjectId } = require('mongodb');
+
+    const gebruiker = await db.collection(USERS_COLLECTION).findOne({
+      _id: new ObjectId(userId)
+    });
+
+    const zitErin = gebruiker.watchlist?.includes(movieId);
+
+    if (zitErin) {
+      // verwijderen
+      await db.collection(USERS_COLLECTION).updateOne(
+        { _id: new ObjectId(userId) },
+        { $pull: { watchlist: movieId } }
+      );
+    } else {
+      // toevoegen
+      await db.collection(USERS_COLLECTION).updateOne(
+        { _id: new ObjectId(userId) },
+        { $addToSet: { watchlist: movieId } }
+      );
+    }
+
+    res.redirect(`/movie/${movieId}`);
+
+  } catch (error) {
+    console.error(error);
+    res.redirect('back');
+  }
+});
+
+app.post('/recentlyWatched/toggle', async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    const movieId = parseInt(req.body.movieId);
+
+  if (!userId) {
+    req.session.redirectTo = `/movie/${movieId}`;
+    return res.redirect('/login');
+  }
+
+    const { ObjectId } = require('mongodb');
+
+    const gebruiker = await db.collection(USERS_COLLECTION).findOne({
+      _id: new ObjectId(userId)
+    });
+
+    const zitErin = gebruiker.recentlyWatched?.includes(movieId);
+
+    if (zitErin) {
+      // verwijderen
+      await db.collection(USERS_COLLECTION).updateOne(
+        { _id: new ObjectId(userId) },
+        { $pull: { recentlyWatched: movieId } }
+      );
+    } else {
+      // toevoegen
+      await db.collection(USERS_COLLECTION).updateOne(
+        { _id: new ObjectId(userId) },
+        { $addToSet: { recentlyWatched: movieId } }
+      );
+    }
+
+    res.redirect(`/movie/${movieId}`);
+
+  } catch (error) {
+    console.error(error);
+    res.redirect('back');
+  }
+});
 
  
 app.get("/profile", async (req, res) => { 
@@ -453,10 +584,14 @@ app.get("/profile", async (req, res) => {
     
     const { ObjectId } = require("mongodb")
 
+    if (!req.session.userId) {
+      return res.redirect('/login');
+    }
+
     const gebruiker = await db.collection(USERS_COLLECTION).findOne({
       _id: new ObjectId(req.session.userId)
     }) 
-                
+         
     const hour = new Date().getHours()
     let greeting
 
@@ -470,6 +605,7 @@ app.get("/profile", async (req, res) => {
 
     const watchlist = []
     const recentlyWatched = []
+    const favorites = []
 
     for (const movieId of gebruiker.recentlyWatched) {
       const url = `${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`
@@ -486,11 +622,25 @@ app.get("/profile", async (req, res) => {
       watchlist.push(movie)
     }
 
+    for (const movieId of gebruiker.favorites || []) {
+      const url = `${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`
+      const response = await fetch(url)
+      const movie = await response.json()
+      favorites.push(movie)
+    }
+
     const movies = await getPopularMovies()
 
     req.session.visited = true
     // 3. Pass the data object as the second argument to res.render
-    res.render("profile",  { gebruiker, greeting, movies, recentlyWatched, watchlist}) 
+    res.render("profile", { 
+      gebruiker, 
+      greeting, 
+      movies, 
+      recentlyWatched, 
+      watchlist,
+      favorites
+    })
 
   } catch (error) {  
     console.error("Error fetching profile:", error)
@@ -722,7 +872,12 @@ app.post("/login", async (req, res) => {
     // Zonder session/JWT: alleen redirect bij succesvolle login
     req.session.userId = user._id.toString()
 
-    req.session.save(() => res.redirect(next || '/indexingelogd'));
+    
+    const redirectTo = req.session.redirectTo || '/indexingelogd';
+    req.session.redirectTo = null;
+    //blijft op detailpagina van fil na inloggen
+    res.redirect(redirectTo);
+
   } catch (error) {
     console.error("Login error:", error)
     return res.status(500).render("login", {
@@ -733,34 +888,6 @@ app.post("/login", async (req, res) => {
 })
 
 
-// make sure your route is protected (user logged in)
-app.post("/watchlist/add", async (req, res) => {
-  try {
-    const userId = req.session.userId
-    const { movieId } = req.body
-
-    // niet ingelogd
-    if (!userId) {
-      return res.status(401).json({ notLoggedIn: true })
-    }
-
-    const { ObjectId } = require("mongodb")
-
-    await db.collection(USERS_COLLECTION).updateOne(
-      { _id: new ObjectId(userId) },
-      {
-        $addToSet: { watchlist: movieId } // voorkomt duplicates
-      }
-    )
-
-   // blijf op zelfde pagina
-    res.redirect(`/movie/${movieId}?added=true`);
-
-  } catch (error) {
-    console.error(error);
-    res.redirect('back');
-  }
-});
 
 //Mongo Connection
 connectToMongo()

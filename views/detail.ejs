@@ -9,7 +9,7 @@
 
 <body>
    <header>
-        <%- include('partials/header') %>
+        <%- include('partials/detailheader') %>
     </header>
     <main>
 
@@ -38,12 +38,13 @@
                 </div>
 
                 <!-- bekijken -->
-                <form action="/recentlywatched/add" method="POST">
+                <form action="/recentlywatched/toggle" method="POST">
                     <input type="hidden" name="movieId" value="<%= movie.id %>">
 
-                    <button id="watch-button">
-                        Ik ga deze kijken!
+                    <button class="watch-button <%= isInWatched? 'active' : '' %>">
+                        <%= isInWatched ? 'Bekeken' : 'Ik ga deze kijken!' %>
                     </button>
+
                 </form>
 
             </section>
@@ -51,29 +52,29 @@
             <div class="movie-actions">
 
                 <!-- FAVORIETEN -->
-                <form action="/favorites/add" method="POST">
+                <form action="/favorites/toggle" method="POST">
                     <input type="hidden" name="movieId" value="<%= movie.id %>">
 
-                    <button class="save-button <%= added ? 'active' : '' %>">
+                    <button class="save-button <%= isInFavorites ? 'active' : '' %>">
 
-                        <img src="/images/favoriet.svg" 
-                            class="<%= added ? 'active-icon' : '' %>">
+                        <img src="/images/favoriet.svg"
+                            class="<%= isInFavorites ? 'active-icon' : '' %>">
 
-                        <%= added ? 'Toegevoegd aan favorieten' : 'Voeg toe aan favoriet' %>
+                        <%= isInFavorites ? 'Opgeslagen in favorieten' : 'Voeg toe aan favoriet' %>
 
                     </button>
                 </form>
 
                 <!-- WATCHLIST -->
-                <form action="/watchlist/add" method="POST">
+                <form action="/watchlist/toggle" method="POST">
                     <input type="hidden" name="movieId" value="<%= movie.id %>">
 
-                    <button class="save-button <%= added ? 'active' : '' %>">
+                    <button class="save-button <%= isInWatchlist ? 'active' : '' %>">
 
-                        <img src="/images/watchlater.svg" alt=""
-                            class="<%= added ? 'active-icon' : '' %>">
+                        <img src="/images/watchlater.svg"
+                            class="<%= isInWatchlist ? 'active-icon' : '' %>">
 
-                        <%= added ? 'Toegevoegd aan watchlist' : 'Voeg toe aan watchlist' %>
+                        <%= isInWatchlist ? 'Opgeslagen in watchlist' : 'Voeg toe aan watchlist' %>
 
                     </button>
                 </form>
@@ -132,7 +133,7 @@
 
                     <div class="provider-row">
 
-                        <img src="https://image.tmdb.org/t/p/w45<%= p.logo_path %>" alt="<%= p.provider_name %>">
+                        <img src="https://image.tmdb.org/t/p/w45<%= p.logo_path %>" alt="<%= p.provider_name %>" loading="lazy">
 
                         <div>
                             <h3><%= p.provider_name %></h3>
@@ -195,7 +196,7 @@
 
             <a href="/movie/<%= movie.id %>" class="movie-card">
 
-                <img src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>">
+                <img src="https://image.tmdb.org/t/p/w200<%= movie.poster_path %>" alt="<%= movie.title %>" loading="lazy">
 
                 <h3><%= movie.title %></h3>
 
