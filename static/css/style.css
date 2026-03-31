@@ -632,6 +632,47 @@
     cursor: pointer;
 }
 
+.verwijder-account-dialog {
+    border: none;
+    border-radius: 12px;
+    padding: 1.2rem;
+    max-width: 420px;
+}
+
+.verwijder-account-dialog p {
+    color: #000;
+}
+
+.verwijder-account-acties {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.verwijder-account-acties button {
+    border: none;
+    border-radius: 8px;
+    padding: 0.55rem 0.9rem;
+    cursor: pointer;
+}
+
+#verwijder-account-ja {
+    background: #A10A1D;
+    color: #FFF;
+    border: none;
+}
+
+#verwijder-account-ja:hover{
+    box-shadow: 0 10px 25px rgba(244, 26, 26, 0.5);
+}
+
+#verwijder-account-nee {
+    background: #F45A1A;
+    color: #fff;
+    border: none;
+}
+
 /* vragenlijst styling */
 
 .vragenlijst main{

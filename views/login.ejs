@@ -17,7 +17,7 @@
                 <div class="form-error" role="alert"><%= error %></div>
             <% } %>
             <form class="login-form" action="/login" method="POST">
-                <input type="hidden" name="next" value="<%= next || ''%>">
+                <input type="hidden" name="next" value="<%= typeof next !== 'undefined' ? next : '' %>">
                 <label for="email" class="l-email">Email:</label>
                 <input type="text" id="l-email" name="email" value="<%= formData && formData.email ? formData.email : '' %>">
                 <label for="wwoord" class="l-wwoord">Wachtwoord:</label>

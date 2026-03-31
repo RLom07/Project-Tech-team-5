@@ -36,8 +36,18 @@
         <label for="wwoord" class="p-wwoord">Wachtwoord:</label>
         <input type="password" id="p-wwoord" name="wwoord">
         <input type="submit" id="update" name="update" value="update">
-        <button class="verwijderacc" type="button">Verwijder Account</button>
+        <button class="verwijderacc" id="verwijder-account-btn" type="button">Verwijder Account</button>
      </form>
+
+    <form id="verwijder-account-form" method="post" action="/profielaanpassen/verwijder-account"></form>
+    
+    <dialog id="verwijder-account-dialog" class="verwijder-account-dialog">
+         <p>Weet je zeker dat je je account wilt verwijderen? Dit kan niet meer ongedaan worden gemaakt</p>
+         <div class="verwijder-account-acties">
+            <button type="button" id="verwijder-account-ja">Ja</button>
+            <button type="button" id="verwijder-account-nee">Nee</button>
+        </div>
+    </dialog>
     </main>
 </body>
 
@@ -45,6 +55,11 @@
     const trigger = document.getElementById("profielfoto-trigger")
     const input = document.getElementById("profielfoto-input")
     const preview = document.getElementById("gebruikerpf-preview")
+    const deleteBtn = document.getElementById("verwijder-account-btn")
+    const deleteForm = document.getElementById("verwijder-account-form")
+    const deleteDialog = document.getElementById("verwijder-account-dialog")
+    const deleteYes = document.getElementById("verwijder-account-ja")
+    const deleteNo = document.getElementById("verwijder-account-nee")
 
     trigger.addEventListener("click", () => {
         input.click()
@@ -73,5 +88,27 @@
         } finally {
             input.value = ""
         }
+    })
+
+     deleteBtn.addEventListener("click", () => {
+        const message = "Weet je zeker dat je je account wilt verwijderen? Dit kan niet meer ongedaan worden gemaakt"
+                
+        if (typeof deleteDialog.showModal === "function") {
+            deleteDialog.showModal()
+            return
+        }
+            
+        if (confirm(message)) {
+            deleteForm.submit()
+        }
+    })
+            
+    deleteNo.addEventListener("click", () => {
+        deleteDialog.close()
+    })
+            
+    deleteYes.addEventListener("click", () => {
+        deleteDialog.close()
+        deleteForm.submit()
     })
 </script>

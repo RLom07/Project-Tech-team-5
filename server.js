@@ -708,6 +708,47 @@ app.post("/profielaanpassen/update", async (req, res) => {
 })
 
 
+app.post("/profielaanpassen/verwijder-account", async (req, res) => {
+  if (!req.session || !req.session.userId) {
+    return res.redirect("/login")
+  }
+
+  try {
+    const { ObjectId } = require("mongodb")
+    const userId = req.session.userId
+
+    const gebruiker = await db.collection(USERS_COLLECTION).findOne(
+      { _id: new ObjectId(userId) },
+      { projection: { profielfoto: 1 } }
+    )
+
+    await db.collection(USERS_COLLECTION).deleteOne({ _id: new ObjectId(userId) })
+
+    if (
+      gebruiker &&
+      typeof gebruiker.profielfoto === "string" &&
+      gebruiker.profielfoto.startsWith("/uploads/profielen/")
+    ) {
+      const relativePath = gebruiker.profielfoto.replace(/^\/+/, "")
+      const absolutePath = path.resolve(__dirname, "public", relativePath)
+      const uploadRoot = path.resolve(PROFILE_PHOTO_UPLOAD_DIR)
+
+      if (absolutePath.startsWith(uploadRoot + path.sep)) {
+        await fs.promises.unlink(absolutePath).catch(() => {})
+      }
+    }
+
+    req.session.destroy(() => {
+      res.clearCookie("connect.sid")
+      return res.redirect("/")
+    })
+  } catch (error) {
+    console.error("Error deleting account:", error)
+    return res.status(500).send("Internal Server Error")
+  }
+})
+
+
 app.get("/register", (req, res) => {
   res.render("register", { error: null, formData: {} })
 })
@@ -870,13 +911,15 @@ app.post("/login", async (req, res) => {
 
   try {
     const { email, wwoord, next } = req.body;
+    const safeNext = typeof next === "string" ? next : ""
     const sanitizedEmail = sanitizeTextInput(email).toLowerCase();
     const formData = { email: sanitizedEmail };
 
     if (!sanitizedEmail || !wwoord) {
       return res.status(400).render("login", {
         error: "Vul email en wachtwoord in.",
-        formData
+        formData,
+        next: safeNext
       })
     }
 
@@ -887,7 +930,8 @@ app.post("/login", async (req, res) => {
     if (!user) {
       return res.status(401).render("login", {
         error: "Ongeldige inloggegevens.",
-        formData: { email: sanitizedEmail }
+        formData: { email: sanitizedEmail },
+        next: safeNext
       })
     }
 
@@ -896,19 +940,21 @@ app.post("/login", async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).render("login", {
         error: "Ongeldige inloggegevens.",
-        formData: { email: sanitizedEmail }
+        formData: { email: sanitizedEmail },
+        next: safeNext
       })
     }
 
     // Zonder session/JWT: alleen redirect bij succesvolle login
     req.session.userId = user._id.toString()
 
-    req.session.save(() => res.redirect(next || '/indexingelogd'));
+    req.session.save(() => res.redirect(safeNext || '/indexingelogd'));
   } catch (error) {
     console.error("Login error:", error)
     return res.status(500).render("login", {
       error: "Er ging iets mis bij inloggen.",
-      formData: { email: sanitizeTextInput(req.body.email).toLowerCase() }
+      formData: { email: sanitizeTextInput(req.body.email).toLowerCase() },
+      next: typeof req.body?.next === "string" ? req.body.next : ""
     })
   }
 })
