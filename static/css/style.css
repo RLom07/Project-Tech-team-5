@@ -17,15 +17,26 @@
     body{
         margin: 0;
         font-family: var(--body-font);
-        background: url("../images/background-image.png");
+        background: url("../images/background-image.avif");
        
         background-size: auto;
         background-position: center;
         background-color: var(--background-color);
         color: var(--text-color);
+        animation: transitionIn 1.50s;
     }
  
+    @keyframes transitionIn{
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
 
+        to {
+            opacity: 1;
+            transform: translateY(0); 
+        }
+    }
 
     h2{
         font-family: var(--header-font);
@@ -50,7 +61,7 @@
         list-style: none;
     }
 
-    .primary-button, #watch-button{
+    .primary-button, .watch-button{
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -65,7 +76,7 @@
         cursor: pointer;
     }
 
-    .primary-button:hover, #watch-button:hover{
+    .primary-button:hover, .watch-button:hover{
         background-color: #d94e14;
         box-shadow: 0 6px 14px rgba(0,0,0,0.15);
     }
@@ -116,6 +127,11 @@
         padding-bottom: 0.5em;
     }
 
+    nav ul li img:hover{
+        scale: 110%;
+        transition: 250ms ease-in-out;
+    }
+
     nav ul li a, #call-to-action ul li a:last-child{
         font-family: var(--body-font);
         border-radius: 22px;
@@ -133,7 +149,7 @@
         font-weight: bold;
     }
 
-    a.inloggen{
+    a.inloggen, a.profileDetail{
         border: 1px solid #F45A1A;
         color: white;
     }
@@ -980,6 +996,31 @@
         align-items: center;
     }
 
+    .info img{
+        transform-origin: 50% 50%; 
+        animation: wobble 1s ease-in-out infinite;
+    }
+
+    @keyframes wobble {
+        0%, 100% {
+            transform: rotate(0deg) translateX(0);
+        }
+        15% {
+            transform: rotate(5deg) translateX(5px);
+        }
+        30% {
+            transform: rotate(-0deg) translateX(-5px);
+        }
+        45% {
+            transform: rotate(5deg) translateX(5px);
+        }
+        60% {
+            transform: rotate(-0deg) translateX(-5px);
+        }
+        75% {
+            transform: rotate(5deg) translateX(3px);
+        }
+    }
   
     .background-dots{
         position: absolute;
@@ -989,7 +1030,14 @@
         width: 60%;
     
         z-index: -1;
-        pointer-events: none;
+        pointer-events: none; */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        width: 100%;
+        height: auto;
     }
 
     .verwijder-button{
@@ -1324,17 +1372,27 @@
     
     .save-button img{
         width: 3em;
+        transition: transform 0.3s ease;
     }
     
-    #watch-button{
+    .watch-button{
         margin-top:10px;
         width:320px;
     }
 
     .save-button.active {
         background-color: var(--outline-color);
-
     }
+    
+    .save-button.active img {
+     transform: scale(1.2) rotate(10deg);
+    }
+
+    .watch-button.active {
+        background-color: rgba(208, 121, 85, 0.52);
+        backdrop-filter: blur(4px);
+    }
+    
 
     
 
@@ -1547,7 +1605,7 @@
     
 /* Profile pagina **************************************/ 
 /* Kevin's Stukje **************************************/
-    #recentlyWatched{
+    .moviesCarousel{
         color: var(--text-color);
         display: flex;
         flex-direction: column;
@@ -1558,7 +1616,7 @@
         margin-bottom: 4em;
     }
 
-#recentlyWatched ul {
+.moviesCarousel ul {
     list-style: none;
     display: flex;
     justify-content: flex-start; /* items start from left */
@@ -1572,53 +1630,57 @@
     margin: 0; /* remove extra margins */
 }
 
-    #recentlyWatched ul::-webkit-scrollbar{
+    .moviesCarousel ul::-webkit-scrollbar{
         height: 8px; /* horizontal scrollbar height */
         opacity: 0;
     }
 
-    #recentlyWatched ul:hover::-webkit-scrollbar{
+    .moviesCarousel ul:hover::-webkit-scrollbar{
         opacity: 100;
         transition: 350ms ease-in-out;
     }
 
-    #recentlyWatched ul::-webkit-scrollbar-track{
+    .moviesCarousel ul::-webkit-scrollbar-track{
         background: transparent;
     }
 
-    #recentlyWatched ul::-webkit-scrollbar-thumb{
+    .moviesCarousel ul::-webkit-scrollbar-thumb{
         background: var(--button-color);
         border-radius: 10px;
     }
 
-    #recentlyWatched ul::-webkit-scrollbar-thumb:hover{
+    .moviesCarousel ul::-webkit-scrollbar-thumb:hover{
         background: var(--text-color);
     }
 
-#recentlyWatched ul li {
-    width: 200px;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    margin-right: 1em; /* spacing between items */
-}
+    .moviesCarousel ul li {
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        margin-right: 1em; /* spacing between items */
+    }
 
-    #recentlyWatched ul li .recentlyWatchedPosters{
+    .moviesCarousel ul li .recentlyWatchedPosters{
         height: 18em;
         width: auto;
         border-radius: 12px;
         object-fit: cover;
     }
 
-    #recentlyWatched h2{
+    .moviesCarousel h2{
         font-family: var(--header-font);
         text-align: center;
         font-size: 30px;
     }
 
-    #recentlyWatched h3{
+    .moviesCarousel h3{
         font-size: 16px;
         font-family: var(--header-font);
+    }
+
+    .moviesCarousel p{
+        text-align: center;
     }
 
     /* Verwijderen uit recentlywatched knop *********/
@@ -1670,31 +1732,31 @@
 
     }
 
-#watchList .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 300px); /* exactly 3 columns of 300px */
-    gap: 40px; /* space between cards */
-    justify-content: center; /* center the 3 columns horizontally */
-    padding: 0;
-    list-style: none;
-    margin-bottom: 3em;
-}
+    #watchList .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 300px); /* exactly 3 columns of 300px */
+        gap: 60px; /* space between cards */
+        justify-content: center; /* center the 3 columns horizontally */
+        padding: 0;
+        list-style: none;
+        margin-bottom: 3em;
+    }
 
-#watchList .grid li {
-    display: flex;
-    flex-direction: column;
-    width: 300px; /* fixed card width */
-    height: 380px;
-    align-items: center;
-    text-align: center;
-}
+    #watchList .grid li {
+        display: flex;
+        flex-direction: column;
+        width: 300px; /* fixed card width */
+        height: 380px;
+        align-items: center;
+        text-align: center;
+    }
 
-#watchList .grid li img {
-    width: 300px;
-    height: 380px;
-    object-fit: cover;
-    border-radius: 8px;
-}
+    #watchList .grid li img {
+        width: 300px;
+        height: 380px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
 
     #watchList .grid h4,
     #watchList .grid p{
@@ -1753,24 +1815,28 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        align-items: center; /* centers items vertically */
-        gap: 10px; /* optional spacing between items */
+        margin-right: 2em;
+        align-items: start; /* vertical center all children */
+        gap: 10px;
         padding-bottom: 0;
     }
 
     #watchListNav h2 {
         font-family: var(--header-font);
+        margin: 0;   
+        margin-top: 0.2em;            /* remove default heading margins */
+        line-height: 1;          /* tighten the line height to reduce extra space */
+        padding-right: 2em;      /* optional spacing */
         display: flex;
-        align-items: center;
-        padding-right: 2em;
-
+        align-items: end;      /* vertically center content inside h2 */
     }
+
 
 
     #watchListNav aside {
         display: flex;
-        align-items: center; /* vertical center for images and text */
-        gap: 10px; /* spacing between icons and text */
+        align-items: start; /* vertical center for images and text */
+        gap: 10px;
     }
 
 /********** Watchlist lijst ************/
@@ -1796,8 +1862,12 @@
         color: var(--text-color);
     }
 
-    #watchList h3, h4, p{
+    #watchList h3, p{
         color: var(--text-color);
+    }
+
+    #watchList h4{
+        color: var(--button-color);
     }
 
     #watchList h3{
@@ -1805,6 +1875,7 @@
         font-family: var(--header-font);
         font-size: 30px;
     }
+
 
     #watchList li{
         display: flex;
@@ -1814,7 +1885,7 @@
         width: 100%;
         gap: 1em;
         margin-top: 1em;
-        border: 2px solid red;
+
         padding-right: 1em;
     }
 

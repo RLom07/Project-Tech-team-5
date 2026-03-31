@@ -49,7 +49,7 @@
                 </h3>
             </li>
         </ul>
-        <img class=background-dots src="../images/info-background.png" alt="info background" aria-hidden="true">
+        <img class=background-dots src="../images/info-background.png" alt="info background" aria-hidden="true" loading="lazy">
 
     </section>
 
@@ -63,7 +63,7 @@
 
                 <a href="/movie/<%= movie.id %>" class="movie-card <%= index < 2 ? 'large' : '' %>">
 
-                    <img src="https://image.tmdb.org/t/p/w780<%= movie.backdrop_path || movie.poster_path %>" alt="<%= movie.title %>" loading="lazy">
+                    <img src="https://image.tmdb.org/t/p/w400<%= movie.backdrop_path || movie.poster_path %>" alt="<%= movie.title %>" loading="lazy">
                 
                     <h3><%= movie.title %></h3>
                     
@@ -85,7 +85,7 @@
     <section id="trustpilot">
 
         <div>
-            <img src="../images/trustpilot-stars.svg" alt="trustpilot stars" aria-hidden="true">
+            <img src="../images/trustpilot-stars.svg" alt="trustpilot stars" aria-hidden="true" loading="lazy">
             <p>see our reviews</p>
         </div>
         
