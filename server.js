@@ -170,8 +170,6 @@ async function getPopularMovies() {
 }
 
 //oefenen review pagina
-
-let currentId = 2
 //read- haalt de reviews op
 app.get("/reviews", (req, res) => {
   res.json(reviews)
