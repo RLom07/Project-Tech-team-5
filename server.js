@@ -665,7 +665,6 @@ app.get("/profile", async (req, res) => {
     const favorites = []
     const watchlist = []
     const recentlyWatched = []
-    const favorites = []
 
     for (const movieId of gebruiker.favorites) {
       const url = `${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`
