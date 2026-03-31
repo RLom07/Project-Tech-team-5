@@ -985,6 +985,11 @@
         font-size: 28px;
     }
 
+    .info h1{
+        font-family: var(--header-font);
+        font-size: 1.5em;
+    }
+
     .info li, #call-to-action ul, #call-to-action li, #trustpilot{
         display: flex;
         flex-direction: column;
@@ -1018,10 +1023,11 @@
     }
   
     .background-dots{
-        /* position: absolute;
-        inset: 0;
-        height: 150%;
-
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60%;
     
         z-index: -1;
         pointer-events: none; */
@@ -1032,6 +1038,32 @@
 
         width: 100%;
         height: auto;
+    }
+
+    .verwijder-button{
+        margin-top: 1em;
+        width: 3rem;
+        height: 3rem;
+        border: 1px solid var(--button-color);
+        border-radius: 50%;
+        background: transparent;
+        color: var(--button-color);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .verwijder-button:hover{
+        background: var(--button-color);
+        color: var(--text-color);
+        box-shadow: 0 10px 25px rgba(244, 90, 26, 0.25);
+    }
+
+    .verwijder-button svg{
+        width: 1.2rem;
+        height: 1.2rem;
+        fill: currentColor;
     }
 
    
@@ -1109,99 +1141,145 @@
         padding: 9em;
     }
 
-    #gebruikers, #trustpilot>div:first-child, #reviews-header>div{
+    #gebruikers{
         display: flex;
         justify-content: center;
-        flex-direction: row;
-        gap:1.5em;
-    }
-    #gebruikers{
         padding: 9em 5em;
-        align-items: flex-end;
+        align-items: center;
         gap:4em;
     }
 
     #gebruikers h2{
         padding: 0;
         margin:0;
-    }
-
-    #trustpilot img{
-        width: 20em;
-    }
-
-     #reviews-header h3{
-        font-family: var(--body-font);
-        font-weight: bold;
-        font-size: 4em;
-        padding: 0;
-        margin: 0;
-    }
-
-
-    #trustpilot div p{
-        font-weight: bold;
-    }
-
-    #reviews-header{
-        padding-top: 3em;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
         text-align: center;
     }
 
-    #reviews-header p img{
-        width: 6em;
+    #gebruikers img{
+        display: block;
+        align-self: center;
+        transform: translateY(-2.5em);
     }
 
-    #reviews{
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        gap: 2em;
-        padding: 0 100px;
-    }
-      
-    #reviews-rating img{
-        width: 10em;
-    }
+/* review functie */
 
-    #reviews-rating article{
-        position: relative;
-        z-index: 2;
-        padding: 1em;
-        border-radius: 12px;
-        margin-bottom: 2em;;
+.review{ 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
 
-        background: rgba(217,217,217,0.15);
-        backdrop-filter: blur(4px);
+.review h1 {
+    font-family: "aBigDeal";
+    font-size: 3em;
+}
 
-        border:1px solid rgba(255,255,255,0.25);
-    }
-   
-    .review-meta{
-        display:flex;
-        align-items:center;
-        gap:10px;
+.review h2 {
+    font-family: "aBigDeal";
+    font-size: 1.5em;
+    padding: 0;
+}
 
-        font-size:0.9rem;
-    }
+.review textarea {
+    width: 50em;
+    height: 7em;
+}
 
-    .review-meta time{
-        margin-left:auto;
-        opacity:0.7;
-    }
+.review #name{
+    height: 3em;
+}
 
-    #reviews-rating>svg{
-        position: absolute;
-        inset: 0;
+.review label[for="rating"] {
+    display: block;
+    margin: 0.5em 0 0.75em;
+    font-family: var(--body-font);
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
 
-        width: 100%;
-        height: 100%;
+.review input#rating {
+    width: 6rem;
+    padding: 0.85em 1em;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 14px;
+    background: rgba(217, 217, 217, 0.15);
+    backdrop-filter: blur(4px);
+    color: var(--text-color);
+    font-family: var(--body-font);
+    font-size: 1rem;
+}
 
-        pointer-events: none;
-    }
+.review input#rating:focus {
+    outline: none;
+    border-color: var(--button-color);
+    box-shadow: 0 0 0 3px rgba(244, 90, 26, 0.2);
+}
+
+.review div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 3em;
+}
+.review button{
+    width: 48em;
+}
+
+#trustpilot h1{
+    color: white;
+    text-align: center;
+    font-family: "a Big Deal";
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+#trustpilot h2{
+    padding: 0;
+    font-size: 1.5em;
+    font-family: var(--body-font);
+    font-weight: 400;
+}
+
+#trustpilot section {
+    display: flex;
+    flex-direction: column;
+    width: 50em;
+    background: rgba(255, 255, 255, 0.10);
+    border-radius: 2em;
+}
+
+#trustpilot section article {
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    margin: 2em;
+    padding: 1em 5em 1em 1em;
+}
+
+
+#trustpilot section article form {
+    position: absolute;
+    top: 50%;
+    right: 1em;
+    transform: translateY(-50%);
+    margin: 0;
+}
+
+
+#trustpilot section article h3 {
+    font-weight: 400;
+}
+
+#trustpilot > .primary-button {
+    margin-top: 2em;
+}
 
 
 /* detailpagina */
