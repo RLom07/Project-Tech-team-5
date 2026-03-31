@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,10 +38,10 @@
                 </div>
 
                 <!-- bekijken -->
-                <form action="/recentlywatched/toggle" method="POST">
-                    <input type="hidden" name="movieId" value="<%= movie.id %>">
+                <form action="/recentlyWatched/toggle" method="POST">
+                    <input type="hidden" name="movieId" value="<%= movie.id %>" >
 
-                    <button class="watch-button <%= isInWatched? 'active' : '' %>">
+                    <button type="submit" class="watch-button <%= isInWatched? 'active' : '' %>" aria-label="Voeg toe aan recent bekeken" aria-pressed="<%= isInWatched %>" >
                         <%= isInWatched ? 'Bekeken' : 'Ik ga deze kijken!' %>
                     </button>
 
@@ -55,9 +55,9 @@
                 <form action="/favorites/toggle" method="POST">
                     <input type="hidden" name="movieId" value="<%= movie.id %>">
 
-                    <button class="save-button <%= isInFavorites ? 'active' : '' %>">
+                    <button type="submit" class="save-button <%= isInFavorites ? 'active' : '' %>" aria-label="Voeg toe aan favorieten" aria-pressed="<%= isInFavorites %>">
 
-                        <img src="/images/favoriet.svg"
+                        <img src="/images/favoriet.svg" alt="" aria-hidden="true" 
                             class="<%= isInFavorites ? 'active-icon' : '' %>">
 
                         <%= isInFavorites ? 'Opgeslagen in favorieten' : 'Voeg toe aan favoriet' %>
@@ -69,9 +69,9 @@
                 <form action="/watchlist/toggle" method="POST">
                     <input type="hidden" name="movieId" value="<%= movie.id %>">
 
-                    <button class="save-button <%= isInWatchlist ? 'active' : '' %>">
+                    <button type="submit" class="save-button <%= isInWatchlist ? 'active' : '' %>" aria-label="Voeg toe aan watchlist" aria-pressed="<%= isInWatchlist %>">
 
-                        <img src="/images/watchlater.svg"
+                        <img src="/images/watchlater.svg" alt="" aria-hidden="true"
                             class="<%= isInWatchlist ? 'active-icon' : '' %>">
 
                         <%= isInWatchlist ? 'Opgeslagen in watchlist' : 'Voeg toe aan watchlist' %>
@@ -79,7 +79,7 @@
                     </button>
                 </form>
             </div>
-            <img class=background-dots src="../images/movie-background.png" alt="info background" aria-hidden="true">
+            <img class="background-dots" src="../images/movie-background.png" alt="info background" aria-hidden="true">
         </section>
 
     </main>
@@ -92,7 +92,7 @@
 
             <div class="stat-box">
 
-                <img src="../images/star.svg" alt=star icon aria-hidden="true"> 
+                <img src="../images/star.svg" alt="star" icon aria-hidden="true"> 
                 <p><%= movie.vote_average.toFixed(1) %> /10 <br>
                     <span class="vote-count">
                         <%= movie.vote_count %> votes
@@ -109,7 +109,7 @@
 
             <div class="stat-box">
 
-               <img src="../images/popularity.svg" alt=star icon aria-hidden="true"> 
+               <img src="../images/popularity.svg" alt="popularity" icon aria-hidden="true"> 
                 <p><%= Math.round(movie.popularity) %></p>
 
             </div>
@@ -174,10 +174,11 @@
         <% if (trailer) { %>
 
             <div class="trailer">
-                <iframe 
+                <iframe title="trailer"
                     width="100%" 
                     height="400"
                     src="https://www.youtube.com/embed/<%= trailer.key %>"
+                    loading="lazy"
                     frameborder="0"
                     allowfullscreen>
                 </iframe>

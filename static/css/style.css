@@ -65,7 +65,7 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background-color: #F45A1A;
+        background-color: var(--button-color);
         color: white;
         font-family: var(--body-font);
         font-weight: bold;
@@ -366,7 +366,7 @@
 }
 
 .tologin {
-    color: #F45A1A;
+    color: var(--button-color);
 }
 
 #register {
@@ -376,7 +376,7 @@
     height: 4rem;
     justify-self: center;
     border-radius: 10px;
-    background-color: #F45A1A;
+    background-color: var(--button-color);
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     color: #FFF;
     font-size: 18px;
@@ -388,7 +388,6 @@
 
 #register:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 25px rgba(244, 90, 26, 0.5);
     box-shadow: none;
 }
 
@@ -459,7 +458,7 @@
     height: 4rem;
     justify-self: center;
     border-radius: 10px;
-    background-color: #F45A1A;
+    background-color: var(--button-color);
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     color: #FFF;
     font-size: 18px;
@@ -600,7 +599,7 @@
     grid-column-start: 2;
 
     width: 65%;
-    background-color: #F45A1A;
+    background-color: var(--button-color);
     border-radius: 15px;
     color: #FFF;
     font-size: 18px;
@@ -695,7 +694,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 5em;
+    padding-top: 3em;
 }
 
 .vragenlijst h1{
@@ -934,7 +933,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background-color: #F45A1A;
+    background-color: var(--button-color);
     color: white;
     font-family: var(--body-font);
     font-weight: bold;
@@ -978,7 +977,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background-color: #F45A1A;
+    background-color: var(--button-color);
     color: white;
     font-family: var(--body-font);
     font-weight: bold;
@@ -1069,7 +1068,7 @@
         align-items: center;
     }
 
-    .info img{
+    .info li img{
         transform-origin: 50% 50%; 
         animation: wobble 1s ease-in-out infinite;
     }
@@ -1097,11 +1096,15 @@
   
     .background-dots{
         position: absolute;
-        inset:0;
-        height: 150%;
-
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+     
         z-index:-1;
-        
+    }
+
+    .movie-hero .background-dots{
+        left: 20%;
     }
 
     .verwijder-button{
@@ -1430,6 +1433,7 @@
         backdrop-filter: blur(4px);
 
         border:1px solid rgba(255,255,255,0.25);
+        transition: all 0.3s ease;
 
     } 
 
@@ -1926,7 +1930,7 @@
         color: var(--text-color);
     }
 
-    #watchList h3, p{
+    #watchList h3, #watchList p{
         color: var(--text-color);
     }
 
