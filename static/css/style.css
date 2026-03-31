@@ -23,9 +23,20 @@
         background-position: center;
         background-color: var(--background-color);
         color: var(--text-color);
+        animation: transitionIn 1.50s;
     }
  
+    @keyframes transitionIn{
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
 
+        to {
+            opacity: 1;
+            transform: translateY(0); 
+        }
+    }
 
     h2{
         font-family: var(--header-font);
@@ -114,6 +125,11 @@
         height: 70px;
         width: auto;
         padding-bottom: 0.5em;
+    }
+
+    nav ul li img:hover{
+        scale: 110%;
+        transition: 250ms ease-in-out;
     }
 
     nav ul li a, #call-to-action ul li a:last-child{
@@ -975,6 +991,31 @@
         align-items: center;
     }
 
+    .info img{
+        transform-origin: 50% 50%; 
+        animation: wobble 1s ease-in-out infinite;
+    }
+
+    @keyframes wobble {
+        0%, 100% {
+            transform: rotate(0deg) translateX(0);
+        }
+        15% {
+            transform: rotate(5deg) translateX(5px);
+        }
+        30% {
+            transform: rotate(-0deg) translateX(-5px);
+        }
+        45% {
+            transform: rotate(5deg) translateX(5px);
+        }
+        60% {
+            transform: rotate(-0deg) translateX(-5px);
+        }
+        75% {
+            transform: rotate(5deg) translateX(3px);
+        }
+    }
   
     .background-dots{
         /* position: absolute;
@@ -1534,13 +1575,13 @@
         background: var(--text-color);
     }
 
-.moviesCarousel ul li {
-    width: 200px;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    margin-right: 1em; /* spacing between items */
-}
+    .moviesCarousel ul li {
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        margin-right: 1em; /* spacing between items */
+    }
 
     .moviesCarousel ul li .recentlyWatchedPosters{
         height: 18em;
@@ -1558,6 +1599,10 @@
     .moviesCarousel h3{
         font-size: 16px;
         font-family: var(--header-font);
+    }
+
+    .moviesCarousel p{
+        text-align: center;
     }
 
     /* Verwijderen uit recentlywatched knop *********/
@@ -1609,31 +1654,31 @@
 
     }
 
-#watchList .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 300px); /* exactly 3 columns of 300px */
-    gap: 40px; /* space between cards */
-    justify-content: center; /* center the 3 columns horizontally */
-    padding: 0;
-    list-style: none;
-    margin-bottom: 3em;
-}
+    #watchList .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 300px); /* exactly 3 columns of 300px */
+        gap: 60px; /* space between cards */
+        justify-content: center; /* center the 3 columns horizontally */
+        padding: 0;
+        list-style: none;
+        margin-bottom: 3em;
+    }
 
-#watchList .grid li {
-    display: flex;
-    flex-direction: column;
-    width: 300px; /* fixed card width */
-    height: 380px;
-    align-items: center;
-    text-align: center;
-}
+    #watchList .grid li {
+        display: flex;
+        flex-direction: column;
+        width: 300px; /* fixed card width */
+        height: 380px;
+        align-items: center;
+        text-align: center;
+    }
 
-#watchList .grid li img {
-    width: 300px;
-    height: 380px;
-    object-fit: cover;
-    border-radius: 8px;
-}
+    #watchList .grid li img {
+        width: 300px;
+        height: 380px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
 
     #watchList .grid h4,
     #watchList .grid p{
@@ -1692,24 +1737,28 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        align-items: center; /* centers items vertically */
-        gap: 10px; /* optional spacing between items */
+        margin-right: 2em;
+        align-items: start; /* vertical center all children */
+        gap: 10px;
         padding-bottom: 0;
     }
 
     #watchListNav h2 {
         font-family: var(--header-font);
+        margin: 0;   
+        margin-top: 0.2em;            /* remove default heading margins */
+        line-height: 1;          /* tighten the line height to reduce extra space */
+        padding-right: 2em;      /* optional spacing */
         display: flex;
-        align-items: center;
-        padding-right: 2em;
-
+        align-items: end;      /* vertically center content inside h2 */
     }
+
 
 
     #watchListNav aside {
         display: flex;
-        align-items: center; /* vertical center for images and text */
-        gap: 10px; /* spacing between icons and text */
+        align-items: start; /* vertical center for images and text */
+        gap: 10px;
     }
 
 /********** Watchlist lijst ************/
@@ -1735,8 +1784,12 @@
         color: var(--text-color);
     }
 
-    #watchList h3, h4, p{
+    #watchList h3, p{
         color: var(--text-color);
+    }
+
+    #watchList h4{
+        color: var(--button-color);
     }
 
     #watchList h3{
@@ -1744,6 +1797,7 @@
         font-family: var(--header-font);
         font-size: 30px;
     }
+
 
     #watchList li{
         display: flex;
@@ -1753,7 +1807,7 @@
         width: 100%;
         gap: 1em;
         margin-top: 1em;
-        border: 2px solid red;
+
         padding-right: 1em;
     }
 
