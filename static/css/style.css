@@ -1254,6 +1254,11 @@
     height: 3em;
 }
 
+.review #voornaam{
+    height: 3em;
+}
+
+
 .review label[for="rating"] {
     display: block;
     margin: 0.5em 0 0.75em;

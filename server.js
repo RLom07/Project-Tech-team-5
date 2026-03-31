@@ -155,7 +155,7 @@ app.get("/", async (req, res) => {
 
   const movies = await getPopularMovies();
   const reviews = await db.collection(REVIEWS_COLLECTION).find().toArray();
-  res.render('index', { movies, reviews});
+  res.render('index', { movies, reviews, currentUserId: null });
 });
 
 // API index populair movies /////////////////////////////////
@@ -184,10 +184,10 @@ app.post("/reviews", async (req, res) => {
     return res.redirect("/login?next=/review")
   }
   
-  const { name, text, rating } = req.body
+  const { voornaam, name, text, rating } = req.body
   const nummerRating = Number(rating)
 
-  if (!name || !text || !rating) {
+  if (!voornaam | !name || !text || !rating) {
     return res.status(400).json({error:"vul alle velden in."})
   }
 
@@ -198,6 +198,7 @@ app.post("/reviews", async (req, res) => {
   const newReview = {
     id: currentId++,
     userId: req.session.userId,
+    voornaam,
     name,
     text,
     rating: nummerRating,
