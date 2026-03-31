@@ -7,72 +7,67 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="matching">
-    <header></header>
-    <h1>Resultaten</h1>
+    <header>
+    <%- include('partials/header') %>
+    </header>
+    <main>
+        <% if (typeof error !== 'undefined' && error) { %>
+            <p><%= error %></p>
+        <% } %>
 
-    <% if (typeof error !== 'undefined' && error) { %>
-        <p><%= error %></p>
-    <% } %>
-
-    <% if (bestMatch) { %>
-        <section id="beste-match">
-            <h2>Jouw beste match!</h2>
-            <ul id="beste-match-ul">
-                <li>
-                    <a href="/movie/<%= bestMatch.id %>" class="poster-link"><img 
-                        src="<%= bestMatch.poster_path ? `https://image.tmdb.org/t/p/w342${bestMatch.poster_path}` : '' %>"
-                        alt="<%= bestMatch.title %> poster"></a>
-                    <div class="beste-match-div">
-                        <h3><%= bestMatch.title %></h3>
-                        <h4 id="oranje"><%= bestMatch.matchPercentage %>%</h4>
-                        <h4>Match</h4>
-                        <p><%= bestMatch.runtimeLabel %></p>
-                        <p><%= bestMatch.overview %></p>
-                        <a href="/movie/<%= bestMatch.id %>" class="primary-button">Bekijk details</a>
-                    </div>
-                </li>
-            </ul>
-        </section>
-
-        <% if (otherMatches.length) { %>
-            <section class="meer-matches">
-                <h2>Je andere matches</h2>
-                <ul class="meer-matches-ul">
-                    <% otherMatches.forEach((movie) => { %>
-                        <li>
-                           <a href="/movie/<%= movie.id %>" class="poster-link"><img
-                                src="<%= movie.poster_path ? `https://image.tmdb.org/t/p/w342${movie.poster_path}` : '' %>"
-                                alt="<%= movie.title %> poster"></a>
-                            <div>
-                                <h3><%= movie.title %></h3>
-                                <h4 id="oranje"><%= movie.matchPercentage %>%</h4>
-                                <h4>Match</h4>
-                                <p><%= movie.runtimeLabel %></p>
-                                <p><%= movie.overview %></p>
-                                <a href="/movie/<%= movie.id %>" class="primary-button">Bekijk details</a>
-                            </div>
-                        </li>
-                    <% }) %>
+        <% if (bestMatch) { %>
+            <section id="beste-match">
+                <h2>Jouw beste match!</h2>
+                <ul id="beste-match-ul">
+                    <li>
+                        <a href="/movie/<%= bestMatch.id %>" class="poster-link"><img 
+                            src="<%= bestMatch.poster_path ? `https://image.tmdb.org/t/p/w342${bestMatch.poster_path}` : '' %>"
+                            alt="<%= bestMatch.title %> poster"></a>
+                        <div class="beste-match-div">
+                            <h3><%= bestMatch.title %></h3>
+                            <h4 id="oranje"><%= bestMatch.matchPercentage %>%</h4>
+                            <h4>Match</h4>
+                            <p><%= bestMatch.runtimeLabel %></p>
+                            <p><%= bestMatch.overview %></p>
+                            <a href="/movie/<%= bestMatch.id %>" class="primary-button">Bekijk details</a>
+                        </div>
+                    </li>
                 </ul>
             </section>
-        <% } %>
-    <% } else { %>
-        <section id="beste-match">
-            <h2>We konden nog geen matches tonen</h2>
-            <p>Vul de vragenlijst opnieuw in om films te vinden die beter bij jouw voorkeuren passen.</p>
-            <a href="/vragenlijst-vraag1">Start de vragenlijst</a>
-        </section>
-    <% } %>
 
-    <% if (Object.keys(antwoorden || {}).length) { %>
-        <section>
-            <h2>Jouw keuzes</h2>
-            <ul>
-                <% Object.entries(antwoorden).forEach(([vraag, antwoord]) => { %>
-                    <li><strong><%= vraag %>:</strong> <%= antwoord %></li>
-                <% }) %>
-            </ul>
-        </section>
-    <% } %>
+            <% if (otherMatches.length) { %>
+                <section class="meer-matches">
+                    <h2>Je andere matches</h2>
+                    <ul class="meer-matches-ul">
+                        <% otherMatches.forEach((movie) => { %>
+                            <li>
+                               <a href="/movie/<%= movie.id %>" class="poster-link"><img
+                                    src="<%= movie.poster_path ? `https://image.tmdb.org/t/p/w342${movie.poster_path}` : '' %>"
+                                    alt="<%= movie.title %> poster"></a>
+                                <div>
+                                    <h3><%= movie.title %></h3>
+                                    <h4 id="oranje"><%= movie.matchPercentage %>%</h4>
+                                    <h4>Match</h4>
+                                    <p><%= movie.runtimeLabel %></p>
+                                    <p><%= movie.overview %></p>
+                                    <a href="/movie/<%= movie.id %>" class="primary-button">Bekijk details</a>
+                                </div>
+                            </li>
+                        <% }) %>
+                    </ul>
+                </section>
+            <% } %>
+        <% } else { %>
+            <section id="beste-match">
+                <h2>We konden nog geen matches tonen</h2>
+                <p>Vul de vragenlijst opnieuw in om films te vinden die beter bij jouw voorkeuren passen.</p>
+                <a href="/vragenlijst-vraag1">Start de vragenlijst</a>
+            </section>
+        <% } %>
+
+    </main>
+    <footer>
+        <%- include('partials/footer') %>
+    </footer>
 </body>
 </html>

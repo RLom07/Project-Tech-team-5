@@ -7,10 +7,9 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="vragenlijst">
-    <button onclick="history.back()" class="back-button">
-        <img src="../images/icoon-pijl-wit.svg" alt="witte pijl naar rechts" aria-hidden="true">
-        Terug
-    </button>
+    <header>
+    <%- include('partials/header', { hideAuthButtons: true }) %>
+    </header>
     <main>
         <h1>Vindt de film voor nu!</h1>
         <section>

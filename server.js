@@ -380,9 +380,6 @@ async function getMatchingMovies(antwoorden = {}) {
 }
 
 
-
-
-
 // API detail info movies /////////////////////////////////
 
 //met behulp van ChatGPT
@@ -985,7 +982,7 @@ app.get("/vragenlijst-vraag5", (req, res) => { res.render("vragenlijst-vraag5")}
 app.get("/vragenlijst-vraag6", (req, res) => { res.render("vragenlijst-vraag6")})
 
 app.get("/matching", (req, res) => {
-  res.render("matching", { antwoorden: {}, bestMatch: null, otherMatches: [] })
+  res.render("matching", { bestMatch: null, otherMatches: [] })
 })
  
 
@@ -996,14 +993,12 @@ app.post("/matching", async (req, res) => {
     const matches = await getMatchingMovies(antwoorden)
 
     res.render("matching", {
-      antwoorden,
       bestMatch: matches[0] || null,
       otherMatches: matches.slice(1)
     })
   } catch (error) {
     console.error("Matching error:", error)
     res.status(500).render("matching", {
-      antwoorden: parseAntwoorden(req.body.antwoorden),
       bestMatch: null,
       otherMatches: [],
       error: "Er ging iets mis bij het ophalen van matches."
