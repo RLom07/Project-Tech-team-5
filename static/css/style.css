@@ -977,13 +977,20 @@
 
   
     .background-dots{
-        position: absolute;
+        /* position: absolute;
         inset: 0;
         height: 150%;
 
     
         z-index: -1;
-        pointer-events: none;
+        pointer-events: none; */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        width: 100%;
+        height: auto;
     }
 
    
@@ -1241,8 +1248,6 @@
 
         border:1px solid rgba(255,255,255,0.25);
 
-        transition: transform 0.15s ease;
-
     } 
 
     
@@ -1254,12 +1259,10 @@
     .watch-button{
         margin-top:10px;
         width:320px;
-        transition: transform 0.15s ease;
     }
 
     .save-button.active {
         background-color: var(--outline-color);
-        transform: scale(0.95);
     }
     
     .save-button.active img {
@@ -1269,7 +1272,6 @@
     .watch-button.active {
         background-color: rgba(208, 121, 85, 0.52);
         backdrop-filter: blur(4px);
-        transform: scale(0.95);
     }
     
 
