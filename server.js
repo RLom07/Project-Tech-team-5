@@ -182,11 +182,25 @@ app.post("/reviews", async (req, res) => {
 
 //delete van een review
 
-app.post('/reviews/:id/delete', async (req, res) =>{
-  const { ObjectId } = require("mongodb")  
+app.post('/reviews/:id/delete', async (req, res) => {
+  const { ObjectId } = require("mongodb")
 
-   console.log("Delete id:", req.params.id)
-  
+  if (!req.session || !req.session.userId) {
+    return res.redirect('/login')
+  }
+
+  const review = await db.collection(REVIEWS_COLLECTION).findOne({
+    _id: new ObjectId(req.params.id)
+  })
+
+  if (!review) {
+    return res.redirect('/indexingelogd')
+  }
+
+  if (review.userId !== req.session.userId) {
+    return res.status(403).send("Niet toegestaan")
+  }
+
   await db.collection(REVIEWS_COLLECTION).deleteOne({
     _id: new ObjectId(req.params.id)
   })
@@ -207,7 +221,7 @@ app.get('/indexingelogd', async (req, res) => {
 
   const movies = await getPopularMovies();
   const reviews = await db.collection(REVIEWS_COLLECTION).find().toArray();
-  res.render('indexingelogd', { movies, reviews, gebruiker });
+  res.render('indexingelogd', { movies, reviews, gebruiker, currentUserId: req.session.userId });
 });
 
 //gegenereerde code voor de matching functie//

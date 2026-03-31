@@ -1093,45 +1093,53 @@
         padding: 9em;
     }
 
-    #gebruikers, #trustpilot>div:first-child, #reviews-header>div{
+    #gebruikers{
         display: flex;
         justify-content: center;
-        flex-direction: row;
-        gap:1.5em;
-    }
-    #gebruikers{
         padding: 9em 5em;
-        align-items: flex-end;
+        align-items: center;
         gap:4em;
     }
 
     #gebruikers h2{
         padding: 0;
         margin:0;
+        text-align: center;
+    }
+
+    #gebruikers img{
+        display: block;
+        align-self: center;
+        transform: translateY(-2.5em);
     }
 
 /* review functie */
 
 .review{ 
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .review h1 {
     font-family: "aBigDeal";
-    font-size: 4em;
+    font-size: 3em;
 }
 
 .review h2 {
     font-family: "aBigDeal";
-    font-size: 2em;
+    font-size: 1.5em;
     padding: 0;
 }
 
 .review textarea {
-    width: 63em;
-    height: 5em;
+    width: 50em;
+    height: 7em;
+}
+
+.review #name{
+    height: 3em;
 }
 
 .review label[for="rating"] {
@@ -1162,6 +1170,69 @@
     border-color: var(--button-color);
     box-shadow: 0 0 0 3px rgba(244, 90, 26, 0.2);
 }
+
+.review div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 3em;
+}
+.review button{
+    width: 48em;
+}
+
+#trustpilot h1{
+    color: white;
+    text-align: center;
+    font-family: "a Big Deal";
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+#trustpilot h2{
+    padding: 0;
+    font-size: 1.5em;
+    font-family: var(--body-font);
+    font-weight: 400;
+}
+
+#trustpilot section {
+    display: flex;
+    flex-direction: column;
+    width: 50em;
+    background: rgba(255, 255, 255, 0.10);
+    border-radius: 2em;
+}
+
+#trustpilot section article {
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    margin: 2em;
+    padding: 1em 5em 1em 1em;
+}
+
+
+#trustpilot section article form {
+    position: absolute;
+    top: 50%;
+    right: 1em;
+    transform: translateY(-50%);
+    margin: 0;
+}
+
+
+#trustpilot section article h3 {
+    font-weight: 400;
+}
+
+#trustpilot > .primary-button {
+    margin-top: 2em;
+}
+
 
 /* detailpagina */
 
