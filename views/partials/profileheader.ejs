@@ -1,3 +1,14 @@
+<%
+  const headerProfielFotoSrc =
+    typeof profielFotoSrc === "string" && profielFotoSrc.trim()
+      ? profielFotoSrc.trim()
+      : (typeof gebruiker !== "undefined" &&
+        gebruiker &&
+        typeof gebruiker.profielfoto === "string" &&
+        gebruiker.profielfoto.trim()
+          ? gebruiker.profielfoto.trim()
+          : "/images/defaultpf.jpg")
+%>
 <nav>
     <ul>
         <li>
@@ -7,7 +18,9 @@
         </li>
         <li>
             <a href="/uitloggen" class="registreren">Uitloggen</a>
-            <a href="#" class="inloggen">Instellingen</a>
+            <a href="profielaanpassen" class="profiel-aanpassen">
+                <img id="header-gebruikerpf-preview" src="<%= headerProfielFotoSrc %>" alt="profiel foto van gebruiker" class="gebruikerpfpartial js-profiel-foto-preview">
+            </a>
         </li>
     </ul>
 </nav>
