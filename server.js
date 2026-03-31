@@ -1135,7 +1135,12 @@ app.post("/login", async (req, res) => {
     // Zonder session/JWT: alleen redirect bij succesvolle login
     req.session.userId = user._id.toString()
 
-    req.session.save(() => res.redirect(safeNext || '/indexingelogd'));
+    const redirectTo = req.session.redirectTo || '/indexingelogd';
+    req.session.redirectTo = null;
+    //blijft op detailpagina van fil na inloggen
+    res.redirect(redirectTo);
+
+    
   } catch (error) {
     console.error("Login error:", error)
     return res.status(500).render("login", {
