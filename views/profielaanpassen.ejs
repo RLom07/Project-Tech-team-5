@@ -10,16 +10,29 @@
 
 <body>
     <main class="main-pfa">
-     <h1 class="groetgebruiker">Hallo Henry</h1> <!-- Vervang Henry later voor naam uit database -->
-     <p class="profielfoto">Profiel foto:</p>
-     <img src="/images/defaultpf.jpg" alt="profiel foto van gebruiker" class="gebruikerpf">
-     <form class="profielaanpasform">
+    <h1 class="groetgebruiker">Hallo <%= gebruiker.voornaam %>
+    </h1>
+    <p class="profielfoto">Profiel foto:</p>
+    <button type="button" id="profielfoto-trigger" class="gebruikerpf-knop" aria-label="Kies profielfoto">
+        <img id="gebruikerpf-preview" src="<%= profielFotoSrc %>" alt="profiel foto van gebruiker" class="gebruikerpf">
+    </button>
+    <input type="file" id="profielfoto-input" name="profielfoto" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+
+    <form class="profielaanpasform" method="post" action="/profielaanpassen/update">
+     <% if (updateError) { %>
+        <p class="profiel-update-error">
+            <%= updateError %>
+        </p>
+        <% } %>
+        <% if (updateSuccess) { %>
+            <p class="profiel-update-success">Profiel is bijgewerkt.</p>
+        <% } %>
         <label for="vnaam" class="p-vnaam">Voornaam:</label>
-        <input type="text" id="p-vnaam" name="vnaam">
+        <input type="text" id="p-vnaam" name="vnaam" value="<%= gebruiker.voornaam %>">
         <label for="anaam" class="p-anaam">Achternaam:</label>
-        <input type="text" id="p-anaam" name="anaam">
+        <input type="text" id="p-anaam" name="anaam" value="<%= gebruiker.achternaam %>">
         <label for="email" class="p-email">Email:</label>
-        <input type="text" id="p-email" name="email">
+        <input type="text" id="p-email" name="email" value="<%= gebruiker.email %>">
         <label for="wwoord" class="p-wwoord">Wachtwoord:</label>
         <input type="password" id="p-wwoord" name="wwoord">
         <input type="submit" id="update" name="update" value="update">
@@ -27,3 +40,38 @@
      </form>
     </main>
 </body>
+
+<script>
+    const trigger = document.getElementById("profielfoto-trigger")
+    const input = document.getElementById("profielfoto-input")
+    const preview = document.getElementById("gebruikerpf-preview")
+
+    trigger.addEventListener("click", () => {
+        input.click()
+    })
+
+    input.addEventListener("change", async () => {
+        if (!input.files || !input.files.length) return
+
+        const formData = new FormData()
+        formData.append("profielfoto", input.files[0])
+
+        try {
+            const response = await fetch("/profielaanpassen/profielfoto", {
+                method: "POST",
+                body: formData
+            })
+
+            const data = await response.json()
+            if (!response.ok) {
+                throw new Error(data.error || "Upload mislukt.")
+            }
+
+            preview.src = `${data.profielFotoSrc}?t=${Date.now()}`
+        } catch (error) {
+            alert(error.message)
+        } finally {
+            input.value = ""
+        }
+    })
+</script>
