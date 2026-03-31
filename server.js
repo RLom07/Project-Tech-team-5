@@ -688,13 +688,6 @@ app.get("/profile", async (req, res) => {
       watchlist.push(movie)
     }
 
-    for (const movieId of gebruiker.favorites || []) {
-      const url = `${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`
-      const response = await fetch(url)
-      const movie = await response.json()
-      favorites.push(movie)
-    }
-
     const movies = await getPopularMovies()
 
     req.session.visited = true
