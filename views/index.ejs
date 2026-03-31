@@ -49,7 +49,7 @@
                 </h3>
             </li>
         </ul>
-        <img class=background-dots src="../images/info-background.png" alt="info background" aria-hidden="true">
+        <img class=background-dots src="../images/info-background.png" alt="info background" aria-hidden="true" loading="lazy">
 
     </section>
 
@@ -63,7 +63,7 @@
 
                 <a href="/movie/<%= movie.id %>" class="movie-card <%= index < 2 ? 'large' : '' %>">
 
-                    <img src="https://image.tmdb.org/t/p/w780<%= movie.backdrop_path || movie.poster_path %>" alt="<%= movie.title %>" loading="lazy">
+                    <img src="https://image.tmdb.org/t/p/w400<%= movie.backdrop_path || movie.poster_path %>" alt="<%= movie.title %>" loading="lazy">
                 
                     <h3><%= movie.title %></h3>
                     
@@ -85,7 +85,7 @@
     <section id="trustpilot">
 
         <div>
-            <img src="../images/trustpilot-stars.svg" alt="trustpilot stars" aria-hidden="true">
+            <img src="../images/trustpilot-stars.svg" alt="trustpilot stars" aria-hidden="true" loading="lazy">
             <p>see our reviews</p>
         </div>
         
@@ -96,8 +96,12 @@
                 <h3><%= review.name %></h3>
                 <p><%= review.text %></p>
                 <p>Rating: <%= review.rating %></p>
-                <form action="/reviews/<%= review.id %>/delete" method="POST">
-                    <button type="submit">verwijder review</button>
+                <form action="/reviews/<%= review._id %>/delete" method="POST">
+                    <button type="submit" class="verwijder-button" aria-label="Verwijder review">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M9 3h6l1 2h4v2H4V5h4l1-2zm-1 6h2v8H8V9zm6 0h2v8h-2V9zM7 9h10l-1 11H8L7 9z"/>
+                        </svg>
+                    </button>
                 </form>
             </article>
             <% }) %>
