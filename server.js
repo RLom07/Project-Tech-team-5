@@ -2,8 +2,10 @@ require("dotenv").config()
  
 const express = require("express")
 const path = require("path")
-const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb")
+const fs = require("node:fs")
+const { MongoClient, ServerApiVersion } = require("mongodb")
 const xss = require("xss")
+const multer = require("multer")
 const app = express()
 const port = process.env.PORT || 3000
 const validator = require("validator")
@@ -26,6 +28,41 @@ const client = new MongoClient(uri, {
 
 const SALT_ROUNDS = 12
 const USERS_COLLECTION = "users"
+
+const DEFAULT_PROFILE_PHOTO = "/images/defaultpf.jpg"
+const PROFILE_PHOTO_UPLOAD_DIR = path.join(__dirname, "public", "uploads", "profielen")
+fs.mkdirSync(PROFILE_PHOTO_UPLOAD_DIR, { recursive: true })
+const ALLOWED_IMAGE_MIME_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif"
+])
+
+
+const profilePhotoStorage = multer.diskStorage({
+  destination: (_req, _file, cb) => {
+    cb(null, PROFILE_PHOTO_UPLOAD_DIR)
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase()
+    const safeExt = [".jpg", ".jpeg", ".png", ".webp", ".gif"].includes(ext) ? ext : ".jpg"
+    cb(null, `user-${req.session.userId}-${Date.now()}${safeExt}`)
+  }
+})
+
+const uploadProfilePhoto = multer({
+  storage: profilePhotoStorage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  fileFilter: (_req, file, cb) => {
+    if (!ALLOWED_IMAGE_MIME_TYPES.has(file.mimetype)) {
+      return cb(new Error("Alleen JPG, PNG, WEBP of GIF zijn toegestaan."))
+    }
+    cb(null, true)
+  }
+})
+
+
 const REVIEWS_COLLECTION = "reviews"
 const ALLOWED_EMAIL_PROVIDERS = new Set([
   "gmail.com",
@@ -628,7 +665,6 @@ app.get("/profile", async (req, res) => {
     const favorites = []
     const watchlist = []
     const recentlyWatched = []
-    const favorites = []
 
     for (const movieId of gebruiker.favorites) {
       const url = `${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`
@@ -650,13 +686,6 @@ app.get("/profile", async (req, res) => {
       const response = await fetch(url)
       const movie = await response.json()
       watchlist.push(movie)
-    }
-
-    for (const movieId of gebruiker.favorites || []) {
-      const url = `${process.env.BASE_URL}/movie/${movieId}?api_key=${process.env.API_KEY}`
-      const response = await fetch(url)
-      const movie = await response.json()
-      favorites.push(movie)
     }
 
     const movies = await getPopularMovies()
@@ -731,7 +760,190 @@ app.delete("/watchlist/:id", async (req, res) => {
   }
 })
 
-app.get("/profielaanpassen", (req, res) => { res.render("profielaanpassen") })
+app.get("/profielaanpassen", async (req, res) => {
+  if (!req.session || !req.session.userId) {
+    return res.redirect("/login?next=/profielaanpassen")
+  }
+
+  try {
+    const { ObjectId } = require("mongodb")
+
+    const gebruiker = await db.collection(USERS_COLLECTION).findOne(
+      { _id: new ObjectId(req.session.userId) },
+      { projection: { voornaam: 1, achternaam: 1, email: 1, profielfoto: 1 } }
+    )
+
+    if (!gebruiker) {
+      return res.redirect("/login")
+    }
+
+    const profielFotoSrc =
+      typeof gebruiker.profielfoto === "string" && gebruiker.profielfoto.trim()
+        ? gebruiker.profielfoto.trim()
+        : DEFAULT_PROFILE_PHOTO
+
+      const errorMessages = {
+      invalid_email: "Voer een geldig e-mailadres in.",
+      unsupported_provider: "Gebruik een ondersteunde mailprovider.",
+      invalid_mx: "Deze mailprovider heeft geen geldige MX-records.",
+      email_taken: "Dit e-mailadres is al in gebruik."
+    }
+
+    const updateError = errorMessages[req.query.error] || null
+    const updateSuccess = req.query.updated === "1"
+
+    res.render("profielaanpassen", { gebruiker, profielFotoSrc, updateError, updateSuccess })
+  } catch (error) {
+    console.error("Error fetching profielaanpassen data:", error)
+    res.status(500).send("Internal Server Error")
+  }
+})
+
+
+app.post("/profielaanpassen/profielfoto", (req, res) => {
+  if (!req.session || !req.session.userId) {
+    return res.status(401).json({ error: "Niet ingelogd." })
+  }
+
+  uploadProfilePhoto.single("profielfoto")(req, res, async (err) => {
+    if (err instanceof multer.MulterError) {
+      if (err.code === "LIMIT_FILE_SIZE") {
+        return res.status(400).json({ error: "Bestand is te groot (max 5MB)." })
+      }
+      return res.status(400).json({ error: "Upload mislukt." })
+    }
+
+    if (err) {
+      return res.status(400).json({ error: err.message || "Upload mislukt." })
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ error: "Geen bestand ontvangen." })
+    }
+
+    try {
+      const { ObjectId } = require("mongodb")
+      const profielFotoSrc = `/uploads/profielen/${req.file.filename}`
+
+      await db.collection(USERS_COLLECTION).updateOne(
+        { _id: new ObjectId(req.session.userId) },
+        { $set: { profielfoto: profielFotoSrc } }
+      )
+
+      return res.status(200).json({ success: true, profielFotoSrc })
+    } catch (error) {
+      console.error("Error uploading profielfoto:", error)
+      return res.status(500).json({ error: "Interne serverfout." })
+    }
+  })
+})
+
+
+app.post("/profielaanpassen/update", async (req, res) => {
+  if (!req.session || !req.session.userId) {
+    return res.redirect("/login?next=/profielaanpassen")
+  }
+
+  try {
+    const { ObjectId } = require("mongodb")
+    const { vnaam, anaam, email, wwoord } = req.body
+
+    const updates = {}
+
+    const sanitizedVnaam = sanitizeTextInput(vnaam)
+    if (sanitizedVnaam) {
+      updates.voornaam = sanitizedVnaam
+    }
+
+    const sanitizedAnaam = sanitizeTextInput(anaam)
+    if (sanitizedAnaam) {
+      updates.achternaam = sanitizedAnaam
+    }
+
+    const sanitizedEmail = sanitizeTextInput(email).toLowerCase()
+    if (sanitizedEmail) {
+      if (!validator.isEmail(sanitizedEmail)) {
+        return res.redirect("/profielaanpassen?error=invalid_email")
+      }
+
+      const emailDomain = sanitizedEmail.split("@")[1].toLowerCase()
+      if (!ALLOWED_EMAIL_PROVIDERS.has(emailDomain)) {
+        return res.redirect("/profielaanpassen?error=unsupported_provider")
+      }
+
+      const providerOk = await hasValidMailProvider(sanitizedEmail)
+      if (!providerOk) {
+        return res.redirect("/profielaanpassen?error=invalid_mx")
+      }
+
+      updates.email = sanitizedEmail
+    }
+
+    if (typeof wwoord === "string" && wwoord.trim()) {
+      updates.wachtwoord = await bcrypt.hash(wwoord, SALT_ROUNDS)
+    }
+
+    if (Object.keys(updates).length === 0) {
+      return res.redirect("/profielaanpassen")
+    }
+
+    await db.collection(USERS_COLLECTION).updateOne(
+      { _id: new ObjectId(req.session.userId) },
+      { $set: updates }
+    )
+
+    return res.redirect("/profielaanpassen?updated=1")
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.redirect("/profielaanpassen?error=email_taken")
+    }
+
+    console.error("Error updating profiel:", error)
+    return res.status(500).send("Internal Server Error")
+  }
+})
+
+
+app.post("/profielaanpassen/verwijder-account", async (req, res) => {
+  if (!req.session || !req.session.userId) {
+    return res.redirect("/login")
+  }
+
+  try {
+    const { ObjectId } = require("mongodb")
+    const userId = req.session.userId
+
+    const gebruiker = await db.collection(USERS_COLLECTION).findOne(
+      { _id: new ObjectId(userId) },
+      { projection: { profielfoto: 1 } }
+    )
+
+    await db.collection(USERS_COLLECTION).deleteOne({ _id: new ObjectId(userId) })
+
+    if (
+      gebruiker &&
+      typeof gebruiker.profielfoto === "string" &&
+      gebruiker.profielfoto.startsWith("/uploads/profielen/")
+    ) {
+      const relativePath = gebruiker.profielfoto.replace(/^\/+/, "")
+      const absolutePath = path.resolve(__dirname, "public", relativePath)
+      const uploadRoot = path.resolve(PROFILE_PHOTO_UPLOAD_DIR)
+
+      if (absolutePath.startsWith(uploadRoot + path.sep)) {
+        await fs.promises.unlink(absolutePath).catch(() => {})
+      }
+    }
+
+    req.session.destroy(() => {
+      res.clearCookie("connect.sid")
+      return res.redirect("/")
+    })
+  } catch (error) {
+    console.error("Error deleting account:", error)
+    return res.status(500).send("Internal Server Error")
+  }
+})
+
 
 app.get("/register", (req, res) => {
   res.render("register", { error: null, formData: {} })
@@ -848,6 +1060,7 @@ app.post("/register", async (req, res) => {
       achternaam: sanitizedAnaam,
       email: sanitizedEmail,
       wachtwoord: hashedPassword,
+      profielfoto: DEFAULT_PROFILE_PHOTO,
       watchlist: [],
       recentlyWatched: [],
       favorites: [],
@@ -884,14 +1097,16 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
 
   try {
-    const { email, wwoord, next } = req.body
-    const sanitizedEmail = sanitizeTextInput(email).toLowerCase()
-    const formData = { email: sanitizedEmail }
+    const { email, wwoord, next } = req.body;
+    const safeNext = typeof next === "string" ? next : ""
+    const sanitizedEmail = sanitizeTextInput(email).toLowerCase();
+    const formData = { email: sanitizedEmail };
 
     if (!sanitizedEmail || !wwoord) {
       return res.status(400).render("login", {
         error: "Vul email en wachtwoord in.",
-        formData
+        formData,
+        next: safeNext
       })
     }
 
@@ -902,7 +1117,8 @@ app.post("/login", async (req, res) => {
     if (!user) {
       return res.status(401).render("login", {
         error: "Ongeldige inloggegevens.",
-        formData: { email: sanitizedEmail }
+        formData: { email: sanitizedEmail },
+        next: safeNext
       })
     }
 
@@ -911,24 +1127,21 @@ app.post("/login", async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).render("login", {
         error: "Ongeldige inloggegevens.",
-        formData: { email: sanitizedEmail }
+        formData: { email: sanitizedEmail },
+        next: safeNext
       })
     }
 
     // Zonder session/JWT: alleen redirect bij succesvolle login
     req.session.userId = user._id.toString()
 
-    
-    const redirectTo = req.session.redirectTo || '/indexingelogd';
-    req.session.redirectTo = null;
-    //blijft op detailpagina van fil na inloggen
-    res.redirect(redirectTo);
-
+    req.session.save(() => res.redirect(safeNext || '/indexingelogd'));
   } catch (error) {
     console.error("Login error:", error)
     return res.status(500).render("login", {
       error: "Er ging iets mis bij inloggen.",
-      formData: { email: sanitizeTextInput(req.body.email).toLowerCase() }
+      formData: { email: sanitizeTextInput(req.body.email).toLowerCase() },
+      next: typeof req.body?.next === "string" ? req.body.next : ""
     })
   }
 })

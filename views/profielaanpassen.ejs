@@ -10,20 +10,105 @@
 
 <body>
     <main class="main-pfa">
-     <h1 class="groetgebruiker">Hallo Henry</h1> <!-- Vervang Henry later voor naam uit database -->
-     <p class="profielfoto">Profiel foto:</p>
-     <img src="/images/defaultpf.jpg" alt="profiel foto van gebruiker" class="gebruikerpf">
-     <form class="profielaanpasform">
+    <h1 class="groetgebruiker">Hallo <%= gebruiker.voornaam %>
+    </h1>
+    <p class="profielfoto">Profiel foto:</p>
+    <button type="button" id="profielfoto-trigger" class="gebruikerpf-knop" aria-label="Kies profielfoto">
+        <img id="gebruikerpf-preview" src="<%= profielFotoSrc %>" alt="profiel foto van gebruiker" class="gebruikerpf">
+    </button>
+    <input type="file" id="profielfoto-input" name="profielfoto" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+
+    <form class="profielaanpasform" method="post" action="/profielaanpassen/update">
+     <% if (updateError) { %>
+        <p class="profiel-update-error">
+            <%= updateError %>
+        </p>
+        <% } %>
+        <% if (updateSuccess) { %>
+            <p class="profiel-update-success">Profiel is bijgewerkt.</p>
+        <% } %>
         <label for="vnaam" class="p-vnaam">Voornaam:</label>
-        <input type="text" id="p-vnaam" name="vnaam">
+        <input type="text" id="p-vnaam" name="vnaam" value="<%= gebruiker.voornaam %>">
         <label for="anaam" class="p-anaam">Achternaam:</label>
-        <input type="text" id="p-anaam" name="anaam">
+        <input type="text" id="p-anaam" name="anaam" value="<%= gebruiker.achternaam %>">
         <label for="email" class="p-email">Email:</label>
-        <input type="text" id="p-email" name="email">
+        <input type="text" id="p-email" name="email" value="<%= gebruiker.email %>">
         <label for="wwoord" class="p-wwoord">Wachtwoord:</label>
         <input type="password" id="p-wwoord" name="wwoord">
         <input type="submit" id="update" name="update" value="update">
-        <button class="verwijderacc" type="button">Verwijder Account</button>
+        <button class="verwijderacc" id="verwijder-account-btn" type="button">Verwijder Account</button>
      </form>
+
+    <form id="verwijder-account-form" method="post" action="/profielaanpassen/verwijder-account"></form>
+    
+    <dialog id="verwijder-account-dialog" class="verwijder-account-dialog">
+         <p>Weet je zeker dat je je account wilt verwijderen? Dit kan niet meer ongedaan worden gemaakt</p>
+         <div class="verwijder-account-acties">
+            <button type="button" id="verwijder-account-ja">Ja</button>
+            <button type="button" id="verwijder-account-nee">Nee</button>
+        </div>
+    </dialog>
     </main>
 </body>
+
+<script>
+    const trigger = document.getElementById("profielfoto-trigger")
+    const input = document.getElementById("profielfoto-input")
+    const preview = document.getElementById("gebruikerpf-preview")
+    const deleteBtn = document.getElementById("verwijder-account-btn")
+    const deleteForm = document.getElementById("verwijder-account-form")
+    const deleteDialog = document.getElementById("verwijder-account-dialog")
+    const deleteYes = document.getElementById("verwijder-account-ja")
+    const deleteNo = document.getElementById("verwijder-account-nee")
+
+    trigger.addEventListener("click", () => {
+        input.click()
+    })
+
+    input.addEventListener("change", async () => {
+        if (!input.files || !input.files.length) return
+
+        const formData = new FormData()
+        formData.append("profielfoto", input.files[0])
+
+        try {
+            const response = await fetch("/profielaanpassen/profielfoto", {
+                method: "POST",
+                body: formData
+            })
+
+            const data = await response.json()
+            if (!response.ok) {
+                throw new Error(data.error || "Upload mislukt.")
+            }
+
+            preview.src = `${data.profielFotoSrc}?t=${Date.now()}`
+        } catch (error) {
+            alert(error.message)
+        } finally {
+            input.value = ""
+        }
+    })
+
+     deleteBtn.addEventListener("click", () => {
+        const message = "Weet je zeker dat je je account wilt verwijderen? Dit kan niet meer ongedaan worden gemaakt"
+                
+        if (typeof deleteDialog.showModal === "function") {
+            deleteDialog.showModal()
+            return
+        }
+            
+        if (confirm(message)) {
+            deleteForm.submit()
+        }
+    })
+            
+    deleteNo.addEventListener("click", () => {
+        deleteDialog.close()
+    })
+            
+    deleteYes.addEventListener("click", () => {
+        deleteDialog.close()
+        deleteForm.submit()
+    })
+</script>
