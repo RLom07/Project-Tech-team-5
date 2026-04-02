@@ -1754,6 +1754,17 @@ nav ul li img.gebruikerpfpartial:hover {
         color: var(--text-color);
         font-family: var(--body-font);
     }
+
+    footer a h3:hover{
+        color: var(--button-color);
+        transition: 300ms ease-in-out;
+    }
+
+    footer a p:hover{
+        color: var(--button-color);
+        transition: 300ms ease-in-out;
+    }
+
     footer ul{
         list-style: none; 
     }

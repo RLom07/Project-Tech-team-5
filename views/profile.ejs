@@ -34,7 +34,6 @@
                     <a href="/movie/<%= movie.id %>">
                         <img class="recentlyWatchedPosters" src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>" loading="lazy">
                     </a>
-                    <!-- Remove button -->
                     <button id="removeFavorite" class="removeBtn" data-id="<%= movie.id %>" aria-label="Verwijder film">✕</button>
                 </div>
                 <h3><%= movie.title %></h3>
@@ -42,7 +41,7 @@
             <% }) %>
         </ul>
         <% } else { %>
-            <p>Je hebt nog geen films toegevoegd aan uw favorieten.</p>
+            <p>Je hebt nog geen films toegevoegd aan uw favorieten :(</p>
         <% } %>
     </section>
     <section class="moviesCarousel">
@@ -59,7 +58,7 @@
             <% }) %>
         </ul>
         <% } else { %>
-            <p>Je hebt nog geen films in je watchlist.</p>
+            <p>Je hebt nog geen films die je onlangs hebt bekeken :(</p>
         <% } %>
     </section>
     <section id="watchList">
@@ -72,9 +71,7 @@
                 <button class="sort" data-sort="watchListName" style="cursor:pointer;">Naam </button>
             </aside>
         </div>
-        <!-- Search input -->
         <input type="search" class="search" placeholder="  Zoek op naam">
-        <!-- List.js container -->
         <% if (watchlist && watchlist.length > 0) { %>
             <ul class="list">
             <% watchlist.forEach((movie) => { %>
@@ -96,7 +93,7 @@
             <% }) %>
             </ul>
         <% } else { %>
-            <p>Je hebt nog geen films in je watchlist.</p>
+            <p>Je hebt nog geen films in je watchlist :(</p>
         <% } %>
     </section>
     <section id="populair-movies">
@@ -112,7 +109,6 @@
             <% }) %>
         </div>
     </section>       
-    <!-- List.js Initialization -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const buttons = document.querySelectorAll("#removeFavorite");
@@ -123,7 +119,6 @@
 
                     const movieId = button.dataset.id;
 
-                    // Confirmation popup
                     const confirmed = confirm("Weet je zeker dat je deze film wilt verwijderen?");
                     if (!confirmed) return;
 
@@ -133,7 +128,6 @@
                         });
 
                         if (response.ok) {
-                            // Smooth removal animation
                             const li = button.closest("li");
                             li.style.transition = "0.3s";
                             li.style.opacity = "0";
@@ -159,7 +153,6 @@
 
                     const movieId = button.dataset.id;
 
-                    // Confirmation popup
                     const confirmed = confirm("Weet je zeker dat je deze film wilt verwijderen?");
                     if (!confirmed) return;
 
@@ -169,7 +162,6 @@
                         });
 
                         if (response.ok) {
-                            // Smooth removal animation
                             const li = button.closest("li");
                             li.style.transition = "0.3s";
                             li.style.opacity = "0";
