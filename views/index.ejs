@@ -84,108 +84,37 @@
 
     <section id="trustpilot">
 
-        <div>
-            <img src="../images/trustpilot-stars.svg" alt="trustpilot stars" aria-hidden="true" loading="lazy">
-            <p>see our reviews</p>
+         <div>
+            <h1>Onze reviews</h1>
         </div>
         
-        <section class="reviews-rating">
+        <section id="review-box">
             <% if (reviews.length > 0) { %>
             <% reviews.forEach(review => { %>
             <article>
-                <h3><%= review.name %></h3>
+                <h2>Geschreven door <strong><%= review.voornaam  %></strong></h2>
+                <p><%= review.name %></p>
                 <p><%= review.text %></p>
                 <p>Rating: <%= review.rating %></p>
-                <form action="/reviews/<%= review._id %>/delete" method="POST">
-                    <button type="submit" class="verwijder-button" aria-label="Verwijder review">
+                <% if (currentUserId && review.userId === currentUserId) { %>
+                    <form action="/reviews/<%= review._id %>/delete" method="POST">
+                    <div>
+                        <button type="submit" class="verwijder-button" aria-label="Verwijder review">
                         <svg viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M9 3h6l1 2h4v2H4V5h4l1-2zm-1 6h2v8H8V9zm6 0h2v8h-2V9zM7 9h10l-1 11H8L7 9z"/>
                         </svg>
-                    </button>
+                        </button>
+                    </div>
                 </form>
+               <% } %>
             </article>
             <% }) %>
             <% } else { %>
             <p>Er zijn nog geen reviews.</p>
             <% } %>
-           
         </section>
-      
-
-       
-        <a href="/review" class="primary-button">Schrijf een review</a>
-
-
+        <a href="/review" class="primary-button">Schrijf zelf een review!</a>
     </section>
-        <!-- <section id="reviews">
-
-            <div id="reviews-header">
-                <div>
-                    <h3>Excellent</h3>
-                    <img src="../images/trustpilot-stars.svg" alt="trustpilot stars" aria-hidden="true">
-                </div>
-                
-                <p>
-                    See all <strong>765</strong> reviews on 
-                    <img src="../images/trustpilot-logo.svg" alt="trustpilot-logo">
-                </p>
-            </div>
-
-            <section id="reviews-rating">
-                <svg xmlns="http://www.w3.org/2000/svg" width="1241" height="1134" viewBox="0 0 1241 1134" fill="none">
-                    <mask id="path-1-inside-1_74_234" fill="white">
-                        <path d="M922.368 44.7617H1241V1133.76H0V44.7617H851.632L887 0L922.368 44.7617Z"/>
-                    </mask>
-                    <path d="M922.368 44.7617L920.014 46.6216L920.915 47.7617H922.368V44.7617ZM1241 44.7617H1244V41.7617H1241V44.7617ZM1241 1133.76V1136.76H1244V1133.76H1241ZM0 1133.76H-3V1136.76H0V1133.76ZM0 44.7617V41.7617H-3V44.7617H0ZM851.632 44.7617V47.7617H853.085L853.986 46.6216L851.632 44.7617ZM887 0L889.354 -1.8599L887 -4.83896L884.646 -1.8599L887 0ZM922.368 44.7617V47.7617H1241V44.7617V41.7617H922.368V44.7617ZM1241 44.7617H1238V1133.76H1241H1244V44.7617H1241ZM1241 1133.76V1130.76H0V1133.76V1136.76H1241V1133.76ZM0 1133.76H3V44.7617H0H-3V1133.76H0ZM0 44.7617V47.7617H851.632V44.7617V41.7617H0V44.7617ZM851.632 44.7617L853.986 46.6216L889.354 1.8599L887 0L884.646 -1.8599L849.278 42.9018L851.632 44.7617ZM887 0L884.646 1.8599L920.014 46.6216L922.368 44.7617L924.722 42.9018L889.354 -1.8599L887 0Z" fill="white" mask="url(#path-1-inside-1_74_234)"/>
-                </svg>
-                
-                <article>
-                    <p class="review-meta">
-                        <img src="../images/trustpilot-stars.svg" alt="4 van 5 sterren" aria-hidden="true">
-                        <span>by <strong>Emma van Dijk</strong></span>
-                        <time datetime="2026-01-05">67 days ago</time>
-                    </p>
-
-                    <h4>Eindelijk geen keuzestress meer!</h4>
-
-                    <p class="review-text">
-                        Cinematch maakt het kiezen van een film echt super makkelijk. <br>
-                        Binnen een paar vragen had ik meteen een goede match gevonden. Ideaal voor filmavonden met vrienden!
-                    </p>
-                </article>
-
-                <article>
-                    <p class="review-meta">
-                        <img src="../images/trustpilot-stars-4.svg" alt="4 van 5 sterren" aria-hidden="true">
-                        <span>by <strong>Lucas Vermeer</strong></span>
-                        <time datetime="2026-01-05">67 days ago</time>
-                    </p>
-
-                    <h4>Handige manier om nieuwe films te ontdekken</h4>
-
-                    <p class="review-text">
-                        Heel fijn om films te vinden die bij mijn stemming passen. <br>
-                        Ik heb al een paar leuke nieuwe titels ontdekt. 
-                        Soms zou ik nog wat meer opties willen zien, maar verder werkt het top!
-                    </p>
-                </article>
-
-                <article>
-                    <p class="review-meta">
-                        <img src="../images/trustpilot-stars.svg" alt="4 van 5 sterren" aria-hidden="true">
-                        <span>by <strong>Sophie Jansen</strong></span>
-                        <time datetime="2026-01-05">67 days ago</time>
-                    </p>
-
-                    <h4>Perfect voor een filmavond</h4>
-
-                    <p class="review-text">
-                        Ik wist nooit wat ik moest kijken tussen al die streamingdiensten. <br>
-                        Met Cinematch krijg je snel een goede aanbeveling op basis van je mood. Echt een aanrader!
-                    </p>
-                </article> -->
-       
-
     <section id="call-to-action">
         <h2>
             Waar wacht je nog op, <br> start met matchen!

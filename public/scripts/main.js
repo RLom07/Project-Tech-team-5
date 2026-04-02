@@ -44,3 +44,4 @@ if (vragenForm && antwoordenInput) {
         antwoordenInput.value = localStorage.getItem("vragenlijst") || "{}"
     })
 }
+

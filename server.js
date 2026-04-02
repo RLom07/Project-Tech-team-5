@@ -155,7 +155,7 @@ app.get("/", async (req, res) => {
 
   const movies = await getPopularMovies();
   const reviews = await db.collection(REVIEWS_COLLECTION).find().toArray();
-  res.render('index', { movies, reviews});
+  res.render('index', { movies, reviews, currentUserId: null });
 });
 
 // API index populair movies /////////////////////////////////
@@ -170,8 +170,6 @@ async function getPopularMovies() {
 }
 
 //oefenen review pagina
-
-let currentId = 2
 //read- haalt de reviews op
 app.get("/reviews", (req, res) => {
   res.json(reviews)
@@ -184,10 +182,14 @@ app.post("/reviews", async (req, res) => {
     return res.redirect("/login?next=/review")
   }
   
-  const { name, text, rating } = req.body
+  const { voornaam, name, text, rating } = req.body
+
+  const sanitizedVoornaam = sanitizeTextInput(voornaam)
+  const sanitizedname = sanitizeTextInput(name)
+  const sanitizedtext = sanitizeTextInput(text)
   const nummerRating = Number(rating)
 
-  if (!name || !text || !rating) {
+  if (!sanitizedVoornaam || !sanitizedname || !sanitizedtext || !rating) {
     return res.status(400).json({error:"vul alle velden in."})
   }
 
@@ -196,16 +198,16 @@ app.post("/reviews", async (req, res) => {
   }
   
   const newReview = {
-    id: currentId++,
     userId: req.session.userId,
-    name,
-    text,
+    voornaam: sanitizedVoornaam,
+    name: sanitizedname,
+    text: sanitizedtext,
     rating: nummerRating,
   }
 
   await db.collection(REVIEWS_COLLECTION).insertOne(newReview)
   res.redirect('/');
-});
+}); 
 
 //delete van een review
 
@@ -377,9 +379,6 @@ async function getMatchingMovies(antwoorden = {}) {
 
   return detailedMovies
 }
-
-
-
 
 
 // API detail info movies /////////////////////////////////
@@ -984,7 +983,7 @@ app.get("/vragenlijst-vraag5", (req, res) => { res.render("vragenlijst-vraag5")}
 app.get("/vragenlijst-vraag6", (req, res) => { res.render("vragenlijst-vraag6")})
 
 app.get("/matching", (req, res) => {
-  res.render("matching", { antwoorden: {}, bestMatch: null, otherMatches: [] })
+  res.render("matching", { bestMatch: null, otherMatches: [] })
 })
  
 
@@ -995,14 +994,12 @@ app.post("/matching", async (req, res) => {
     const matches = await getMatchingMovies(antwoorden)
 
     res.render("matching", {
-      antwoorden,
       bestMatch: matches[0] || null,
       otherMatches: matches.slice(1)
     })
   } catch (error) {
     console.error("Matching error:", error)
     res.status(500).render("matching", {
-      antwoorden: parseAntwoorden(req.body.antwoorden),
       bestMatch: null,
       otherMatches: [],
       error: "Er ging iets mis bij het ophalen van matches."
