@@ -171,9 +171,6 @@ async function getPopularMovies() {
 
 //oefenen review pagina
 //read- haalt de reviews op
-app.get("/reviews", (req, res) => {
-  res.json(reviews)
-})
 
 //Create- nieuwe review toevoegen
 app.post("/reviews", async (req, res) => {
