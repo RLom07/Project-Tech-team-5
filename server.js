@@ -153,10 +153,10 @@ app.get("/", async (req, res) => {
     return res.redirect("/indexingelogd")
   }
 
-  const movies = await getPopularMovies();
-  const reviews = await db.collection(REVIEWS_COLLECTION).find().toArray();
-  res.render('index', { movies, reviews, currentUserId: null });
-});
+  const movies = await getPopularMovies()
+  const reviews = await db.collection(REVIEWS_COLLECTION).find().toArray()
+  res.render("index", { movies, reviews, currentUserId: null })
+})
 
 // API index populair movies /////////////////////////////////
 async function getPopularMovies() {
@@ -203,16 +203,16 @@ app.post("/reviews", async (req, res) => {
   }
 
   await db.collection(REVIEWS_COLLECTION).insertOne(newReview)
-  res.redirect('/');
-}); 
+  res.redirect("/")
+}) 
 
 //delete van een review
 
-app.post('/reviews/:id/delete', async (req, res) => {
+app.post("/reviews/:id/delete", async (req, res) => {
   const { ObjectId } = require("mongodb")
 
   if (!req.session || !req.session.userId) {
-    return res.redirect('/login')
+    return res.redirect("/login")
   }
 
   const review = await db.collection(REVIEWS_COLLECTION).findOne({
@@ -220,7 +220,7 @@ app.post('/reviews/:id/delete', async (req, res) => {
   })
 
   if (!review) {
-    return res.redirect('/indexingelogd')
+    return res.redirect("/indexingelogd")
   }
 
   if (review.userId !== req.session.userId) {
@@ -231,24 +231,24 @@ app.post('/reviews/:id/delete', async (req, res) => {
     _id: new ObjectId(req.params.id)
   })
 
-  res.redirect('/indexingelogd')
+  res.redirect("/indexingelogd")
 })
 
-app.get('/indexingelogd', async (req, res) => {
+app.get("/indexingelogd", async (req, res) => {
   const { ObjectId } = require("mongodb")
 
   if (!req.session || !req.session.userId) {
-    return res.redirect('/login');
+    return res.redirect("/login")
   }
 
   const gebruiker = await db.collection(USERS_COLLECTION).findOne({
     _id: new ObjectId(req.session.userId)
   })
 
-  const movies = await getPopularMovies();
-  const reviews = await db.collection(REVIEWS_COLLECTION).find().toArray();
-  res.render('indexingelogd', { movies, reviews, gebruiker, currentUserId: req.session.userId });
-});
+  const movies = await getPopularMovies()
+  const reviews = await db.collection(REVIEWS_COLLECTION).find().toArray()
+  res.render("indexingelogd", { movies, reviews, gebruiker, currentUserId: req.session.userId })
+})
 
 //gegenereerde code voor de matching functie//
 function parseAntwoorden(rawAntwoorden) {
@@ -383,24 +383,24 @@ async function getMatchingMovies(antwoorden = {}) {
 //met behulp van ChatGPT
 app.get("/movie/:id", async (req, res) => {
   
-  const movieId = parseInt(req.params.id);
+  const movieId = parseInt(req.params.id)
 
-  let gebruiker = null;
-  let isInWatchlist = false;
-  let isInFavorites = false;
-  let isInWatched = false;
+  let gebruiker = null
+  let isInWatchlist = false
+  let isInFavorites = false
+  let isInWatched = false
 
   if (req.session.userId) {
-    const { ObjectId } = require('mongodb');
+    const { ObjectId } = require("mongodb")
 
     gebruiker = await db.collection(USERS_COLLECTION).findOne({
       _id: new ObjectId(req.session.userId)
-    });
+    })
 
     if (gebruiker) {
-      isInWatchlist = gebruiker.watchlist?.includes(movieId);
-      isInFavorites = gebruiker.favorites?.includes(movieId);
-      isInWatched = gebruiker.recentlyWatched?.includes(movieId);
+      isInWatchlist = gebruiker.watchlist?.includes(movieId)
+      isInFavorites = gebruiker.favorites?.includes(movieId)
+      isInWatched = gebruiker.recentlyWatched?.includes(movieId)
     }
   }
 
@@ -507,127 +507,127 @@ app.get("/movie/:id", async (req, res) => {
     isInFavorites,
     isInWatchlist,
     isInWatched
-  });
+  })
 
 })
 
-app.post('/favorites/toggle', async (req, res) => {
+app.post("/favorites/toggle", async (req, res) => {
   try {
-    const userId = req.session.userId;
-    const movieId = parseInt(req.body.movieId);
+    const userId = req.session.userId
+    const movieId = parseInt(req.body.movieId)
 
   if (!userId) {
-    req.session.redirectTo = `/movie/${movieId}`;
-    return res.redirect('/login');
+    req.session.redirectTo = `/movie/${movieId}`
+    return res.redirect("/login")
   }
 
-    const { ObjectId } = require('mongodb');
+    const { ObjectId } = require("mongodb")
 
     const gebruiker = await db.collection(USERS_COLLECTION).findOne({
       _id: new ObjectId(userId)
-    });
+    })
 
-    const zitErin = gebruiker.favorites?.includes(movieId);
+    const zitErin = gebruiker.favorites?.includes(movieId)
 
     if (zitErin) {
       await db.collection(USERS_COLLECTION).updateOne(
         { _id: new ObjectId(userId) },
         { $pull: { favorites: movieId } }
-      );
+      )
     } else {
       await db.collection(USERS_COLLECTION).updateOne(
         { _id: new ObjectId(userId) },
         { $addToSet: { favorites: movieId } }
-      );
+      )
     }
 
-    res.redirect(`/movie/${movieId}`);
+    res.redirect(`/movie/${movieId}`)
 
   } catch (error) {
-    console.error(error);
-    res.redirect('back');
+    console.error(error)
+    res.redirect("back")
   }
-});
+})
 
-app.post('/watchlist/toggle', async (req, res) => {
+app.post("/watchlist/toggle", async (req, res) => {
   try {
-    const userId = req.session.userId;
-    const movieId = parseInt(req.body.movieId);
+    const userId = req.session.userId
+    const movieId = parseInt(req.body.movieId)
 
   if (!userId) {
-    req.session.redirectTo = `/movie/${movieId}`;
-    return res.redirect('/login');
+    req.session.redirectTo = `/movie/${movieId}`
+    return res.redirect("/login")
   }
 
-    const { ObjectId } = require('mongodb');
+    const { ObjectId } = require("mongodb")
 
     const gebruiker = await db.collection(USERS_COLLECTION).findOne({
       _id: new ObjectId(userId)
-    });
+    })
 
-    const zitErin = gebruiker.watchlist?.includes(movieId);
+    const zitErin = gebruiker.watchlist?.includes(movieId)
 
     if (zitErin) {
       // verwijderen
       await db.collection(USERS_COLLECTION).updateOne(
         { _id: new ObjectId(userId) },
         { $pull: { watchlist: movieId } }
-      );
+      )
     } else {
       // toevoegen
       await db.collection(USERS_COLLECTION).updateOne(
         { _id: new ObjectId(userId) },
         { $addToSet: { watchlist: movieId } }
-      );
+      )
     }
 
-    res.redirect(`/movie/${movieId}`);
+    res.redirect(`/movie/${movieId}`)
 
   } catch (error) {
-    console.error(error);
-    res.redirect('back');
+    console.error(error)
+    res.redirect("back")
   }
-});
+})
 
-app.post('/recentlyWatched/toggle', async (req, res) => {
+app.post("/recentlyWatched/toggle", async (req, res) => {
   try {
-    const userId = req.session.userId;
-    const movieId = parseInt(req.body.movieId);
+    const userId = req.session.userId
+    const movieId = parseInt(req.body.movieId)
 
   if (!userId) {
-    req.session.redirectTo = `/movie/${movieId}`;
-    return res.redirect('/login');
+    req.session.redirectTo = `/movie/${movieId}`
+    return res.redirect("/login")
   }
 
-    const { ObjectId } = require('mongodb');
+    const { ObjectId } = require("mongodb")
 
     const gebruiker = await db.collection(USERS_COLLECTION).findOne({
       _id: new ObjectId(userId)
-    });
+    })
 
-    const zitErin = gebruiker.recentlyWatched?.includes(movieId);
+    const zitErin = gebruiker.recentlyWatched?.includes(movieId)
 
     if (zitErin) {
       // verwijderen
       await db.collection(USERS_COLLECTION).updateOne(
         { _id: new ObjectId(userId) },
         { $pull: { recentlyWatched: movieId } }
-      );
+      )
     } else {
       // toevoegen
       await db.collection(USERS_COLLECTION).updateOne(
         { _id: new ObjectId(userId) },
         { $addToSet: { recentlyWatched: movieId } }
-      );
+      )
     }
 
-    res.redirect(`/movie/${movieId}`);
+    res.redirect(`/movie/${movieId}`)
 
   } catch (error) {
-    console.error(error);
-    res.redirect('back');
+    console.error(error)
+    res.redirect("back")
   }
-});
+})
 
  
 app.get("/profile", async (req, res) => { 
@@ -638,10 +638,6 @@ app.get("/profile", async (req, res) => {
     }
 
     const { ObjectId } = require("mongodb")
-
-    if (!req.session.userId) {
-      return res.redirect('/login');
-    }
 
     const gebruiker = await db.collection(USERS_COLLECTION).findOne({
       _id: new ObjectId(req.session.userId)
@@ -687,7 +683,7 @@ app.get("/profile", async (req, res) => {
     const movies = await getPopularMovies()
 
     req.session.visited = true
-    // 3. Pass the data object as the second argument to res.render
+
     res.render("profile", { 
       gebruiker, 
       greeting, 
@@ -1091,10 +1087,10 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
 
   try {
-    const { email, wwoord, next } = req.body;
+    const { email, wwoord, next } = req.body
     const safeNext = typeof next === "string" ? next : ""
-    const sanitizedEmail = sanitizeTextInput(email).toLowerCase();
-    const formData = { email: sanitizedEmail };
+    const sanitizedEmail = sanitizeTextInput(email).toLowerCase()
+    const formData = { email: sanitizedEmail }
 
     if (!sanitizedEmail || !wwoord) {
       return res.status(400).render("login", {
@@ -1129,7 +1125,7 @@ app.post("/login", async (req, res) => {
     // Zonder session/JWT: alleen redirect bij succesvolle login
     req.session.userId = user._id.toString()
 
-    req.session.save(() => res.redirect(safeNext || '/indexingelogd'));
+    req.session.save(() => res.redirect(safeNext || "/indexingelogd"))
   } catch (error) {
     console.error("Login error:", error)
     return res.status(500).render("login", {
@@ -1152,4 +1148,5 @@ connectToMongo()
   .catch((error) => {
     console.error("Failed to start server:", error)
     process.exit(1)
+  
   })
