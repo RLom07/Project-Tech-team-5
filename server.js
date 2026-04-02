@@ -183,9 +183,13 @@ app.post("/reviews", async (req, res) => {
   }
   
   const { voornaam, name, text, rating } = req.body
+
+  const sanitizedVoornaam = sanitizeTextInput(voornaam)
+  const sanitizedname = sanitizeTextInput(name)
+  const sanitizedtext = sanitizeTextInput(text)
   const nummerRating = Number(rating)
 
-  if (!voornaam | !name || !text || !rating) {
+  if (!sanitizedVoornaam || !sanitizedname || !sanitizedtext || !rating) {
     return res.status(400).json({error:"vul alle velden in."})
   }
 
@@ -194,17 +198,16 @@ app.post("/reviews", async (req, res) => {
   }
   
   const newReview = {
-    id: currentId++,
     userId: req.session.userId,
-    voornaam,
-    name,
-    text,
+    voornaam: sanitizedVoornaam,
+    name: sanitizedname,
+    text: sanitizedtext,
     rating: nummerRating,
   }
 
   await db.collection(REVIEWS_COLLECTION).insertOne(newReview)
   res.redirect('/');
-});
+}); 
 
 //delete van een review
 

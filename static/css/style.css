@@ -953,16 +953,6 @@
     box-sizing: border-box;
 }
 
-.matching main h1{
-    color: white;
-    font-family: "a Big Deal";
-    font-size: 40px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    text-align: center;
-}
-
 .matching main h2{
     color: white;
     font-family: "a Big Deal";
@@ -1018,20 +1008,6 @@
     border: #d94e14 1px solid;
     padding: 2em;
     padding-bottom: 1em;
-}
-
-.matching main button{
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #F45A1A;
-    color: white;
-    font-family: var(--body-font);
-    font-weight: bold;
-    padding: 25px 85px;
-    border-radius: 20px;
-    border: none;
-    cursor: pointer;
 }
 
 .matching main #beste-match img,
@@ -1132,11 +1108,6 @@
 }
 
 @media (max-width: 600px){
-    .matching main h1{
-        font-size: 32px;
-        padding: 1rem;
-    }
-
     .matching main h3,
     .matching main h4{
         font-size: 32px;
@@ -1166,11 +1137,6 @@
 .meer-matches-ul p{
     font-size: 16px;
     margin: 0.4em 0;
-}
-
-.meer-matches-ul button{
-    margin-top: auto;
-    align-self: flex-start;
 }
 
 .meer-matches-ul img{
