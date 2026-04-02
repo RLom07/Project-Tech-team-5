@@ -49,7 +49,7 @@
                 </h3>
             </li>
         </ul>
-        <img class=background-dots src="../images/info-background.png" alt="info background" aria-hidden="true" loading="lazy">
+        <img class=background-dots src="../images/info-background.webp" alt="info background" aria-hidden="true" loading="lazy">
 
     </section>
 
@@ -63,7 +63,7 @@
 
                 <a href="/movie/<%= movie.id %>" class="movie-card <%= index < 2 ? 'large' : '' %>">
 
-                    <img src="https://image.tmdb.org/t/p/w400<%= movie.backdrop_path || movie.poster_path %>" alt="<%= movie.title %>" loading="lazy">
+                    <img src="https://image.tmdb.org/t/p/w300<%= movie.backdrop_path || movie.poster_path %>" alt="<%= movie.title %>" loading="lazy">
                 
                     <h3><%= movie.title %></h3>
                     

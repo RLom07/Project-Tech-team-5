@@ -1198,7 +1198,7 @@ nav ul li img.gebruikerpfpartial:hover {
         align-items: center;
     }
 
-    .info img{
+    .info ul img{
         transform-origin: 50% 50%; 
         animation: wobble 1s ease-in-out infinite;
     }
@@ -1226,45 +1226,20 @@ nav ul li img.gebruikerpfpartial:hover {
   
     .background-dots{
         position: absolute;
-        inset:0;
-        height: 150%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
 
-        z-index:-1;
-        
+        width: 100%;
+        height: auto;
+
+        z-index: -1;
     }
 
-    .verwijder-button{
-        margin-top: 1em;
-        width: 3rem;
-        height: 3rem;
-        border: 1px solid var(--button-color);
-        border-radius: 50%;
-        background: transparent;
-        color: var(--button-color);
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+    .movie-hero .background-dots{
+        left: 20%;
     }
-
-    .verwijder-button:hover{
-        background: var(--button-color);
-        color: var(--text-color);
-        box-shadow: 0 10px 25px rgba(244, 90, 26, 0.25);
-    }
-
-    .verwijder-button svg{
-        width: 1.2rem;
-        height: 1.2rem;
-        fill: currentColor;
-    }
-
-   
-
-    #call-to-action li{
-        gap: 1em;
-    }
-
+    
     .movie-grid{
         display: grid;
         grid-template-columns: repeat(6, 1fr);
@@ -1334,6 +1309,10 @@ nav ul li img.gebruikerpfpartial:hover {
         padding: 9em;
     }
 
+    #call-to-action li{
+        gap: 1em;
+    }
+
     #gebruikers{
         display: flex;
         justify-content: center;
@@ -1345,7 +1324,7 @@ nav ul li img.gebruikerpfpartial:hover {
     #gebruikers h2{
         padding: 0;
         margin:0;
-        text-align: center;
+        text-align: left;
     }
 
     #gebruikers img{
@@ -1478,6 +1457,32 @@ nav ul li img.gebruikerpfpartial:hover {
 #trustpilot > .primary-button {
     margin-top: 2em;
 }
+
+.verwijder-button{
+        margin-top: 1em;
+        width: 3rem;
+        height: 3rem;
+        border: 1px solid var(--button-color);
+        border-radius: 50%;
+        background: transparent;
+        color: var(--button-color);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .verwijder-button:hover{
+        background: var(--button-color);
+        color: var(--text-color);
+        box-shadow: 0 10px 25px rgba(244, 90, 26, 0.25);
+    }
+
+    .verwijder-button svg{
+        width: 1.2rem;
+        height: 1.2rem;
+        fill: currentColor;
+    }
 
 
 /* detailpagina */
