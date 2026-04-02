@@ -9,12 +9,15 @@
 </head>
 
 <body>
+    <header>
+        <%- include('partials/profileheader') %>
+    </header>
     <main class="main-pfa">
     <h1 class="groetgebruiker">Hallo <%= gebruiker.voornaam %>
     </h1>
     <p class="profielfoto">Profiel foto:</p>
     <button type="button" id="profielfoto-trigger" class="gebruikerpf-knop" aria-label="Kies profielfoto">
-        <img id="gebruikerpf-preview" src="<%= profielFotoSrc %>" alt="profiel foto van gebruiker" class="gebruikerpf">
+        <img id="form-gebruikerpf-preview" src="<%= profielFotoSrc %>" alt="profiel foto van gebruiker" class="gebruikerpf js-profiel-foto-preview">
     </button>
     <input type="file" id="profielfoto-input" name="profielfoto" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
 
@@ -39,7 +42,7 @@
         <button class="verwijderacc" id="verwijder-account-btn" type="button">Verwijder Account</button>
      </form>
 
-    <form id="verwijder-account-form" method="post" action="/profielaanpassen/verwijder-account"></form>
+    <form id="verwijder-account-form" method="post" action="/profielaanpassen/verwijder-account">
     
     <dialog id="verwijder-account-dialog" class="verwijder-account-dialog">
          <p>Weet je zeker dat je je account wilt verwijderen? Dit kan niet meer ongedaan worden gemaakt</p>
@@ -48,13 +51,14 @@
             <button type="button" id="verwijder-account-nee">Nee</button>
         </div>
     </dialog>
+    </form>
     </main>
 </body>
 
 <script>
     const trigger = document.getElementById("profielfoto-trigger")
     const input = document.getElementById("profielfoto-input")
-    const preview = document.getElementById("gebruikerpf-preview")
+    const previews = document.querySelectorAll(".js-profiel-foto-preview")
     const deleteBtn = document.getElementById("verwijder-account-btn")
     const deleteForm = document.getElementById("verwijder-account-form")
     const deleteDialog = document.getElementById("verwijder-account-dialog")
@@ -82,7 +86,10 @@
                 throw new Error(data.error || "Upload mislukt.")
             }
 
-            preview.src = `${data.profielFotoSrc}?t=${Date.now()}`
+            const nieuweFotoSrc = `${data.profielFotoSrc}?t=${Date.now()}`
+            previews.forEach((preview) => {
+                preview.src = nieuweFotoSrc
+            })
         } catch (error) {
             alert(error.message)
         } finally {

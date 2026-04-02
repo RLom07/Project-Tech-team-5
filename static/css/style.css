@@ -525,6 +525,28 @@
     filter: brightness(0.85);
 }
 
+.gebruikerpfpartial {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    padding-bottom: 0;
+}
+
+.profiel-aanpassen {
+    display: block;
+    width: 5rem;
+    height: 5rem;
+    padding: 0;
+    border-radius: 100rem;
+    overflow: hidden;
+}
+
+nav ul li img.gebruikerpfpartial:hover {
+    scale: 100%;
+    transition: none;
+}
+
 .profielaanpasform {
     display: grid;
     grid-template-rows: .1fr .1fr .1fr .1fr .1fr .1fr .1fr .1fr;
