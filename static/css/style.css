@@ -713,11 +713,26 @@ nav ul li img.gebruikerpfpartial:hover {
 
 /* vragenlijst styling */
 
+.vragenlijst{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.vragenlijst > header{
+    flex: 0 0 auto;
+    width: 100%;
+}
+
 .vragenlijst main{
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 5em;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2rem 1.5rem 3rem;
+    box-sizing: border-box;
 }
 
 .vragenlijst h1{
@@ -728,7 +743,6 @@ nav ul li img.gebruikerpfpartial:hover {
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    padding: 1em;
 }
 
 .vragenlijst h2{
@@ -756,7 +770,6 @@ nav ul li img.gebruikerpfpartial:hover {
     border-radius: 20px;
     background: rgba(255, 255, 255, 0.10);
     width: 60%;
-    height: 80%;
     display: flex;
     flex-direction: column;
     align-items: center; 
@@ -838,6 +851,7 @@ nav ul li img.gebruikerpfpartial:hover {
     width: 100%;
     justify-content: space-between;
     position: relative;
+    isolation: isolate;
 }
 
 .stappen .cirkel{
@@ -872,7 +886,7 @@ nav ul li img.gebruikerpfpartial:hover {
     height: 4px;
     width: 100%;
     background: white;
-    z-index: -1;
+    z-index: 0;
 }
 
 .progressie-bar .indicator{
@@ -883,19 +897,85 @@ nav ul li img.gebruikerpfpartial:hover {
     transition: all 800ms ease;
     
 }
-    
-.matching h1{
-    color: white;
-    font-family: "a Big Deal";
-    font-size: 40px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    padding: 1em;
-    text-align: center;
+
+@media (max-width: 900px){
+    .vragenlijst main section{
+        width: min(90%, 720px);
+    }
+
+    .checkboxbutton-list{
+        flex-wrap: wrap;
+    }
+
+    .checkboxbutton-list li{
+        flex: 1 1 calc(50% - 0.5rem);
+    }
+
+    .volgende-vorige{
+        padding-inline: 2rem;
+    }
 }
 
-.matching h2{
+@media (max-width: 600px){
+    .vragenlijst main{
+        justify-content: flex-start;
+        padding-top: 1.5rem;
+    }
+
+    .vragenlijst h1,
+    .vragenlijst h2,
+    .vragenlijst p{
+        font-size: 32px;
+        padding-inline: 1rem;
+    }
+
+    .vragenlijst main section{
+        width: 100%;
+        padding-bottom: 2rem;
+    }
+
+    .checkboxbutton-list li{
+        flex: 1 1 100%;
+    }
+
+    .volgende-vorige{
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+
+    .container{
+        max-width: 100%;
+    }
+
+    .stappen .cirkel{
+        height: 40px;
+        width: 40px;
+        font-size: 18px;
+    }
+}
+    
+.matching{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.matching > header{
+    flex: 0 0 auto;
+    width: 100%;
+}
+
+.matching main{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem 0 3rem;
+    box-sizing: border-box;
+}
+
+.matching main h2{
     color: white;
     font-family: "a Big Deal";
     font-size: 25px;
@@ -907,7 +987,7 @@ nav ul li img.gebruikerpfpartial:hover {
     padding-left: 6em;
 }
 
-.matching h3{
+.matching main h3{
     color: white;
     font-family: "a Big Deal";
     font-size: 40px;
@@ -917,7 +997,7 @@ nav ul li img.gebruikerpfpartial:hover {
     margin: 0;
 }
 
-.matching h4{
+.matching main h4{
     color: white;
     font-family: "a Big Deal";
     font-size: 40px;
@@ -932,7 +1012,7 @@ nav ul li img.gebruikerpfpartial:hover {
     font-size: 60px;
 }
 
-.matching section{
+.matching main section{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -942,7 +1022,7 @@ nav ul li img.gebruikerpfpartial:hover {
     padding-bottom: 2em;
 }
 
-.matching #beste-match-ul{
+.matching main #beste-match-ul{
     border-radius: 20px;
     background: black;
     width: 80%;
@@ -952,31 +1032,18 @@ nav ul li img.gebruikerpfpartial:hover {
     padding-bottom: 1em;
 }
 
-.matching button{
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #F45A1A;
-    color: white;
-    font-family: var(--body-font);
-    font-weight: bold;
-    padding: 25px 85px;
-    border-radius: 20px;
-    border: none;
-    cursor: pointer;
-}
-
-.matching img{
+.matching main #beste-match img,
+.matching main .meer-matches-ul img{
     height: 320px;
     width: 250px;
 }
 
-.matching .poster-link{
+.matching main .poster-link{
     display: inline-block;
     transition: none;
 }
 
-.matching .poster-link:hover{
+.matching main .poster-link:hover{
     transform: none;
     box-shadow: none;
 }
@@ -991,26 +1058,12 @@ nav ul li img.gebruikerpfpartial:hover {
     width: 80%;
     border: #d94e14 1px solid;
     padding: 2em;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
 }
 
-.meer-matches-ul button{
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #F45A1A;
-    color: white;
-    font-family: var(--body-font);
-    font-weight: bold;
-    padding: 15px 55px;
-    border-radius: 20px;
-    border: none;
-    cursor: pointer;
-}
-
-.matching li{
+.matching main li{
     display: flex;
     padding: 1em;
 }
@@ -1019,9 +1072,16 @@ nav ul li img.gebruikerpfpartial:hover {
     flex-direction: row;
     align-items: stretch;
     text-align: left;
-    border-radius: 20px;
     margin: 0;
     gap: 2em;
+    padding: 0;
+    padding-bottom: 1.5em;
+    border-bottom: 1px solid rgba(244, 90, 26, 0.35);
+}
+
+.meer-matches-ul li:last-child{
+    padding-bottom: 0;
+    border-bottom: none;
 }
 
 .meer-matches-ul div{
@@ -1030,8 +1090,66 @@ nav ul li img.gebruikerpfpartial:hover {
     gap: 0.5em;
 }
 
+.meer-matches-ul a{
+    max-width: 40%;
+}
+
 .meer-matches-ul h3{
     font-size: 28px;
+}
+
+@media (max-width: 900px){
+    .matching main{
+        padding-inline: 1.5rem;
+    }
+
+    .matching main h2{
+        align-self: center;
+        padding-left: 0;
+        text-align: center;
+    }
+
+    .matching main #beste-match-ul,
+    .meer-matches-ul{
+        width: 100%;
+    }
+
+    .matching main #beste-match-ul li,
+    .meer-matches-ul li{
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .beste-match-div,
+    .meer-matches-ul div{
+        padding-left: 0;
+        align-items: center;
+    }
+
+}
+
+@media (max-width: 600px){
+    .matching main h3,
+    .matching main h4{
+        font-size: 32px;
+        text-align: center;
+    }
+
+    #oranje{
+        font-size: 48px;
+    }
+
+    .matching main #beste-match img,
+    .matching main .meer-matches-ul img{
+        width: min(100%, 250px);
+        height: auto;
+    }
+
+    .matching main #beste-match-ul,
+    .meer-matches-ul{
+        padding: 1.5rem;
+    }
 }
 
 .meer-matches-ul h4{
@@ -1043,21 +1161,10 @@ nav ul li img.gebruikerpfpartial:hover {
     margin: 0.4em 0;
 }
 
-.meer-matches-ul button{
-    margin-top: auto;
-    align-self: flex-start;
-}
-
 .meer-matches-ul img{
     width: 250px;
     height: 320px;
     object-fit: cover;
-}
-
-@media (max-width: 768px) {
-    .meer-matches-ul{
-        grid-template-columns: 1fr;
-    }
 }
 
 /*index styling */
@@ -1275,6 +1382,11 @@ nav ul li img.gebruikerpfpartial:hover {
 .review #name{
     height: 3em;
 }
+
+.review #voornaam{
+    height: 3em;
+}
+
 
 .review label[for="rating"] {
     display: block;
