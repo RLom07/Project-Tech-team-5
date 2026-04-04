@@ -1,8 +1,10 @@
 # README
 
-## Over het project
+## Over de applicatie
 
 In deze README staat uitgelegd welke packages geïnstalleerd moeten worden, welke environment variables nodig zijn en hoe de applicatie gestart kan worden.
+
+Cinematch is een website die gebruikers helpt bij het vinden van een passende film of tv-show. Wanneer een gebruiker iets wil kijken, kan diegene eerst een vragenlijst invullen. Op basis van de antwoorden wordt de gebruiker gematcht aan een film of tv-show die daarbij past. Vervolgens kan de gebruiker de details van deze film of tv-show bekijken en zien waar deze te streamen of te bekijken is.
 
 ---
 
@@ -18,14 +20,10 @@ Voordat je de applicatie kunt gebruiken, moet het volgende op je computer geïns
 
 ## Installatie
 
-Open een terminal in de hoofdmap van het project en voer de volgende commando’s uit:
+Open een terminal in de hoofdmap van het project en voer het volgende commando uit:
 
 ```bash
-npm install dotenv
-npm install express
-npm install xss
-npm install validator
-npm install bcrypt
+npm install
 ```
 
 ## .env bestand toevoegen
@@ -91,6 +89,7 @@ Binnen dit project is gebruikgemaakt van de volgende technologieën en packages:
 - **xss** - voor het beveiligen van gebruikersinvoer tegen XSS-aanvallen
 - **validator** - voor het controleren en valideren van invoer
 - **bcrypt** - voor het veilig hashen van wachtwoorden
+- **multer** - voor het uploaden en verwerken van bestanden
 - **MongoDB** - database voor het opslaan van gegevens
 - **The Movie Database (TMDb) API** - externe API voor filmgegevens
 
